@@ -1,5 +1,7 @@
 package it.inserrafesta.iseomap.activity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -10,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,12 +22,15 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import it.inserrafesta.iseomap.ConnectionDetector;
 import it.inserrafesta.iseomap.R;
 
 import it.inserrafesta.iseomap.fragment.LinkFragment;
 import it.inserrafesta.iseomap.fragment.MapFragment;
 import it.inserrafesta.iseomap.fragment.PointFragment;
 import it.inserrafesta.iseomap.fragment.WaterFragment;
+
+import static android.content.DialogInterface.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-
+        checkStatusConnection();
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
@@ -190,6 +196,18 @@ public class MainActivity extends AppCompatActivity {
         }
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+
+    }
+
+    protected void checkStatusConnection(){
+     /*check if is present internet connection */
+        ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
+        Boolean isInternetPresent = cd.isConnectingToInternet();
+
+        if (!isInternetPresent) {
+            // make HTTP requests
+            showAlertDialog(this, "Connessione Internet assente", "Necessaria una connessione internet per usare l'applicazione", true);
+        }
     }
 
     protected void displayMapFragment() {
@@ -273,7 +291,6 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
-
     /*
     / metodo che controlla se il fragment della mappa e gia presente o meno, in caso non lo sia ne crea uno nuovo, invece se esiste gia non fa niente in modo che non ricarica di nuovo la mappa se e gia presente!
      */
@@ -323,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
+        //checkStatusConnection();
         super.onResume();
 
         // TODO necessario per nascondere la navigation bar, problema la mapFragment però non si estende sotto dove non c'è più la navigation bar
@@ -355,4 +373,44 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Function to display simple Alert Dialog
+     * @param context - application context
+     * @param title - alert dialog title
+     * @param message - alert message
+     * @param status - success/failure (used to set icon)
+     * */
+    public void showAlertDialog(Context context, String title, String message, Boolean status) {
+       final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(title);
+        alert.setIcon(R.drawable.ic_no_connection);
+        alert.setMessage(message);
+        alert.setPositiveButton("Impostazioni", new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+                finish();
+                System.exit(0);
+            //TODO non funziona il link alle impostazioni
+                startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+            }
+        });
+
+        alert.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                finish();
+                System.exit(0);
+            }
+        });
+
+
+        alert.setNegativeButton("Esci", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+                finish();
+                System.exit(0);
+            }
+        });
+        alert.show();
+    }
 }
