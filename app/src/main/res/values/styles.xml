@@ -11,10 +11,4 @@
     </style>
     <style name="Theme.TransparencyDemo" parent="@android:style/Theme.Holo.Light"/>
 
-    <style name="NavDrawerRowItemText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/nav_drawer_item_main_text</item>
-        <item name="android:layout_gravity">start|center_vertical</item>
-    </style>
 </resources>
