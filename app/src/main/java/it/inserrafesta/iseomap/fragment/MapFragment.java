@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import it.inserrafesta.iseomap.R;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -44,7 +45,7 @@ import java.util.Vector;
 import it.inserrafesta.iseomap.Place;
 import it.inserrafesta.iseomap.activity.DetailsActivity;
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment{
 
     static final LatLng INITIAL_LATLNG = new LatLng(45.733636, 10.051033);
     final int INITIAL_ZOOM = 12;
@@ -57,7 +58,7 @@ public class MapFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_map, menu);
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

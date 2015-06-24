@@ -6,9 +6,11 @@
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="windowActionBarOverlay">true</item>
-
+        <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="Theme.TransparencyDemo" parent="@android:style/Theme.Holo.Light"/>
 
+    <style name="MyDrawerArrowToggle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/white</item>
+    </style>
 </resources>
