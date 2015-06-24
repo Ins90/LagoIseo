@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="it.inserrafesta.iseomap" >
+
+    <!-- o check internet connection status -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- to check network state whether data can be downloaded or not -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- to determine user’s location using WiFi and mobile cell data -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- to determine user’s location using GPS -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- to write to external storage as google maps store map data in external storage -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- Required OpenGL ES 2.0. for Maps V2 -->
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <uses-library android:name="com.google.android.maps" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_barca"
+        android:theme="@style/AppTheme"
+        android:label="@string/app_name">
+        <activity
+            android:name="it.inserrafesta.iseomap.activity.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCmKPyEEOGKOq3XEKqA_FOaEAEzUMvkS0s" />
+
+        <activity
+            android:name="it.inserrafesta.iseomap.activity.MyPreferencesActivity"
+            android:label="@string/title_activity_my_preferences" >
+        </activity>
+        <activity
+            android:name="it.inserrafesta.iseomap.activity.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
+        <activity
+            android:name="it.inserrafesta.iseomap.activity.DetailsActivity"
+            android:label="@string/title_activity_details" >
+        </activity>
+
+    </application>
+
+</manifest>

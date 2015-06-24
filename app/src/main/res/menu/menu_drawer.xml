@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single" >
+
+        <item
+            android:id="@+id/home"
+            style="@style/NavDrawerRowItemText"
+            android:checked="false"
+            android:icon="@drawable/ic_home_white_24dp"
+            android:title="@string/home_string"
+            android:textColor="@color/nav_drawer_item_text_selected"  />
+
+        <item
+            android:id="@+id/explore"
+            android:checked="false"
+            android:icon="@drawable/ic_explore_white_24dp"
+            android:title="@string/explore_string" />
+
+        <item
+            android:id="@+id/classification"
+            android:checked="false"
+            android:icon="@drawable/ic_invert_colors_white_24dp"
+            android:title="@string/classification_string" />
+
+        <item
+            android:id="@+id/link"
+            android:checked="false"
+            android:icon="@drawable/ic_language_white_24dp"
+            android:title="@string/link_string" />
+
+        <item android:title="">
+            <menu>
+                <item
+                    android:id="@+id/settings"
+                    android:icon="@drawable/ic_settings_white_24dp"
+                    android:title="@string/settings_string" />
+                <item
+                    android:id="@+id/help"
+                    android:icon="@drawable/ic_help_white_24dp"
+                    android:title="@string/help_and_feedback" />
+                <item
+                    android:id="@+id/about"
+                    android:icon="@drawable/ic_info_white_24dp"
+                    android:title="@string/about_string" />
+            </menu>
+        </item>
+    </group>
+</menu>

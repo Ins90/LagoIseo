@@ -1,0 +1,20 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
+
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="Theme.TransparencyDemo" parent="@android:style/Theme.Holo.Light"/>
+
+    <style name="NavDrawerRowItemText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/nav_drawer_item_main_text</item>
+        <item name="android:layout_gravity">start|center_vertical</item>
+    </style>
+</resources>
