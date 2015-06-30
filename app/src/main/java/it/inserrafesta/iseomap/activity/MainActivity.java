@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
         //checkStatusConnection();
         super.onResume();
 
-        // TODO necessario per nascondere la navigation bar, problema la mapFragment però non si estende sotto dove non c'è più la navigation bar
+        // TODO necessario per nascondere la navigation bar, problema la mapFragment pero non si estende sotto dove non c'e piu la navigation bar
        /* View decorView = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= 19) {
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE

@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="10dp"/>
-
+        <!--
         <Button
             android:id="@+id/detailsButton"
             android:layout_width="fill_parent"
@@ -34,7 +34,7 @@
             android:padding="1dp"
             android:textColor="#666666"
             android:background="@drawable/mapbutton_normal"
-            android:text="Info"/>
+            android:text="Info"/> -->
         <!--  android:onClick="goToDetails" -->
     </LinearLayout>
 

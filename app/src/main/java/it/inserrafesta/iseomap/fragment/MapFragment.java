@@ -133,7 +133,7 @@ public class MapFragment extends Fragment{
         return v;
     }
 
-    //la main activity setta il tipo di mappa -> prova perchè non è efficace! usare switch sulla mappa
+    //la main activity setta il tipo di mappa -> prova perchï¿½ non ï¿½ efficace! usare switch sulla mappa
     public void initializeMapType() {
         boolean sat=bundle.getBoolean("OptSatellite", true);
         if(sat) {
@@ -163,7 +163,6 @@ public class MapFragment extends Fragment{
             googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                 @Override
                 public View getInfoWindow(Marker marker) {
-
                     return null;
                 }
 
@@ -208,24 +207,25 @@ public class MapFragment extends Fragment{
                                 break;
                         }
                     }
-                    // TODO non funge il pulsante dettagli
+                  // TODO non funge il pulsante dettagli
                     imageinfo.setImageResource(image);
 
-                    final Intent intent = new Intent(getActivity(), DetailsActivity.class);
+              /*      final Intent intent = new Intent(getActivity(), DetailsActivity.class);
                     final Button button = (Button) v.findViewById(R.id.detailsButton);
 
                     button.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
-                            Toast.makeText(getActivity().getBaseContext(), "Cliccato!!!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity().getBaseContext(), "Cliccato!!!", Toast.LENGTH_SHORT).show();
 
                             startActivity(intent);
                         }
                     });
-
+*/
 
                     return v;
-                }
-            });
+               }
+
+           });
         }
 
         //Move the camera instantly to center of lake Iseo
@@ -252,6 +252,15 @@ public class MapFragment extends Fragment{
                 }
             }
         });
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                final Intent intent = new Intent(getActivity(), DetailsActivity.class);
+               intent.putExtra("localita",marker.getTitle().split("_")[0].substring(9));
+                startActivity(intent);
+            }
+        });
+
     }
     public static void zoomToMarkers2(View v){
         zoomAnimateLevelToFitMarkers(120);
