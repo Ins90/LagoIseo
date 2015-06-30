@@ -9,5 +9,6 @@
         android:title="@string/action_terrain"
         android:icon="@drawable/ic_terrain"
         app:showAsAction="ifRoom|collapseActionView"
-        android:orderInCategory="100"/>
+        android:orderInCategory="200"/>
+
 </menu>

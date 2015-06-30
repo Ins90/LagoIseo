@@ -3,6 +3,9 @@ package it.inserrafesta.iseomap.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SearchViewCompat;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -54,12 +57,13 @@ public class MapFragment extends Fragment{
     private static CameraUpdate cu;
     private static Vector<Place>  places = new Vector<Place>();
     Bundle bundle;
+    TextView mSearchText;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_map, menu);
-        super.onCreateOptionsMenu(menu, inflater);
     }
+
 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

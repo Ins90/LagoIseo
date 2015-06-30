@@ -385,26 +385,19 @@ public class MainActivity extends AppCompatActivity {
         alert.setTitle(title);
         alert.setIcon(R.drawable.ic_no_connection);
         alert.setMessage(message);
-        alert.setPositiveButton("Impostazioni", new DialogInterface.OnClickListener() {
+        alert.setCancelable(false);
+
+        alert.setNegativeButton("Impostazioni", new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
-                finish();
-                System.exit(0);
-            //TODO non funziona il link alle impostazioni
+                //finish();
+                //System.exit(0);
+            //TODO funziona ma se si preme il tasto indietro torna all app normalmente
                 startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
             }
         });
 
-        alert.setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                finish();
-                System.exit(0);
-            }
-        });
-
-
-        alert.setNegativeButton("Esci", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton("Esci", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
                 finish();

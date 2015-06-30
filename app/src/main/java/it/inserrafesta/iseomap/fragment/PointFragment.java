@@ -22,9 +22,6 @@ public class PointFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.point_fragment, container, false);
-
-
-
         lv = (ListView)v.findViewById(android.R.id.list);
 
         // ListView lv=lv.getListView();

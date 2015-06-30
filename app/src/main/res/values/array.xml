@@ -1,13 +1,15 @@
 <resources>
     <string-array name="listArray">
-        <item>Headings</item>
-        <item>Headings and Details</item>
-        <item>All Data</item>
+        <item>Tutti</item>
+        <item>Qualità eccellente</item>
+        <item>Qualità buona</item>
+        <item>Qualità scarsa</item>
     </string-array>
 
     <string-array name="listValues">
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
     </string-array>
 </resources>
