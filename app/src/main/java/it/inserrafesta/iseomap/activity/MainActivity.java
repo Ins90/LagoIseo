@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-    private static final String TAG_LOG = MainActivity.class.getName();
+    boolean drawer=false; //var usata per vedere se il drawer è aperto
 
     static public MapFragment mapFragment;
     static LinkFragment linkFragment;
@@ -155,13 +155,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDrawerClosed(View drawerView) {
                 // Code here will be triggered once the menu_drawer closes as we dont want anything to happen so we leave this blank
+                drawer=false;
                 super.onDrawerClosed(drawerView);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 // Code here will be triggered once the menu_drawer open as we dont want anything to happen so we leave this blank
-
+                drawer=true;
                 super.onDrawerOpened(drawerView);
             }
         };
@@ -360,16 +361,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mapFragment.isHidden()) {
-            displayMapFragment();
-        } else {
-            if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
-                finish();
-                System.exit(0);
+        if(drawer){ //replace this with actual function which returns if the drawer is open
+            drawerLayout.closeDrawers();     // replace this with actual function which closes drawer
+        }else {
+            if (mapFragment.isHidden()) {
+                displayMapFragment();
             } else {
-                Toast.makeText(getBaseContext(), "Premere di nuovo il tasto INDIETRO per uscire dall'app", Toast.LENGTH_SHORT).show();
+                if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+                    finish();
+                    System.exit(0);
+                } else {
+                    Toast.makeText(getBaseContext(), "Premere di nuovo il tasto INDIETRO per uscire dall'app", Toast.LENGTH_SHORT).show();
+                }
+                mBackPressed = System.currentTimeMillis();
             }
-            mBackPressed = System.currentTimeMillis();
         }
     }
 

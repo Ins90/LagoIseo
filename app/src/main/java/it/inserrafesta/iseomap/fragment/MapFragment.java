@@ -255,8 +255,9 @@ public class MapFragment extends Fragment{
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
+               // Toast.makeText(getActivity().getBaseContext(), marker.getTitle().split("_")[0].substring(9), Toast.LENGTH_SHORT).show();
                 final Intent intent = new Intent(getActivity(), DetailsActivity.class);
-               intent.putExtra("localita",marker.getTitle().split("_")[0].substring(9));
+                intent.putExtra("localita",marker.getTitle().split("_")[0].substring(9));
                 startActivity(intent);
             }
         });
