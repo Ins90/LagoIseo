@@ -14,34 +14,15 @@ import it.inserrafesta.iseomap.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.inserrafesta.iseomap.NowArrayAdapter;
 import it.inserrafesta.iseomap.SimpleArrayAdapter;
 
 /**
  * Created by Andrea on 04-06-2015.
  */
 public class PointFragment extends ListFragment {
-    private NowArrayAdapter m_adapter;
     private ListView lv;
     private SimpleArrayAdapter adapter;
-
     List<Place> items = new ArrayList<Place>();
-/*
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ArrayList<String> listContact = new ArrayList<String>();
-        listContact.add("ciao");
-        listContact.add("ciao2");
-        listContact.add("ciao3");
-
-
-        // GlobalList is a class that holds global variables, arrays etc
-        // getMenuCategories returns global arraylist which is initialized in GlobalList class
-
-        m_adapter = new NowArrayAdapter(getActivity(), android.R.id.list, listContact);
-        lv.setAdapter(m_adapter);
-    }
-*/
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +30,6 @@ public class PointFragment extends ListFragment {
             items.add(MapFragment.places.get(i));
     }
 
-
-
-    // @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater
