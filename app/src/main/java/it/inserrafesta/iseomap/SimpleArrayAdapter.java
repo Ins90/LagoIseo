@@ -1,6 +1,8 @@
 package it.inserrafesta.iseomap;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
+
+import it.inserrafesta.iseomap.activity.DetailsActivity;
 
 /**
  * Created by Andrea on 03/07/2015.
@@ -40,6 +44,7 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> {
         } else {
             holder = (ViewHolder) row.getTag();
         }
+
         final Place place = objects.get(position);
         if (place != null) {
             holder.comune.setText(place.getComune());
@@ -48,6 +53,16 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> {
 
             // Log.d("Adapter", "holder.v1.getText(): " + holder.v1.getText());
         }
+
+        final Intent intent = new Intent(context, DetailsActivity.class);
+
+        row.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent.putExtra("localita",place.getLocalita());
+                context.startActivity(intent);
+            }
+        });
         return row;
     }
 
@@ -69,4 +84,6 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> {
         // TODO Auto-generated method stub
         return objects.get(position);
     }
+
+
 }
