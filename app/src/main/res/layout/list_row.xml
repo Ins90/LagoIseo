@@ -16,8 +16,10 @@
     android:padding="5dip"
     android:paddingTop="15dp"
     android:paddingBottom="15dp"
-    android:background="@drawable/selector_card_background"
-    android:descendantFocusability="afterDescendants">
+    android:background="@drawable/selector_card_background">
+
+    <!--android:descendantFocusability="afterDescendants"-->
+
 
     <!-- ListRow Left sied Thumbnail image -->
 
@@ -27,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="5dip"
-        android:padding="3dip" >
+        android:padding="3dip">
 
         <ImageView
             android:id="@+id/list_image"

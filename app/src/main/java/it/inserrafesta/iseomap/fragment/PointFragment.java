@@ -6,7 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import it.inserrafesta.iseomap.Place;
 import it.inserrafesta.iseomap.R;
@@ -32,12 +34,11 @@ public class PointFragment extends ListFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater
-                .inflate(R.layout.point_fragment, container, false);
-        // RESTManager manager = new RESTManager();
+        View rootView = inflater.inflate(R.layout.point_fragment, container, false);
         lv = (ListView)rootView.findViewById(android.R.id.list);
+        lv.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
 
-        return rootView;
+       return rootView;
     }
 
     @Override
@@ -48,5 +49,7 @@ public class PointFragment extends ListFragment {
                 items);
         setListAdapter(adapter);
     }
+
+
 }
 
