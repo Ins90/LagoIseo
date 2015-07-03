@@ -10,22 +10,33 @@ android:orientation="vertical">
 
 <FrameLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    <!--
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_comune"/>
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_lat"/>
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_lng"/>
-!-->
+    android:layout_height="wrap_content" >
 </FrameLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:background="@drawable/lake"
+    android:orientation="vertical"
+    >
+</RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="comune"
+        android:id="@+id/tv_comune" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="lat"
+        android:id="@+id/tv_lat" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="lng"
+        android:id="@+id/tv_lng" />
+
+
 
 
 </LinearLayout>

@@ -3,6 +3,7 @@ package it.inserrafesta.iseomap.activity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -42,7 +43,6 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
         Bundle extras = getIntent().getExtras();
         localita = extras.getString("localita");
-        Log.w("MyApp",localita);
         initialise();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         JSONArray jsonArray = getJSONFromDB();
@@ -50,13 +50,13 @@ public class DetailsActivity extends AppCompatActivity {
         /*
         ** Set Views content
          */
-
         TextView tvComune = (TextView)findViewById(R.id.tv_comune);
-        tvComune.setText("Comune: "+comune+" ("+provincia+")");
+        tvComune.setText(Html.fromHtml("<B>Comune: </B>"+comune+" ("+provincia+")"));
         TextView tvLat = (TextView)findViewById(R.id.tv_lat);
-        tvLat.setText("Lat: "+lat);
+        tvLat.setText(Html.fromHtml("<B>Lat: </B>"+lat));
         TextView tvLng = (TextView)findViewById(R.id.tv_lng);
-        tvLng.setText("Lng: "+lng);
+        tvLng.setText(Html.fromHtml("<B>Lng: </B>"+lng));
+
     }
 
 
