@@ -73,4 +73,24 @@ public class Place {
     public double getLat() {
         return lat;
     }
+
+    public String getComune() {
+        return comune;
+    }
+
+    public String getLocalita() {
+        return localita;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public int getClassificazione() {
+        return classificazione;
+    }
+
+    public int getDivieto() {
+        return divieto;
+    }
 }

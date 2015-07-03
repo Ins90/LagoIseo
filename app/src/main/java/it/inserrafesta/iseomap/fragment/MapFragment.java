@@ -55,7 +55,7 @@ public class MapFragment extends Fragment{
     MapView mMapView;
     private static GoogleMap googleMap;
     private static CameraUpdate cu;
-    private static Vector<Place>  places = new Vector<Place>();
+    public static Vector<Place>  places = new Vector<Place>();
     Bundle bundle;
     TextView mSearchText;
 

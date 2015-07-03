@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Xml necessario per la creazione della lista di punti di interesse -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,24 +12,12 @@
     android:layout_marginTop="4dp"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
-    android:descendantFocusability="beforeDescendants"
-    android:layout_marginBottom="4dp"
-    android:orientation="horizontal"
-    android:divider="@android:color/transparent"
-    android:dividerHeight="@dimen/activity_horizontal_margin">
-    <!--android:background="@drawable/background_card"-->
-
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:paddingRight="15dp"
-        android:background="@drawable/selector_card_background"
-        android:descendantFocusability="afterDescendants">
+    android:orientation="vertical"
+    android:padding="5dip"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:background="@drawable/selector_card_background"
+    android:descendantFocusability="afterDescendants">
 
     <!-- ListRow Left sied Thumbnail image -->
 
@@ -76,10 +66,10 @@
         android:textSize="10sp"
         tools:ignore="SmallSp" />
 
-    <!-- Valutation -->
+    <!-- Water classification -->
 
     <TextView
-        android:id="@+id/val"
+        android:id="@+id/waterclas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -91,5 +81,4 @@
         android:textSize="10sp"
         android:textStyle="bold"
         tools:ignore="SmallSp" />
-</LinearLayout>
-</FrameLayout>
+</RelativeLayout>
