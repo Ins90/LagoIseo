@@ -42,6 +42,7 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
         Bundle extras = getIntent().getExtras();
         localita = extras.getString("localita");
+        Log.w("MyApp",localita);
         initialise();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         JSONArray jsonArray = getJSONFromDB();
@@ -49,6 +50,7 @@ public class DetailsActivity extends AppCompatActivity {
         /*
         ** Set Views content
          */
+
         TextView tvComune = (TextView)findViewById(R.id.tv_comune);
         tvComune.setText("Comune: "+comune+" ("+provincia+")");
         TextView tvLat = (TextView)findViewById(R.id.tv_lat);
@@ -91,7 +93,7 @@ public class DetailsActivity extends AppCompatActivity {
         InputStream isr = null;
         try{
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://iseomap.altervista.org/get_details_by_loc.php?loc="+localita); //YOUR PHP SCRIPT ADDRESS
+            HttpPost httppost = new HttpPost("http://iseomap.altervista.org/get_details_by_loc.php?loc="+ensureGet(localita)); //YOUR PHP SCRIPT ADDRESS
             // HttpPost httppost = new HttpPost("http://172.23.193.32/elift-test/myfile.php"); //YOUR PHP SCRIPT ADDRESS
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
@@ -122,6 +124,10 @@ public class DetailsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return jsa;
+    }
+
+    private String ensureGet(String getParam) {
+        return getParam.replaceAll(" ","%20");
     }
 
     private void setVariablesFromJSONArray(JSONArray jsonArray) {

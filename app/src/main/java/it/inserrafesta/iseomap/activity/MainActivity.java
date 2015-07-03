@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-    boolean drawer=false; //var usata per vedere se il drawer è aperto
+    boolean drawer=false; //var usata per vedere se il drawer e' aperto
 
     static public MapFragment mapFragment;
     static LinkFragment linkFragment;
