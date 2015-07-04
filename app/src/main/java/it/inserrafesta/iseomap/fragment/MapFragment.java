@@ -297,7 +297,7 @@ public class MapFragment extends Fragment{
             JSONObject json = null;
             try{
                 json = jsonArray.getJSONObject(i);
-                Place p = new Place(json.getString("comune"),json.getString("localita"),json.getString("provincia"),json.getDouble("lat"),json.getDouble("lng"),json.getInt("classificazione"),json.getInt("divieto"));
+                Place p = new Place(json.getString("comune"),json.getString("localita"),json.getString("provincia"),json.getDouble("lat"),json.getDouble("lng"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"));
                 places.add(p);
 
             }catch(JSONException e){

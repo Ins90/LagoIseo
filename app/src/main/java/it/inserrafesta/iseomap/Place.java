@@ -20,8 +20,9 @@ public class Place {
     private double lng;
     private int classificazione; /* 1 eccellente 2 buono 3 sufficiente 4 scarso */
     private int divieto; /* 1 SI 0 NO */
+    private String imageUrl;
 
-    public Place( String _comune, String _localita, String _provincia,double _lat, double _lng, int _classificazione, int _divieto){
+    public Place( String _comune, String _localita, String _provincia,double _lat, double _lng, int _classificazione, int _divieto,String _imageUrl){
         comune = _comune;
         localita = _localita;
         provincia = _provincia;
@@ -29,6 +30,7 @@ public class Place {
         lng = _lng;
         classificazione = _classificazione;
         divieto = _divieto;
+        imageUrl = _imageUrl;
     }
 
     public void makeMaker(GoogleMap mMap){
