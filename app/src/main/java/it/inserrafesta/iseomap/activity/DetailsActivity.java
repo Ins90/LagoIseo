@@ -1,5 +1,7 @@
 package it.inserrafesta.iseomap.activity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +9,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
@@ -19,8 +22,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 import it.inserrafesta.iseomap.Place;
 import it.inserrafesta.iseomap.R;
@@ -35,6 +42,7 @@ public class DetailsActivity extends AppCompatActivity {
     private double lng;
     private int classificazione; /* 1 eccellente 2 buono 3 sufficiente 4 scarso */
     private int divieto; /* 1 SI 0 NO */
+    private String imageUrl;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -47,6 +55,9 @@ public class DetailsActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         JSONArray jsonArray = getJSONFromDB();
         setVariablesFromJSONArray(jsonArray);
+        setImage();
+
+
         /*
         ** Set Views content
          */
@@ -59,6 +70,23 @@ public class DetailsActivity extends AppCompatActivity {
 
     }
 
+    private void setImage() {
+        ImageView iv = (ImageView)findViewById(R.id.iv_details_place);
+        iv.setScaleType(ImageView.ScaleType.FIT_XY);
+        URL url = null;
+        try {
+            url = new URL(imageUrl);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Bitmap bmp = null;
+        try {
+            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        iv.setImageBitmap(bmp);
+    }
 
 
     /**
@@ -83,6 +111,8 @@ public class DetailsActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
     }
     /*
      * Ottiene un oggetto JSONArray dal DB remoto
@@ -140,6 +170,7 @@ public class DetailsActivity extends AppCompatActivity {
             lng = json.getDouble("lng");
             classificazione = json.getInt("classificazione");
             divieto = json.getInt("divieto");
+            imageUrl = json.getString("image");
 
         } catch (JSONException e) {
             e.printStackTrace();

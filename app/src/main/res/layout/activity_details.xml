@@ -7,18 +7,11 @@ android:orientation="vertical">
 
 <include
     layout="@layout/toolbar"/>
-
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
-</FrameLayout>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:background="@drawable/lake"
-    android:orientation="vertical"
-    >
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/iv_details_place"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:src="@drawable/lake" />
 
     <TextView
         android:layout_width="wrap_content"
