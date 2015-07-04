@@ -2,6 +2,7 @@ package it.inserrafesta.iseomap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,8 +50,21 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> {
         if (place != null) {
             holder.comune.setText(place.getComune());
             holder.localita.setText(place.getLocalita());
-            holder.classificazione.setText((Integer.toString(place.getClassificazione())));
 
+            if(place.getDivieto()==1){
+                holder.classificazione.setText(R.string.prohibition);
+                holder.classificazione.setTextColor(Color.parseColor("#D32F2F"));
+            }else {
+                if (place.getClassificazione() == 1) {
+                    holder.classificazione.setText(R.string.water_high);
+                } else {
+                    if (place.getClassificazione() == 2) {
+                        holder.classificazione.setText(R.string.water_good);
+                    } else {
+                        holder.classificazione.setText(R.string.water_poor);
+                    }
+                }
+            }
             // Log.d("Adapter", "holder.v1.getText(): " + holder.v1.getText());
         }
 
@@ -59,7 +73,7 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> {
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent.putExtra("localita",place.getLocalita());
+                intent.putExtra("localita", place.getLocalita());
                 context.startActivity(intent);
             }
         });

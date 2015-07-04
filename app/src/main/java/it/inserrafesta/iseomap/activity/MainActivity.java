@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.about:
                         // getSupportActionBar().setTitle(R.string.about_string);
-                        startActivity(new Intent(navigationView.getContext(), DetailsActivity.class)); //TODO rimettere About
+                        startActivity(new Intent(navigationView.getContext(), AboutActivity.class)); //TODO rimettere About
                         return true;
                     default:
                         Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();

@@ -10,5 +10,7 @@
     <color name="text_grey">#727272</color>
     <color name="blue_500">#3F51B5</color>
     <color name="white">#FFFFFF</color>
+    <color name="green">#4CAF50</color>
+    <color name="red">#D32F2F</color>
 
 </resources>

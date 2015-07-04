@@ -21,11 +21,16 @@
 
     <string name="title_name"></string>
     <string name="descrizione"></string>
-    <string name="valutazione"></string>
+    <string name="valutazione">sdfsdfsdfsdfsdfsdfsd</string>
     <string name="title_activity_water_fragment">WaterFragment</string>
 
 
     <string name="action_home">Home - Zoom su tutti i punti di balneazione</string>
     <string name="action_terrain">Stile Mappa</string>
+
+    <string name="water_high">Eccellente</string>
+    <string name="water_good">Buova</string>
+    <string name="water_poor">Scarsa</string>
+    <string name="prohibition">Divieto temporaneo</string>
 
 </resources>

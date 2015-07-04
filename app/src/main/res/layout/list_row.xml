@@ -33,7 +33,7 @@
 
         <ImageView
             android:id="@+id/list_image"
-            android:src="@mipmap/ic_barca"
+            android:src="@drawable/lake"
             android:layout_width="50dip"
             android:layout_height="50dip"
             android:contentDescription="necessario?"/>
@@ -74,13 +74,15 @@
         android:id="@+id/waterclas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/title_name"
-        android:layout_marginRight="5dip"
+        android:layout_marginRight="18dp"
         android:gravity="right"
-        android:text="@string/valutazione"
-        android:textColor="@android:color/primary_text_light"
+        android:textColor="@color/green"
         android:textSize="10sp"
         android:textStyle="bold"
-        tools:ignore="SmallSp" />
+        tools:ignore="SmallSp"
+        android:padding="3dip"
+        android:layout_marginEnd="15dp"
+        android:layout_alignBottom="@+id/description"
+        android:layout_alignRight="@+id/description"
+        android:layout_alignEnd="@+id/description" />
 </RelativeLayout>
