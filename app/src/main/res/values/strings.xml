@@ -26,6 +26,7 @@
 
 
     <string name="action_home">Home - Zoom su tutti i punti di balneazione</string>
+    <string name="action_filter">Filtro sui punti di balneazione</string>
     <string name="action_terrain">Stile Mappa</string>
 
     <string name="water_high">Eccellente</string>

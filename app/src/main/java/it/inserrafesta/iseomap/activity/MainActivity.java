@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         checkStatusConnection();
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-
             // This method will trigger on item Click of navigation menu
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -137,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.about:
                         // getSupportActionBar().setTitle(R.string.about_string);
-                        startActivity(new Intent(navigationView.getContext(), AboutActivity.class)); //TODO rimettere About
+                        startActivity(new Intent(navigationView.getContext(), AboutActivity.class));
                         return true;
                     default:
                         Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
@@ -365,13 +364,15 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawers();     // replace this with actual function which closes drawer
         }else {
             if (mapFragment.isHidden()) {
+                //TODO sistemare il fatto che quando si preme indietro non cambia l highlight del item su home
+
                 displayMapFragment();
             } else {
                 if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
                     finish();
                     System.exit(0);
                 } else {
-                    Toast.makeText(getBaseContext(), "Premere di nuovo il tasto INDIETRO per uscire dall'app", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Premere ancora il tasto INDIETRO per uscire dall'app", Toast.LENGTH_SHORT).show();
                 }
                 mBackPressed = System.currentTimeMillis();
             }

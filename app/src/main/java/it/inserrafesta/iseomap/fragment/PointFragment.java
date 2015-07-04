@@ -4,11 +4,16 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.GoogleMap;
 
 import it.inserrafesta.iseomap.Place;
 import it.inserrafesta.iseomap.R;
@@ -26,6 +31,15 @@ public class PointFragment extends ListFragment {
     private SimpleArrayAdapter adapter;
     List<Place> items = new ArrayList<Place>();
 
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_point, menu);
+    }
+
+
+
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         for(int i=0;i<MapFragment.places.size();i++)
@@ -34,6 +48,9 @@ public class PointFragment extends ListFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        setHasOptionsMenu(true); //necessario per visualizzare i pulsanti nella toolbar
+
         View rootView = inflater.inflate(R.layout.point_fragment, container, false);
         lv = (ListView)rootView.findViewById(android.R.id.list);
         lv.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);

@@ -32,8 +32,7 @@
         android:padding="3dip">
 
         <ImageView
-            android:id="@+id/list_image"
-            android:src="@drawable/lake"
+            android:id="@+id/point_image"
             android:layout_width="50dip"
             android:layout_height="50dip"
             android:contentDescription="necessario?"/>

@@ -22,6 +22,10 @@ public class Place {
     private int divieto; /* 1 SI 0 NO */
     private String imageUrl;
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
     public Place( String _comune, String _localita, String _provincia,double _lat, double _lng, int _classificazione, int _divieto,String _imageUrl){
         comune = _comune;
         localita = _localita;
