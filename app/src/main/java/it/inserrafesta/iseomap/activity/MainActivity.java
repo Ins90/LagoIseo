@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         // Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         checkStatusConnection();
@@ -193,9 +192,18 @@ public class MainActivity extends AppCompatActivity {
             linkFragment = new LinkFragment();
             exploreFragment = new PointFragment();
             displayMapFragment();
+           // loadPointFragment();
+
+
         }
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
 
+    /* necesario per caricare le immagini la prima volta */
+    private void loadPointFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.frame, exploreFragment, "EXPLORE");
+        ft.hide(exploreFragment);
 
     }
 
@@ -362,10 +370,9 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(drawer){ //replace this with actual function which returns if the drawer is open
             drawerLayout.closeDrawers();     // replace this with actual function which closes drawer
-        }else {
+        }else{
             if (mapFragment.isHidden()) {
                 //TODO sistemare il fatto che quando si preme indietro non cambia l highlight del item su home
-
                 displayMapFragment();
             } else {
                 if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {

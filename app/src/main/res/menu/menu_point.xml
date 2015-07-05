@@ -6,5 +6,11 @@
         android:orderInCategory="100"/>
 
 
-
+  <!--  <item android:id="@+id/action_search"
+        android:title="@string/action_search"
+        android:icon="@drawable/ic_no_connection"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:orderInCategory="100"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+-->
 </menu>

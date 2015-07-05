@@ -88,6 +88,7 @@ public class MapFragment extends Fragment{
         bundle=getArguments(); //necessario per le preferenze passate dalla mainActivity
         setHasOptionsMenu(true);
 
+
         // inflat and return the layout
         /*
          * Istruzioni magiche per consentire la connessione a internet

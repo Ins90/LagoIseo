@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lago d\'Iseo</string>
+    <string name="app_name">IseoAcque</string>
 
     <string name="home_string">Home</string>
     <string name="explore_string">Punti di balneazione</string>
@@ -28,10 +28,14 @@
     <string name="action_home">Home - Zoom su tutti i punti di balneazione</string>
     <string name="action_filter">Filtro sui punti di balneazione</string>
     <string name="action_terrain">Stile Mappa</string>
+    <string name="action_search">Ricerca punto di balneazione</string>
 
     <string name="water_high">Eccellente</string>
     <string name="water_good">Buova</string>
     <string name="water_poor">Scarsa</string>
     <string name="prohibition">Divieto temporaneo</string>
 
+    <string name="some_hint">Filtra per Località o Comune ... </string>
+
+    Filtra per località o Comune..
 </resources>

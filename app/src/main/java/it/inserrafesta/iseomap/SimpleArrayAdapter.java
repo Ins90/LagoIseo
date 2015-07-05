@@ -10,12 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import it.inserrafesta.iseomap.activity.DetailsActivity;
@@ -23,38 +26,53 @@ import it.inserrafesta.iseomap.activity.DetailsActivity;
 /**
  * Created by Andrea on 03/07/2015.
  */
-public class SimpleArrayAdapter extends ArrayAdapter<Place> {
+public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterable {
     private final Context context;
-    private final List<Place> objects;
+    private PointFilter filter;
+    private ArrayList<Place> originalList;
+    private ArrayList<Place> pointList;
 
     public SimpleArrayAdapter(Context context, int resource,
-                              List<Place> objects) {
-        super(context, resource);
+                              ArrayList<Place> pointList) {
+        super(context, resource,pointList);
         this.context = context;
-        this.objects = objects;
+        this.pointList = new ArrayList<Place>();
+        this.pointList.addAll(pointList);
+        this.originalList = new ArrayList<Place>();
+        this.originalList.addAll(pointList);
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (filter == null){
+            filter  = new PointFilter();
+        }
+        return filter;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        ViewHolder holder = new ViewHolder();
-
+        View row =convertView;
+        ViewHolder holder = null;
+        Log.v("ConvertView", String.valueOf(position));
         if (row == null) {
+
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = inflater.inflate(R.layout.list_row, parent, false);
+            row = inflater.inflate(R.layout.list_row, null);
+
+            holder = new ViewHolder();
             holder.localita = (TextView) row.findViewById(R.id.title_name);
             holder.comune = (TextView) row.findViewById(R.id.description);
             holder.classificazione = (TextView) row.findViewById(R.id.waterclas);
             holder.imgV = (ImageView) row.findViewById(R.id.point_image);
             holder.imgV.setScaleType(ImageView.ScaleType.FIT_XY);
             row.setTag(holder);
-
         } else {
             holder = (ViewHolder) row.getTag();
         }
+        final Place place = pointList.get(position);
 
-        final Place place = objects.get(position);
         if (place != null) {
             holder.comune.setText(place.getComune());
             holder.localita.setText(place.getLocalita());
@@ -73,7 +91,7 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> {
                     }
                 }
             }
-
+/*
             URL url = null;
             try {
                 url = new URL(place.getImageUrl());
@@ -87,6 +105,8 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> {
                 e.printStackTrace();
             }
             holder.imgV.setImageBitmap(bmp);
+*/
+           holder.imgV.setImageResource(R.drawable.lake);
 
             // Log.d("Adapter", "holder.v1.getText(): " + holder.v1.getText());
         }
@@ -100,7 +120,8 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> {
                 context.startActivity(intent);
             }
         });
-        return row;
+       return row;
+
     }
 
     public static class ViewHolder {
@@ -114,13 +135,64 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> {
 
     @Override
     public int getCount() {
-        return objects.size();
+        return pointList.size();
     }
 
     @Override
     public Place getItem(int position) {
         // TODO Auto-generated method stub
-        return objects.get(position);
+        return pointList.get(position);
     }
 
+    private class PointFilter extends Filter
+    {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            constraint = constraint.toString().toLowerCase();
+            FilterResults result = new FilterResults();
+            if(constraint != null && constraint.toString().length() > 0)
+            {
+                ArrayList<Place> filteredItems = new ArrayList<Place>();
+
+                //Gestione filtro
+                for(int i = 0, l = originalList.size(); i < l; i++)
+                {
+                    Place place = originalList.get(i);
+                    if(place.getLocalita().toLowerCase().startsWith((String) constraint)) {
+                        filteredItems.add(place);
+                    }else{
+                        if(place.getComune().toLowerCase().startsWith((String) constraint))
+                            filteredItems.add(place);
+                    }
+                }
+                //TODO inserire il caso in cui la lista è vuota
+                result.count = filteredItems.size();
+                result.values = filteredItems;
+            }
+            else
+            {
+                synchronized(this)
+                {
+                    result.values = originalList;
+                    result.count = originalList.size();
+                }
+            }
+            return result;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint,
+                                      FilterResults results) {
+
+            pointList = (ArrayList<Place>)results.values;
+            notifyDataSetChanged();
+            clear();
+            for(int i = 0, l = pointList.size(); i < l; i++)
+                add(pointList.get(i));
+            notifyDataSetInvalidated();
+        }
+    }
 }
