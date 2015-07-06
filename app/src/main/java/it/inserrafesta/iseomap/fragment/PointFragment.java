@@ -3,9 +3,12 @@ package it.inserrafesta.iseomap.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -34,29 +36,55 @@ import it.inserrafesta.iseomap.SimpleArrayAdapter;
 /**
  * Created by Andrea on 04-06-2015.
  */
-public class PointFragment extends ListFragment {  //implements SearchView.OnQueryTextListener
+public class PointFragment extends ListFragment implements SearchView.OnQueryTextListener {  //implements SearchView.OnQueryTextListener
     private ListView lv;
     private SimpleArrayAdapter adapter;
     ArrayList<Place> pointList = new ArrayList<Place>();
-    //SearchView search_view;
-
+    public static MenuItem searchItem;
+    Menu menuNew;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+        menuNew=menu;
         inflater.inflate(R.menu.menu_point, menu);
+        searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+//        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setOnQueryTextListener(this);
+        searchView.setIconifiedByDefault(true);
+        searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean queryTextFocused) {
+                if (!queryTextFocused) {
+                    searchItem.collapseActionView();
+                    searchView.setQuery("", false);
+                }
+            }
+        });
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+              //  if (menuNew != null)
+              //      menuNew.findItem(R.id.action_filter).setVisible(true);
+                return true;  // Return true to collapse action view
+            }
 
-       // search_view = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+              //  if (menuNew != null)
+               //     menuNew.findItem(R.id.action_filter).setVisible(false);
+                return true;  // Return true to expand action view
+            }
+        });
 
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(R.id.action_filter==id){
-            showSingleChoiceDialog(getActivity(), "Filtro punti di balneazione", "Necessaria una connessione internet per usare l'applicazione", true);
-        }
-
-        return super.onOptionsItemSelected(item);
+      //  if(R.id.action_filter==id){
+       //     showSingleChoiceDialog(getActivity(), "Filtro punti di balneazione", "Necessaria una connessione internet per usare l'applicazione", true);
+      //  }
+       return super.onOptionsItemSelected(item);
 
     }
 
@@ -90,12 +118,12 @@ public class PointFragment extends ListFragment {  //implements SearchView.OnQue
         setHasOptionsMenu(true); //necessario per visualizzare i pulsanti nella toolbar
 
         View rootView = inflater.inflate(R.layout.point_fragment, container, false);
-        lv = (ListView)rootView.findViewById(android.R.id.list);
+        lv = (ListView) rootView.findViewById(android.R.id.list);
         lv.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
 
         //enables filtering for the contents of the given ListView
         lv.setTextFilterEnabled(true);
-
+/*
         EditText myFilter = (EditText) rootView.findViewById(R.id.myFilter);
         myFilter.addTextChangedListener(new TextWatcher() {
 
@@ -109,7 +137,7 @@ public class PointFragment extends ListFragment {  //implements SearchView.OnQue
                 adapter.getFilter().filter(s.toString());
             }
         });
-
+*/
         return rootView;
     }
 
@@ -155,7 +183,7 @@ public class PointFragment extends ListFragment {  //implements SearchView.OnQue
         alert.show();
     }
 
-/*
+
     @Override
     public boolean onQueryTextChange(String newText) {
         adapter.getFilter().filter(newText);
@@ -166,7 +194,7 @@ public class PointFragment extends ListFragment {  //implements SearchView.OnQue
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
-*/
+
 
 }
 
