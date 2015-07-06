@@ -1,5 +1,6 @@
 package it.inserrafesta.iseomap.activity;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -43,10 +46,12 @@ public class DetailsActivity extends AppCompatActivity {
     private int classificazione; /* 1 eccellente 2 buono 3 sufficiente 4 scarso */
     private int divieto; /* 1 SI 0 NO */
     private String imageUrl;
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        context=getApplication();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         Bundle extras = getIntent().getExtras();
@@ -55,19 +60,22 @@ public class DetailsActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         JSONArray jsonArray = getJSONFromDB();
         setVariablesFromJSONArray(jsonArray);
-        setImage();
+        //setImage();
 
 
         /*
         ** Set Views content
          */
         TextView tvComune = (TextView)findViewById(R.id.tv_comune);
-        tvComune.setText(Html.fromHtml("<B>Comune: </B>"+comune+" ("+provincia+")"));
+        tvComune.setText(Html.fromHtml("<B>Comune: </B>" + comune + " (" + provincia + ")"));
         TextView tvLat = (TextView)findViewById(R.id.tv_lat);
         tvLat.setText(Html.fromHtml("<B>Lat: </B>"+lat));
         TextView tvLng = (TextView)findViewById(R.id.tv_lng);
         tvLng.setText(Html.fromHtml("<B>Lng: </B>"+lng));
+        ImageView iv = (ImageView)findViewById(R.id.iv_details_place);
+        iv.setScaleType(ImageView.ScaleType.FIT_XY);
 
+        Picasso.with(context).load(imageUrl).into(iv);
     }
 
     private void setImage() {
@@ -87,6 +95,7 @@ public class DetailsActivity extends AppCompatActivity {
         }
         iv.setImageBitmap(bmp);
     }
+
 
 
     /**

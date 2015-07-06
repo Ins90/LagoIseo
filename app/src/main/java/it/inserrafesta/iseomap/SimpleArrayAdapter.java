@@ -15,6 +15,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -91,22 +93,8 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
                     }
                 }
             }
-/*
-            URL url = null;
-            try {
-                url = new URL(place.getImageUrl());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            Bitmap bmp = null;
-            try {
-                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            holder.imgV.setImageBitmap(bmp);
-*/
-           holder.imgV.setImageResource(R.drawable.lake);
+
+            Picasso.with(context).load(place.getImageUrl()).into(holder.imgV);
 
             // Log.d("Adapter", "holder.v1.getText(): " + holder.v1.getText());
         }
