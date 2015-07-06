@@ -130,7 +130,6 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
 
     @Override
     public Place getItem(int position) {
-        // TODO Auto-generated method stub
         return pointList.get(position);
     }
 
@@ -157,7 +156,6 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
                             filteredItems.add(place);
                     }
                 }
-                //TODO inserire il caso in cui la lista è vuota
                 result.count = filteredItems.size();
                 result.values = filteredItems;
             }

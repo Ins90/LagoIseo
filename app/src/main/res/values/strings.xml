@@ -35,6 +35,7 @@
     <string name="water_poor">Scarsa</string>
     <string name="prohibition">Divieto temporaneo</string>
 
-    <string name="some_hint">Filtra per Località o Comune ... </string>
+    <string name="search_hint">Ricerca per Località o Comune ... </string>
+    <string name="empty_list">Nessun risultato trovato</string>
 
 </resources>

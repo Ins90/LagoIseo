@@ -50,7 +50,7 @@ import it.inserrafesta.iseomap.activity.DetailsActivity;
 
 public class MapFragment extends Fragment{
 
-    static final LatLng INITIAL_LATLNG = new LatLng(45.733636, 10.051033);
+    static final LatLng INITIAL_LATLNG = new LatLng(45.733815962451354, 10.05103312432766);
     final int INITIAL_ZOOM = 12;
     MapView mMapView;
     private static GoogleMap googleMap;
@@ -69,12 +69,12 @@ public class MapFragment extends Fragment{
         int id = item.getItemId();
         switch(id){
             case R.id.action_home:
-                Toast.makeText(getActivity().getApplicationContext(), "Centramento mappa ...", Toast.LENGTH_SHORT).show();
-                zoomAnimateLevelToFitMarkers(120);
+                    Toast.makeText(getActivity().getApplicationContext(), "Centramento mappa ...", Toast.LENGTH_SHORT).show();
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(INITIAL_LATLNG, INITIAL_ZOOM));
+                    //zoomAnimateLevelToFitMarkers(120);
                 break;
             case R.id.action_terrain:
                 if(change){
-                    Log.v("eeeeeeee", String.valueOf(change));
                     item.setIcon(R.drawable.ic_satellite_white_36dp);
                     change=false;
                 }else{
@@ -100,8 +100,6 @@ public class MapFragment extends Fragment{
         bundle=getArguments(); //necessario per le preferenze passate dalla mainActivity
         setHasOptionsMenu(true);
 
-
-        // inflat and return the layout
         /*
          * Istruzioni magiche per consentire la connessione a internet
          */
@@ -153,7 +151,6 @@ public class MapFragment extends Fragment{
             googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         }else{
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
         }
     }
 
@@ -234,7 +231,6 @@ public class MapFragment extends Fragment{
                         }
                     });
 */
-
                     return v;
                }
 
@@ -275,9 +271,6 @@ public class MapFragment extends Fragment{
             }
         });
 
-    }
-    public static void zoomToMarkers2(View v){
-        zoomAnimateLevelToFitMarkers(120);
     }
 
     public void goDetails(){
@@ -397,9 +390,5 @@ public class MapFragment extends Fragment{
         }catch(NullPointerException e){
             Log.d("onLowMemory", "NullPointerException: " + e);
         }
-    }
-
-    public static GoogleMap getGoogleMap() {
-        return googleMap;
     }
 }

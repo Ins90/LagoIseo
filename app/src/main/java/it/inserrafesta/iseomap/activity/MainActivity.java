@@ -34,8 +34,6 @@ import static android.content.DialogInterface.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Defining Variables
-
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -76,75 +74,41 @@ public class MainActivity extends AppCompatActivity {
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
-
-
-                    //Replacing the main content with PointFragment Which is our Inbox View;
-
-                    //Replacing the main content with PointFragment Which is our Inbox View;
                     case R.id.home:
                         displayMapFragment();
-//android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        //ft.replace(R.id.frame, mapFragment);
-                        //ft.commit();
-
-                        // replaceFragment(mapFragment);
-                        //MapFragment fragment = new MapFragment();
-                        // android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        // fragmentTransaction.replace(R.id.frame, fragment);
-                        // fragmentTransaction.commit();
-
-                        //MapFragment.zoomAnimateLevelToFitMarkers(120);
-
-
-                        // For rest of the options we just show a toast on click
                         return true;
 
                     case R.id.explore:
                         displayPointFragment();
-
-                       /* exploreFragment = new PointFragment();
-                        android.support.v4.app.FragmentTransaction explorefragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        explorefragmentTransaction.replace(R.id.frame, exploreFragment);
-                        explorefragmentTransaction.commit();
-                       // String strUserName = SP.getString("satellite", "NA");
-                        //String downloadType = SP.getString("downloadType","1"); */
                         return true;
 
                     case R.id.classification:
                         displayWaterFragment();
-
-                       /* waterFragment = new WaterFragment();
-                        android.support.v4.app.FragmentTransaction waterFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        waterFragmentTransaction.replace(R.id.frame, waterFragment);
-                        waterFragmentTransaction.commit();*/
                         return true;
 
                     case R.id.link:
-
                         displayLinkFragment();
-                       /* linkFragment = new LinkFragment();
-                        android.support.v4.app.FragmentTransaction linkFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        linkFragmentTransaction.replace(R.id.frame, linkFragment);
-                        linkFragmentTransaction.commit();*/
                         return true;
+
                     case R.id.settings:
                         startActivity(new Intent(navigationView.getContext(), MyPreferencesActivity.class));
                         return true;
+
                     case R.id.help:
                         //startActivity(new Intent(view.getContext(), HelpActivity.class));
                         return true;
+
                     case R.id.about:
                         // getSupportActionBar().setTitle(R.string.about_string);
                         startActivity(new Intent(navigationView.getContext(), AboutActivity.class));
                         return true;
+
                     default:
                         Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
                         return true;
-
                 }
             }
         });
-
 
         // Initializing Drawer Layout and ActionBarToggle
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -171,40 +135,21 @@ public class MainActivity extends AppCompatActivity {
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
-
         if (savedInstanceState == null) {
             // on first time display view for first nav item (map of Lake Iseo )
             SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             boolean OptSatellite = SP.getBoolean("satellite", true);
             Bundle bundl = new Bundle();
             bundl.putBoolean("OptSatellite", OptSatellite);
-/*
-            mapFragment = new MapFragment();
-            mapFragment.setArguments(bundl);
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame, mapFragment);
-            fragmentTransaction.addToBackStack("MAP");
-            fragmentTransaction.commit(); */
-            waterFragment = new WaterFragment();
 
+            waterFragment = new WaterFragment();
             mapFragment = new MapFragment();
             mapFragment.setArguments(bundl);
             linkFragment = new LinkFragment();
             exploreFragment = new PointFragment();
             displayMapFragment();
-           // loadPointFragment();
-
-
         }
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    }
-
-    /* necesario per caricare le immagini la prima volta */
-    private void loadPointFragment() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.frame, exploreFragment, "EXPLORE");
-        ft.hide(exploreFragment);
-
     }
 
     protected void checkStatusConnection(){
@@ -299,23 +244,6 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    /*
-    / metodo che controlla se il fragment della mappa e gia presente o meno, in caso non lo sia ne crea uno nuovo, invece se esiste gia non fa niente in modo che non ricarica di nuovo la mappa se e gia presente!
-     */
-    private void replaceFragment(Fragment fragment) {
-        String backStateName = fragment.getClass().getName();
-        FragmentManager manager = getSupportFragmentManager();
-        boolean fragmentPopped = manager.popBackStackImmediate(backStateName, 0);
-
-        if (!fragmentPopped) { //fragment not in back stack, create it.
-            android.support.v4.app.FragmentTransaction ft = manager.beginTransaction();
-            // ft.add(R.id.frame,fragment,tag);
-            ft.replace(R.id.frame, fragment);
-            ft.addToBackStack(backStateName);
-            ft.commit();
-        }
-    }
-
    /* public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_map, menu);
@@ -336,7 +264,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }*/
-
 
     /*
     * Qui sono presenti tutti i listener per gli onclick dei file xml dei vari fragment, necessario farlo qui perche i fragmetn non possono ricevere chiamate dai onclick dei button
@@ -376,7 +303,8 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 if (mapFragment.isHidden()) {
                     //TODO sistemare il fatto che quando si preme indietro non cambia l highlight del item su home
-                    displayMapFragment();
+                    navigationView.clearFocus();
+                    //displayMapFragment();
                 } else {
                     if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
                         finish();
