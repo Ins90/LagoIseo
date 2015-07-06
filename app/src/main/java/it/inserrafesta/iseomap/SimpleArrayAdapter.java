@@ -54,6 +54,8 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+
         View row =convertView;
         ViewHolder holder = null;
         //Log.v("ConvertView", String.valueOf(position));

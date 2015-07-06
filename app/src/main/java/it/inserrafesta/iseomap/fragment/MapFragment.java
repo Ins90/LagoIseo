@@ -58,7 +58,7 @@ public class MapFragment extends Fragment{
     public static Vector<Place>  places = new Vector<Place>();
     Bundle bundle;
     TextView mSearchText;
-
+    boolean change=true;
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_map, menu);
@@ -69,9 +69,19 @@ public class MapFragment extends Fragment{
         int id = item.getItemId();
         switch(id){
             case R.id.action_home:
+                Toast.makeText(getActivity().getApplicationContext(), "Centramento mappa ...", Toast.LENGTH_SHORT).show();
                 zoomAnimateLevelToFitMarkers(120);
                 break;
             case R.id.action_terrain:
+                if(change){
+                    Log.v("eeeeeeee", String.valueOf(change));
+                    item.setIcon(R.drawable.ic_satellite_white_36dp);
+                    change=false;
+                }else{
+                    item.setIcon(R.drawable.ic_street_white_36dp);
+                    change=true;
+                }
+
                 if(googleMap.getMapType()==GoogleMap.MAP_TYPE_NORMAL){
                     googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 }else{
@@ -81,6 +91,8 @@ public class MapFragment extends Fragment{
         return super.onOptionsItemSelected(item);
 
     }
+
+
     // Context context = getActivity().getApplicationContext();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

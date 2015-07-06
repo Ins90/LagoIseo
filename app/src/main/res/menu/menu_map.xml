@@ -1,13 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_home"
         android:title="@string/action_home"
-        android:icon="@drawable/ic_gps_fixed_white_24dp"
+        android:icon="@drawable/ic_gps_fixed_white_36dp"
         app:showAsAction="ifRoom|collapseActionView"
         android:orderInCategory="300"/>
 
     <item android:id="@+id/action_terrain"
         android:title="@string/action_terrain"
-        android:icon="@drawable/ic_terrain"
+        android:icon="@drawable/ic_street_white_36dp"
         app:showAsAction="ifRoom|collapseActionView"
         android:orderInCategory="200"/>
 
