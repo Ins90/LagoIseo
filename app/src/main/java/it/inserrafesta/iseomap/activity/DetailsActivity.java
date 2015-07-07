@@ -3,6 +3,7 @@ package it.inserrafesta.iseomap.activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +11,9 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -28,9 +31,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Arrays;
+import java.util.Vector;
 
 import it.inserrafesta.iseomap.Place;
 import it.inserrafesta.iseomap.R;
@@ -38,12 +44,15 @@ import it.inserrafesta.iseomap.fragment.MapFragment;
 
 
 public class DetailsActivity extends AppCompatActivity {
+    static String[] serviziNomiArray = {"Area picnic", "Parco giochi","Servizi Igienici"};
+    public static Vector<String> serviziNomi = new Vector<String>(Arrays.asList(serviziNomiArray));
+    private Vector<Boolean> serviziVec;
     private String comune;
     private String localita;
     private String provincia;
     private String title;
-    private double lat;
-    private double lng;
+  //  private double lat;
+   // private double lng;
     private int classificazione; /* 1 eccellente 2 buono 3 sufficiente 4 scarso */
     private int divieto; /* 1 SI 0 NO */
     private String imageUrl;
@@ -66,11 +75,12 @@ public class DetailsActivity extends AppCompatActivity {
             if (MapFragment.places.get(i).getLocalita().equals(localita)) {
                 comune = MapFragment.places.get(i).getComune();
                 provincia = MapFragment.places.get(i).getProvincia();
-                lat = MapFragment.places.get(i).getLat();
-                lng = MapFragment.places.get(i).getLng();
+            //    lat = MapFragment.places.get(i).getLat();
+             //   lng = MapFragment.places.get(i).getLng();
                 classificazione = MapFragment.places.get(i).getClassificazione();
                 divieto = MapFragment.places.get(i).getDivieto();
                 imageUrl = MapFragment.places.get(i).getImageUrl();
+                serviziVec = MapFragment.places.get(i).getServiziVec();
                 break;
             }
         }
@@ -79,12 +89,28 @@ public class DetailsActivity extends AppCompatActivity {
          */
         TextView tvComune = (TextView) findViewById(R.id.tv_comune);
         tvComune.setText(Html.fromHtml("<B>Comune: </B>" + comune + " (" + provincia + ")"));
-        TextView tvLat = (TextView) findViewById(R.id.tv_lat);
-        tvLat.setText(Html.fromHtml("<B>Lat: </B>" + lat));
-        TextView tvLng = (TextView) findViewById(R.id.tv_lng);
-        tvLng.setText(Html.fromHtml("<B>Lng: </B>" + lng));
+       // TextView tvLat = (TextView) findViewById(R.id.tv_lat);
+       // tvLat.setText(Html.fromHtml("<B>Lat: </B>" + lat));
+       // TextView tvLng = (TextView) findViewById(R.id.tv_lng);
+       // tvLng.setText(Html.fromHtml("<B>Lng: </B>" + lng));
         ImageView iv = (ImageView) findViewById(R.id.iv_details_place);
         iv.setScaleType(ImageView.ScaleType.FIT_XY);
+
+        TextView tvServizi = (TextView) findViewById(R.id.tv_servizi);
+        for(int i=0;i<serviziNomi.size();i++){
+            if(serviziVec.elementAt(i)) {
+                //tvServizi.setText(tvServizi.getText()+serviziNomi.elementAt(i)+"-");
+                GridLayout picLL =(GridLayout) findViewById(R.id.GridLayout1);
+                ImageView myImage = new ImageView(this);
+                myImage.setImageResource(getResources().getIdentifier("servizio_"+(i+1),"drawable",this.getPackageName()));
+                picLL.addView(myImage);
+            }
+        }
+
+
+
+       // ImageView ivServizio = (ImageView) findViewById(R.id.iv_servizio);
+       // ivServizio.setImageResource(getResources().getIdentifier("servizio_1","drawable",this.getPackageName()));
 
         Picasso.with(context)
                 .load(imageUrl)

@@ -8,10 +8,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Vector;
+
 /**
  * Created by Nicolo on 09/06/2015.
  */
 public class Place {
+
+
+
     private String comune;
     private String localita;
     private String provincia;
@@ -22,11 +27,18 @@ public class Place {
     private int divieto; /* 1 SI 0 NO */
     private String imageUrl;
 
+    public Vector<Boolean> getServiziVec() {
+        return serviziVec;
+    }
+
+    private Vector<Boolean> serviziVec;
+
+
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public Place( String _comune, String _localita, String _provincia,double _lat, double _lng, int _classificazione, int _divieto,String _imageUrl){
+    public Place( String _comune, String _localita, String _provincia,double _lat, double _lng, int _classificazione, int _divieto,String _imageUrl,Vector<Boolean> _serviziVec){
         comune = _comune;
         localita = _localita;
         provincia = _provincia;
@@ -35,6 +47,7 @@ public class Place {
         classificazione = _classificazione;
         divieto = _divieto;
         imageUrl = _imageUrl;
+        serviziVec = _serviziVec;
     }
 
     public void makeMaker(GoogleMap mMap){

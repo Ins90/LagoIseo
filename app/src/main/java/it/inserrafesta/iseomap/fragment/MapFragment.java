@@ -314,7 +314,15 @@ public class MapFragment extends Fragment{
             JSONObject json = null;
             try{
                 json = jsonArray.getJSONObject(i);
-                Place p = new Place(json.getString("comune"),json.getString("localita"),json.getString("provincia"),json.getDouble("lat"),json.getDouble("lng"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"));
+                Vector<Boolean> serviziVec= new Vector<Boolean>();
+               for(int j=1;j<=DetailsActivity.serviziNomi.size();j++) {
+                   String servizioString = json.getString(Integer.toString(j));
+                   Boolean servizio = false;
+                   if(servizioString.equals("1"))
+                       servizio = true;
+                   serviziVec.add(servizio);
+                }
+                Place p = new Place(json.getString("comune"),json.getString("localita"),json.getString("provincia"),json.getDouble("lat"),json.getDouble("lng"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec);
                 places.add(p);
 
             }catch(JSONException e){
