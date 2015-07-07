@@ -46,7 +46,7 @@ public class Place {
     }else {
         switch (classificazione) {
             case 1:
-                image = R.drawable.eccellente;
+                image = R.drawable.marker3;
                 break;
             case 2:
                 image = R.drawable.buona;

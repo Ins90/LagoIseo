@@ -89,7 +89,7 @@ public class DetailsActivity extends AppCompatActivity {
         Picasso.with(context)
                 .load(imageUrl)
                 .placeholder(null)
-                .error(R.drawable.no_connection).into(iv);
+                .error(R.drawable.placeholder2).into(iv);
 
     }
 

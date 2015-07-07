@@ -96,7 +96,10 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
                 }
             }
 
-            Picasso.with(context).load(place.getImageUrl()).into(holder.imgV);
+            Picasso.with(context).load(place.getImageUrl())
+                    .placeholder(null)
+                    .error(R.drawable.placeholder1)
+                    .into(holder.imgV);
 
             // Log.d("Adapter", "holder.v1.getText(): " + holder.v1.getText());
         }
