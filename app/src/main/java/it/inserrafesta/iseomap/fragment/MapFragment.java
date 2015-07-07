@@ -200,20 +200,20 @@ public class MapFragment extends Fragment{
 
                     int image=0;
                     if(str2[1].equals("1")){
-                        image=R.drawable.divieto;
+                        image=R.drawable.marker_divieto;
                     }else {
                         switch (str2[2]) {
                             case "1":
-                                image = R.drawable.eccellente;
+                                image = R.drawable.marker3;
                                 break;
                             case "2":
-                                image = R.drawable.buona;
+                                image = R.drawable.marker2;
                                 break;
                             case "3":
-                                image = R.drawable.sufficiente;
+                                image = R.drawable.marker1;
                                 break;
                             case "4":
-                                image = R.drawable.scarsa;
+                                image = R.drawable.marker0;
                                 break;
                             default:
                                 break;

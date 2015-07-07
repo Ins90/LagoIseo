@@ -42,20 +42,20 @@ public class Place {
         String s = Integer.toString(divieto);
 
     if(divieto==1){
-        image= R.drawable.divieto;
+        image= R.drawable.marker_divieto;
     }else {
         switch (classificazione) {
             case 1:
                 image = R.drawable.marker3;
                 break;
             case 2:
-                image = R.drawable.buona;
+                image = R.drawable.marker2;
                 break;
             case 3:
-                image = R.drawable.sufficiente;
+                image = R.drawable.marker1;
                 break;
             case 4:
-                image = R.drawable.scarsa;
+                image = R.drawable.marker0;
                 break;
             default:
                 break;
