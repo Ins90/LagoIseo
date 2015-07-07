@@ -11,4 +11,10 @@
         app:showAsAction="ifRoom|collapseActionView"
         android:orderInCategory="200"/>
 
+    <item android:id="@+id/action_info"
+        android:title="@string/action_terrain"
+        android:icon="@drawable/ic_info_white_36dp"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:orderInCategory="400"/>
+
 </menu>

@@ -1,10 +1,14 @@
 package it.inserrafesta.iseomap.fragment;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SearchViewCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -89,6 +93,11 @@ public class MapFragment extends Fragment{
                     Toast.makeText(getActivity().getApplicationContext(), "Mappa stradale", Toast.LENGTH_SHORT).show();
                     googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 }
+                break;
+            case R.id.action_info:
+                showLegend();
+
+                break;
         }
         return super.onOptionsItemSelected(item);
 
@@ -266,9 +275,9 @@ public class MapFragment extends Fragment{
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-               // Toast.makeText(getActivity().getBaseContext(), marker.getTitle().split("_")[0].substring(9), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getActivity().getBaseContext(), marker.getTitle().split("_")[0].substring(9), Toast.LENGTH_SHORT).show();
                 final Intent intent = new Intent(getActivity(), DetailsActivity.class);
-                intent.putExtra("localita",marker.getTitle().split("_")[0].substring(9));
+                intent.putExtra("localita", marker.getTitle().split("_")[0].substring(9));
                 startActivity(intent);
             }
         });
@@ -362,6 +371,32 @@ public class MapFragment extends Fragment{
     private void putMakers(Vector<Place> places,GoogleMap mMap){
         for(int i=0;i<places.size();i++)
             places.get(i).makeMaker(mMap);
+    }
+
+
+    public void showLegend(){
+        // custom dialog
+        Context context = getActivity().getApplicationContext();
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.popup_custom);
+        dialog.setTitle("Istruzioni");
+
+        // set the custom dialog components - text, image and button
+        //TextView text = (TextView) dialog.findViewById(R.id.text);
+        //text.setText("Android custom dialog example!");
+        //ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        //image.setImageResource(R.mipmap.ic_icon);
+
+        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        // if button is clicked, close the custom dialog
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     @Override
