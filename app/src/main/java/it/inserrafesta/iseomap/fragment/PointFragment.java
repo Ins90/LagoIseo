@@ -33,6 +33,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
     private SimpleArrayAdapter adapter;
     ArrayList<Place> pointList = new ArrayList<Place>();
     public static MenuItem searchItem;
+    public static boolean ricercaCreata=false; //necessaria per il tasto indietro, se lo si preme appena aperta l'app
     Menu menuNew;
 
     @Override
@@ -44,7 +45,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
         searchView.setOnQueryTextListener(this);
         searchView.setIconifiedByDefault(true);
         searchView.setQueryHint(getResources().getString(R.string.search_hint));
-
+        ricercaCreata=true;
         searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean queryTextFocused) {

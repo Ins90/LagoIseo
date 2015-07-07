@@ -295,29 +295,36 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(drawer) { //replace this with actual function which returns if the drawer is open
+        if (drawer) { //replace this with actual function which returns if the drawer is open
             drawerLayout.closeDrawers();     // replace this with actual function which closes drawer
-        }else {
-            if (PointFragment.searchItem.isActionViewExpanded()) {
-                PointFragment.searchItem.collapseActionView(); //controllo se la barra di ricerca è aperta
-            }else{
-                if (mapFragment.isHidden()) {
-                    //TODO sistemare il fatto che quando si preme indietro non cambia l highlight del item su home
-                    navigationView.clearFocus();
-                    //displayMapFragment();
+        } else {
+            if (PointFragment.ricercaCreata) {
+                if (PointFragment.searchItem.isActionViewExpanded()) {
+                    PointFragment.searchItem.collapseActionView(); //controllo se la barra di ricerca è aperta
                 } else {
-                    if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
-                        finish();
-                        System.exit(0);
-                    } else {
-                        Toast.makeText(getBaseContext(), "Premere ancora il tasto INDIETRO per uscire dall'app", Toast.LENGTH_SHORT).show();
-                    }
-                    mBackPressed = System.currentTimeMillis();
+                    checkSatus();
                 }
+            }else{
+                    checkSatus();
             }
         }
     }
 
+    public void checkSatus(){
+        if (mapFragment.isHidden()) {
+            //TODO sistemare il fatto che quando si preme indietro non cambia l highlight del item su home
+            //navigationView.clearFocus();
+            displayMapFragment();
+        } else {
+            if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+                finish();
+                System.exit(0);
+            } else {
+                Toast.makeText(getBaseContext(), "Premere ancora il tasto INDIETRO per uscire dall'app", Toast.LENGTH_SHORT).show();
+            }
+            mBackPressed = System.currentTimeMillis();
+        }
+    }
     /**
      * Function to display simple Alert Dialog
      * @param context - application context

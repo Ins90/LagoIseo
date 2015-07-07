@@ -51,7 +51,7 @@ import it.inserrafesta.iseomap.activity.DetailsActivity;
 public class MapFragment extends Fragment{
 
     static final LatLng INITIAL_LATLNG = new LatLng(45.733815962451354, 10.05103312432766);
-    final int INITIAL_ZOOM = 12;
+    final int INITIAL_ZOOM = 11;
     MapView mMapView;
     private static GoogleMap googleMap;
     private static CameraUpdate cu;
@@ -83,8 +83,10 @@ public class MapFragment extends Fragment{
                 }
 
                 if(googleMap.getMapType()==GoogleMap.MAP_TYPE_NORMAL){
+                    Toast.makeText(getActivity().getApplicationContext(), "Mappa satellitare", Toast.LENGTH_SHORT).show();
                     googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 }else{
+                    Toast.makeText(getActivity().getApplicationContext(), "Mappa stradale", Toast.LENGTH_SHORT).show();
                     googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 }
         }
@@ -144,7 +146,7 @@ public class MapFragment extends Fragment{
         return v;
     }
 
-    //la main activity setta il tipo di mappa -> prova perch� non � efficace! usare switch sulla mappa
+    //la main activity setta il tipo di mappa -> prova perchè non � efficace! usare switch sulla mappa
     public void initializeMapType() {
         boolean sat=bundle.getBoolean("OptSatellite", true);
         if(sat) {
