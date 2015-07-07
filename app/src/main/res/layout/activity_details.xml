@@ -47,7 +47,10 @@ android:orientation="vertical">
         android:id="@+id/GridLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:context=".GridXMLActivity" >
+        tools:context=".GridXMLActivity"
+        android:columnCount="3">
+
     </GridLayout>
+
 
 </LinearLayout>

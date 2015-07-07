@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Bundle;
+import android.support.v7.internal.widget.FitWindowsLinearLayout;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -100,10 +102,24 @@ public class DetailsActivity extends AppCompatActivity {
         for(int i=0;i<serviziNomi.size();i++){
             if(serviziVec.elementAt(i)) {
                 //tvServizi.setText(tvServizi.getText()+serviziNomi.elementAt(i)+"-");
-                GridLayout picLL =(GridLayout) findViewById(R.id.GridLayout1);
-                ImageView myImage = new ImageView(this);
-                myImage.setImageResource(getResources().getIdentifier("servizio_"+(i+1),"drawable",this.getPackageName()));
-                picLL.addView(myImage);
+                GridLayout gridLayout =(GridLayout) findViewById(R.id.GridLayout1);
+                ImageView image = new ImageView(this);
+                image.setImageResource(getResources().getIdentifier("servizio_" + (i + 1), "drawable", this.getPackageName()));
+                TextView textView = new TextView(this);
+                textView.setText(serviziNomi.elementAt(i));
+                LinearLayout linearLayout = new LinearLayout(this);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                int paddingPixel = 25;
+                float density = context.getResources().getDisplayMetrics().density;
+                int paddingDp = (int)(paddingPixel * density);
+                linearLayout.setPadding(paddingPixel,paddingPixel,paddingPixel,paddingPixel);
+                linearLayout.addView(image);
+                linearLayout.addView(textView);
+                gridLayout.addView(linearLayout);
+               /*
+                * Devo tenere traccia del linearLayout più largo e alla fine settare il numero di colonne del GridLayout a
+                * Screen Width / Max LL width
+                */
             }
         }
 
