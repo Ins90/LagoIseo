@@ -100,11 +100,14 @@ public class DetailsActivity extends AppCompatActivity {
        // tvLng.setText(Html.fromHtml("<B>Lng: </B>" + lng));
         ImageView iv = (ImageView) findViewById(R.id.iv_details_place);
         iv.setScaleType(ImageView.ScaleType.FIT_XY);
-
+        /*
+        ** Aggiungo i servizi
+         */
         final GridLayout gridLayout =(GridLayout) findViewById(R.id.GridLayout1);
-
+        Boolean unServizio = false;
         for(int i=0;i<serviziNomi.size();i++){
             if(serviziVec.elementAt(i)) {
+                unServizio = true;
                 ImageView image = new ImageView(this);
                 image.setImageResource(getResources().getIdentifier("servizio_" + (i + 1), "drawable", this.getPackageName()));
                 TextView textView = new TextView(this);
@@ -121,25 +124,27 @@ public class DetailsActivity extends AppCompatActivity {
 
             }
         }
-
         /*
         ** Aggiusto le colonne del Grid Layout a runtime
          */
-        ViewTreeObserver vto = gridLayout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                gridLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                int maxLLwidth=0;
-                for(int i=0; i<((ViewGroup)gridLayout).getChildCount(); ++i) {
-                    View nextChild = ((ViewGroup)gridLayout).getChildAt(i);
-                    int LLwidth = nextChild.getMeasuredWidth();
-                    if(LLwidth>maxLLwidth)
-                        maxLLwidth = LLwidth;
+        if(unServizio){
+            ViewTreeObserver vto = gridLayout.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    gridLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    int maxLLwidth = 0;
+                    for (int i = 0; i < ((ViewGroup) gridLayout).getChildCount(); ++i) {
+                        View nextChild = ((ViewGroup) gridLayout).getChildAt(i);
+                        int LLwidth = nextChild.getMeasuredWidth();
+                        if (LLwidth > maxLLwidth)
+                            maxLLwidth = LLwidth;
+                    }
+                    gridLayout.setColumnCount((int) Math.ceil(gridLayout.getMeasuredWidth() / maxLLwidth));
                 }
-                gridLayout.setColumnCount((int)Math.ceil(gridLayout.getMeasuredWidth()/maxLLwidth));
-            }
-        });
+            });
+        }
+
         Picasso.with(context)
                 .load(imageUrl)
                 .placeholder(null)
