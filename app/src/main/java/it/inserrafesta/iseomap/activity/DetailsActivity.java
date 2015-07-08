@@ -1,5 +1,6 @@
 package it.inserrafesta.iseomap.activity;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.GridView;
@@ -46,7 +49,7 @@ import it.inserrafesta.iseomap.fragment.MapFragment;
 
 
 public class DetailsActivity extends AppCompatActivity {
-    static String[] serviziNomiArray = {"Area picnic", "Parco giochi","Servizi Igienici"};
+    static String[] serviziNomiArray = {"Area picnic", "Parco giochi","Servizi Igienici","Bar","Ristorante","Parcheggio"};
     public static Vector<String> serviziNomi = new Vector<String>(Arrays.asList(serviziNomiArray));
     private Vector<Boolean> serviziVec;
     private String comune;
@@ -97,12 +100,14 @@ public class DetailsActivity extends AppCompatActivity {
        // tvLng.setText(Html.fromHtml("<B>Lng: </B>" + lng));
         ImageView iv = (ImageView) findViewById(R.id.iv_details_place);
         iv.setScaleType(ImageView.ScaleType.FIT_XY);
-
-        TextView tvServizi = (TextView) findViewById(R.id.tv_servizi);
+        /*
+        ** Aggiungo i servizi
+         */
+        final GridLayout gridLayout =(GridLayout) findViewById(R.id.GridLayout1);
+        Boolean unServizio = false;
         for(int i=0;i<serviziNomi.size();i++){
             if(serviziVec.elementAt(i)) {
-                //tvServizi.setText(tvServizi.getText()+serviziNomi.elementAt(i)+"-");
-                GridLayout gridLayout =(GridLayout) findViewById(R.id.GridLayout1);
+                unServizio = true;
                 ImageView image = new ImageView(this);
                 image.setImageResource(getResources().getIdentifier("servizio_" + (i + 1), "drawable", this.getPackageName()));
                 TextView textView = new TextView(this);
@@ -116,17 +121,29 @@ public class DetailsActivity extends AppCompatActivity {
                 linearLayout.addView(image);
                 linearLayout.addView(textView);
                 gridLayout.addView(linearLayout);
-               /*
-                * Devo tenere traccia del linearLayout più largo e alla fine settare il numero di colonne del GridLayout a
-                * Screen Width / Max LL width
-                */
+
             }
         }
-
-
-
-       // ImageView ivServizio = (ImageView) findViewById(R.id.iv_servizio);
-       // ivServizio.setImageResource(getResources().getIdentifier("servizio_1","drawable",this.getPackageName()));
+        /*
+        ** Aggiusto le colonne del Grid Layout a runtime
+         */
+        if(unServizio){
+            ViewTreeObserver vto = gridLayout.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    gridLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    int maxLLwidth = 0;
+                    for (int i = 0; i < ((ViewGroup) gridLayout).getChildCount(); ++i) {
+                        View nextChild = ((ViewGroup) gridLayout).getChildAt(i);
+                        int LLwidth = nextChild.getMeasuredWidth();
+                        if (LLwidth > maxLLwidth)
+                            maxLLwidth = LLwidth;
+                    }
+                    gridLayout.setColumnCount((int) Math.ceil(gridLayout.getMeasuredWidth() / maxLLwidth));
+                }
+            });
+        }
 
         Picasso.with(context)
                 .load(imageUrl)
@@ -136,24 +153,6 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
 
-/*    private void setImage() {
-        ImageView iv = (ImageView)findViewById(R.id.iv_details_place);
-        iv.setScaleType(ImageView.ScaleType.FIT_XY);
-        URL url = null;
-        try {
-            url = new URL(imageUrl);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        Bitmap bmp = null;
-        try {
-            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        iv.setImageBitmap(bmp);
-    }
-*/
 
 
     /**
@@ -179,5 +178,8 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 }
 
