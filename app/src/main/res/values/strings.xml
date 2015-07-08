@@ -38,9 +38,14 @@
     <string name="search_hint">Ricerca per Località o Comune ... </string>
     <string name="empty_list">Nessun risultato trovato</string>
 
+    <!-- Dialog information -->
     <string name="map_sat">Mappa satellitare</string>
     <string name="map_str">Mappa stradale</string>
     <string name="zoom_iseo">Zoom sul lago d Iseo</string>
+    <string name="qlt_ecc">Qualità acque eccellente</string>
+    <string name="qlt_buo">Qualità acque buona</string>
+    <string name="qlt_suf">Qualità acque sufficiente</string>
+    <string name="qlt_sca">Qualità acque scarsa</string>
 
 
 </resources>

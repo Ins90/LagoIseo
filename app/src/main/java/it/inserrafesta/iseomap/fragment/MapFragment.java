@@ -2,14 +2,11 @@ package it.inserrafesta.iseomap.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SearchViewCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.SearchView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,6 +28,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
+import com.squareup.picasso.Picasso;
+
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
@@ -47,6 +45,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import it.inserrafesta.iseomap.Place;
@@ -63,6 +62,10 @@ public class MapFragment extends Fragment{
     Bundle bundle;
     TextView mSearchText;
     boolean change=true;
+    Context context;
+    ArrayList<Place> pointList = new ArrayList<Place>();
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_map, menu);
@@ -87,10 +90,10 @@ public class MapFragment extends Fragment{
                 }
 
                 if(googleMap.getMapType()==GoogleMap.MAP_TYPE_NORMAL){
-                    Toast.makeText(getActivity().getApplicationContext(), "Mappa satellitare", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Mappa satellitare", Toast.LENGTH_SHORT).show();
                     googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 }else{
-                    Toast.makeText(getActivity().getApplicationContext(), "Mappa stradale", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Mappa stradale", Toast.LENGTH_SHORT).show();
                     googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 }
                 break;
@@ -108,6 +111,7 @@ public class MapFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        context = getActivity().getApplicationContext();
         bundle=getArguments(); //necessario per le preferenze passate dalla mainActivity
         setHasOptionsMenu(true);
 
@@ -125,7 +129,7 @@ public class MapFragment extends Fragment{
         mMapView.onResume();// needed to get the map to display immediately
 
         try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
+            MapsInitializer.initialize(context);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -133,7 +137,7 @@ public class MapFragment extends Fragment{
         googleMap = mMapView.getMap();
         try {
             // Loading map
-            initilizeMap();
+            initializeMap();
             initializeUiSettings();
             initializeMapLocationSettings();
             initializeMapType();
@@ -141,18 +145,7 @@ public class MapFragment extends Fragment{
         } catch (Exception e) {
             e.printStackTrace();
         }
-// TODO sistemare!!
-   /*     intent = new Intent(getActivity(), DetailsActivity.class);
-        final Button button = (Button) v.findViewById(R.id.detailsButton);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v2) {
-                (getActivity()).startActivity(intent);
-            }
-        });
-*/
-
-        return v;
+      return v;
     }
 
     //la main activity setta il tipo di mappa -> prova perchè non � efficace! usare switch sulla mappa
@@ -177,7 +170,7 @@ public class MapFragment extends Fragment{
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
 
-    private void initilizeMap() {
+    private void initializeMap() {
 
         /* Qui creo la mia view personalizzata per i marker, sfruttando l xml "custom info contents" */
         if (googleMap != null){
@@ -203,11 +196,11 @@ public class MapFragment extends Fragment{
 
                     TextView mysnippet= (TextView) v.findViewById(R.id.my_snippet);
                     ImageView imageinfo= (ImageView) v.findViewById(R.id.image_info);
-
+                    imageinfo.setScaleType(ImageView.ScaleType.FIT_XY);
                     myTitle.setText(str2[0]);// got first string as title
                     mysnippet.setText(marker.getSnippet());
 
-                    int image=0;
+                   /* int image=0;
                     if(str2[1].equals("1")){
                         image=R.drawable.marker_divieto;
                     }else {
@@ -227,24 +220,16 @@ public class MapFragment extends Fragment{
                             default:
                                 break;
                         }
-                    }
-                  // TODO non funge il pulsante dettagli
-                    imageinfo.setImageResource(image);
+                    }*/
+                    Picasso.with(context)
+                            .load(str2[3])
+                            .resize(50, 50)
+                            .centerCrop()
+                            .placeholder(null)
+                            .error(R.drawable.placeholder1).into(imageinfo);
 
-              /*      final Intent intent = new Intent(getActivity(), DetailsActivity.class);
-                    final Button button = (Button) v.findViewById(R.id.detailsButton);
-
-                    button.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            //Toast.makeText(getActivity().getBaseContext(), "Cliccato!!!", Toast.LENGTH_SHORT).show();
-
-                            startActivity(intent);
-                        }
-                    });
-*/
                     return v;
                }
-
            });
         }
 
@@ -284,10 +269,6 @@ public class MapFragment extends Fragment{
 
     }
 
-    public void goDetails(){
-        startActivity(new Intent(getActivity(), DetailsActivity.class));
-    }
-
     /*
     * Sposta la visuale della mappa in modo che tutti i markers siano visibili
     */
@@ -322,7 +303,9 @@ public class MapFragment extends Fragment{
                        servizio = true;
                    serviziVec.add(servizio);
                 }
-                Place p = new Place(json.getString("comune"),json.getString("localita"),json.getString("provincia"),json.getDouble("lat"),json.getDouble("lng"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec);
+                Place p = new Place(json.getString("comune"),json.getString("localita"),
+                        json.getString("provincia"),json.getDouble("lat"),json.getDouble("lng"),
+                        json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec);
                 places.add(p);
 
             }catch(JSONException e){
@@ -381,13 +364,17 @@ public class MapFragment extends Fragment{
             places.get(i).makeMaker(mMap);
     }
 
-
     public void showLegend(){
-        // custom dialog
-        Context context = getActivity().getApplicationContext();
-        final Dialog dialog = new Dialog(getActivity());
+
+        final Dialog dialog = new Dialog(getActivity(),R.style.Dialog);
         dialog.setContentView(R.layout.popup_custom);
-        dialog.setTitle("Istruzioni");
+        dialog.setTitle("Legenda");
+        float scale=getDensityScale();
+        float myWidth = 250;
+        float myHeight = 300;
+        myWidth=myWidth*scale;
+        myHeight=myHeight*scale;
+        Log.v("ConvertView", "Width "+myWidth+", Height "+myHeight);
 
         // set the custom dialog components - text, image and button
         //TextView text = (TextView) dialog.findViewById(R.id.text);
@@ -395,16 +382,15 @@ public class MapFragment extends Fragment{
         //ImageView image = (ImageView) dialog.findViewById(R.id.image);
         //image.setImageResource(R.mipmap.ic_icon);
 
-        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        // if button is clicked, close the custom dialog
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
+        dialog.getWindow().setLayout((int) myWidth, (int) myHeight);
         dialog.show();
+    }
+
+    private final float getDensityScale()
+    {
+        final DisplayMetrics metrics =
+                Resources.getSystem().getDisplayMetrics();
+        return metrics.density;
     }
 
     @Override

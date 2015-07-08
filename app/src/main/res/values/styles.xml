@@ -8,9 +8,35 @@
         <item name="windowActionBarOverlay">true</item>
         <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
         <!-- Customize your theme here. -->
+
     </style>
 
     <style name="MyDrawerArrowToggle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="color">@color/white</item>
     </style>
+
+
+
+<!-- Dialog theme-->
+
+    <style name="MyOwnDialogTitle">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DialogWindowTitle</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">25sp</item>
+
+
+    </style>
+
+    <style name="Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="@android:textColor">@color/text_grey</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:windowTitleStyle">@style/MyOwnDialogTitle</item>
+
+    </style>
+
+
 </resources>
