@@ -54,7 +54,8 @@
         </activity>
         <activity
             android:name="it.inserrafesta.iseomap.activity.DetailsActivity"
-            android:label="@string/title_activity_details" >
+            android:label="@string/title_activity_details"
+            android:screenOrientation="portrait">
         </activity>
 
     </application>

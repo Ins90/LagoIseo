@@ -1,56 +1,43 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="it.inserrafesta.iseomap.activity.DetailsActivity"
-android:orientation="vertical">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+<LinearLayout
 
-<include
-    layout="@layout/toolbar"/>
-    <ImageView
-        android:id="@+id/iv_details_place"
-        android:layout_width="match_parent"
-        android:layout_height="190dp"
-        android:src="@drawable/lake" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="comune"
-        android:id="@+id/tv_comune" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Servizi: "
-        android:id="@+id/tv_servizi" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/iv_servizio" />
-    <!--
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="lat"
-        android:id="@+id/tv_lat" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="lng"
-        android:id="@+id/tv_lng" />
-    !-->
-
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/GridLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:context=".GridXMLActivity"
-        android:columnCount="3">
-
-    </GridLayout>
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="it.inserrafesta.iseomap.activity.DetailsActivity">
+    <include
+        layout="@layout/toolbar"/>
 
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/iv_details_place"
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:src="@drawable/lake" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="comune"
+            android:id="@+id/tv_comune" />
+
+        <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/GridLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".GridXMLActivity"
+            android:columnCount="1">
+
+        </GridLayout>
+
+
+    </LinearLayout>
+
+
+    </ScrollView>
