@@ -74,7 +74,7 @@ public class Place {
                 break;
         }
     }
-        title="Localit\u00E0 " + localita+"_"+divieto+"_"+classificazione;
+        title="Localit\u00E0 " + localita+"_"+divieto+"_"+classificazione+"_"+imageUrl;
     mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(lat, lng))
                     .title(title)

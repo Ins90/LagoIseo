@@ -76,7 +76,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         //setImage();
 
-        for (int i = 0; i < MapFragment.places.size(); i++) { //previene l eventualita di un inserimento doppio
+        for (int i = 0; i < MapFragment.places.size(); i++) {
             if (MapFragment.places.get(i).getLocalita().equals(localita)) {
                 comune = MapFragment.places.get(i).getComune();
                 provincia = MapFragment.places.get(i).getProvincia();

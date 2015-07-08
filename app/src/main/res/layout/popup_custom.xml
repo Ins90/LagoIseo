@@ -1,109 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
- 
-    <ImageView
-        android:id="@+id/imageT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_satellite_white_36dp"
-        android:layout_above="@+id/image1star"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="33dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginBottom="21dp" />
- 
-    <TextView
-        android:id="@+id/textT"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#FFF"
-        android:text="@string/map_sat"
-        android:layout_toRightOf="@+id/imageT"/>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:id="@+id/tableL">
 
-    <ImageView
-        android:id="@+id/imageS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_street_white_36dp"
-        android:layout_above="@+id/image0star"
-        android:layout_alignLeft="@+id/textZoom"
-        android:layout_alignStart="@+id/textZoom" />
+  <!--  <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="20dp">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/imageT"
+            android:layout_column="3"
+            android:paddingLeft="7dp" />
 
-    <TextView
-        android:id="@+id/textS"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#FFF"
-        android:text="@string/map_str"
-        android:layout_toRightOf="@+id/imageS"/>
+     </TableRow> -->
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
+        <TextView
+            />
+        <ImageView
+            android:id="@+id/imageT"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_satellite_white_36dp"
+            android:layout_column="1"
+            android:padding="5dp"
+            android:background="@color/blue_500"
+            android:layout_span="2" />
 
-    <ImageView
-        android:id="@+id/imageZoom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_gps_fixed_white_36dp"
-        android:layout_above="@+id/image0star"
-        android:layout_toRightOf="@+id/imageT"
-        android:layout_toEndOf="@+id/imageT" />
+        <TextView
+            android:id="@+id/textT"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/map_sat"
+            android:layout_column="3"
+            android:paddingLeft="7dp" />
+    </TableRow>
 
-    <TextView
-        android:id="@+id/textZoom"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#FFF"
-        android:text="@string/zoom_iseo"
-        android:layout_toRightOf="@+id/imageZoom"/>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
 
-    <ImageView
-        android:id="@+id/image0star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/marker0"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <ImageView
+            android:id="@+id/imageS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_street_white_36dp"
+            android:layout_column="1"
+            android:background="@color/blue_500"
+            android:padding="5dp" />
 
-    <TextView
-        android:id="@+id/text0star"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#FFF"
-        android:layout_below="@+id/text2star"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        <TextView
+            android:id="@+id/textS"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#727272"
+            android:text="@string/map_str"
+            android:layout_column="3"
+            android:paddingLeft="7dp" />
+    </TableRow>
 
-    <ImageView
-        android:id="@+id/image1star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/marker1"
-        android:layout_marginBottom="40dp"
-        android:layout_alignBottom="@+id/dialogButtonOK"
-        android:layout_alignRight="@+id/imageT"
-        android:layout_alignEnd="@+id/imageT" />
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/text2star"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#FFF"
-        android:layout_alignTop="@+id/imageT"
-        android:layout_alignLeft="@+id/textT"
-        android:layout_alignStart="@+id/textT" />
+        <ImageView
+            android:id="@+id/imageZoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_gps_fixed_white_36dp"
+            android:layout_column="1"
+            android:background="@color/blue_500"
+            android:padding="5dp" />
 
-    <Button
-        android:id="@+id/dialogButtonOK"
-        android:layout_width="100px"
-        android:layout_height="wrap_content"
-        android:text=" Ok "
-        android:layout_marginTop="147dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/textT"
-        android:layout_alignEnd="@+id/textT"
-        android:layout_marginRight="59dp"
-        android:layout_marginEnd="59dp" />
- 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/textZoom"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#727272"
+            android:text="@string/zoom_iseo"
+            android:layout_column="3"
+            android:paddingLeft="7dp" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/image0star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/marker0"
+            android:layout_column="1"
+            android:background="@color/blue_500"
+            android:padding="5dp" />
+
+        <TextView
+            android:id="@+id/text0star"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#727272"
+            android:text="@string/qlt_sca"
+            android:layout_column="3"
+            android:paddingLeft="7dp" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/image1star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/marker1"
+            android:layout_column="1"
+            android:background="@color/blue_500"
+            android:padding="5dp" />
+
+        <TextView
+            android:id="@+id/text1star"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#727272"
+            android:text="@string/qlt_suf"
+            android:layout_column="3"
+            android:paddingLeft="7dp" />
+    </TableRow>
+
+
+</TableLayout>
