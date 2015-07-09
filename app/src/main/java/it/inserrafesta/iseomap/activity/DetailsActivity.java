@@ -6,11 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.internal.widget.FitWindowsLinearLayout;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -103,7 +105,10 @@ public class DetailsActivity extends AppCompatActivity {
         /*
         ** Aggiungo i servizi
          */
+        final float density = context.getResources().getDisplayMetrics().density;
         final GridLayout gridLayout =(GridLayout) findViewById(R.id.GridLayout1);
+        int paddingPixel = 13;
+        final int paddingDp = (int)(paddingPixel * density);
         Boolean unServizio = false;
         for(int i=0;i<serviziNomi.size();i++){
             if(serviziVec.elementAt(i)) {
@@ -112,15 +117,16 @@ public class DetailsActivity extends AppCompatActivity {
                 image.setImageResource(getResources().getIdentifier("servizio_" + (i + 1), "drawable", this.getPackageName()));
                 TextView textView = new TextView(this);
                 textView.setText(serviziNomi.elementAt(i));
+                textView.setMinimumWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+                textView.setGravity(Gravity.CENTER);
                 LinearLayout linearLayout = new LinearLayout(this);
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
-                int paddingPixel = 25;
-                float density = context.getResources().getDisplayMetrics().density;
-                int paddingDp = (int)(paddingPixel * density);
-                linearLayout.setPadding(paddingPixel,paddingPixel,paddingPixel,paddingPixel);
+
+                linearLayout.setPadding(paddingDp,paddingDp,paddingDp,paddingDp);
                 linearLayout.addView(image);
                 linearLayout.addView(textView);
                 gridLayout.addView(linearLayout);
+
 
             }
         }
@@ -140,7 +146,11 @@ public class DetailsActivity extends AppCompatActivity {
                         if (LLwidth > maxLLwidth)
                             maxLLwidth = LLwidth;
                     }
-                    gridLayout.setColumnCount((int) Math.ceil(gridLayout.getMeasuredWidth() / maxLLwidth));
+                    int numColonne = (int) Math.ceil(gridLayout.getMeasuredWidth() / maxLLwidth);
+                    gridLayout.setColumnCount(numColonne);
+                    int paddingPixelGL = (gridLayout.getMeasuredWidth()-(maxLLwidth*numColonne))/2;
+                    int paddingDpGL = (int)(paddingPixelGL * density);
+                   // gridLayout.setPadding(paddingDpGL-paddingDp*2,0,0,0);
                 }
             });
         }
