@@ -14,20 +14,73 @@
         layout="@layout/toolbar"/>
 
 
-   
 
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
     <ImageView
             android:id="@+id/iv_details_place"
             android:layout_width="match_parent"
             android:layout_height="190dp"
             android:src="@drawable/lake" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:padding="15dp"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#BBFFFFFF"
+            android:padding="5dp"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:layout_marginRight="5dp"
+                android:background="#DDFFFFFF">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Qualità dell'acqua:"
+                android:textStyle="bold"
+                android:textSize="15dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_classificazione"
+                android:text="Eccellente"
+                android:textSize="15dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:textSize="15dp"
+                android:id="@+id/tvDivieto"/>
+            </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/iv_classificazione"
+                android:src="@drawable/class_1"
 
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="comune"
             android:padding="15dp"
-            android:textSize="18dp"
+            android:textSize="15dp"
             android:id="@+id/tv_comune" />
 
         <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"

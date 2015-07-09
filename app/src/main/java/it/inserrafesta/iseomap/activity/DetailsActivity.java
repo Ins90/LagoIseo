@@ -58,8 +58,6 @@ public class DetailsActivity extends AppCompatActivity {
     private String localita;
     private String provincia;
     private String title;
-  //  private double lat;
-   // private double lng;
     private int classificazione; /* 1 eccellente 2 buono 3 sufficiente 4 scarso */
     private int divieto; /* 1 SI 0 NO */
     private String imageUrl;
@@ -75,8 +73,6 @@ public class DetailsActivity extends AppCompatActivity {
         initialise();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
-        //setImage();
 
         for (int i = 0; i < MapFragment.places.size(); i++) {
             if (MapFragment.places.get(i).getLocalita().equals(localita)) {
@@ -96,10 +92,6 @@ public class DetailsActivity extends AppCompatActivity {
          */
         TextView tvComune = (TextView) findViewById(R.id.tv_comune);
         tvComune.setText(Html.fromHtml("<B>Comune: </B>" + comune + " (" + provincia + ")"));
-       // TextView tvLat = (TextView) findViewById(R.id.tv_lat);
-       // tvLat.setText(Html.fromHtml("<B>Lat: </B>" + lat));
-       // TextView tvLng = (TextView) findViewById(R.id.tv_lng);
-       // tvLng.setText(Html.fromHtml("<B>Lng: </B>" + lng));
         ImageView iv = (ImageView) findViewById(R.id.iv_details_place);
         iv.setScaleType(ImageView.ScaleType.FIT_XY);
         /*
@@ -150,16 +142,45 @@ public class DetailsActivity extends AppCompatActivity {
                     gridLayout.setColumnCount(numColonne);
                     int paddingPixelGL = (gridLayout.getMeasuredWidth()-(maxLLwidth*numColonne))/2;
                     int paddingDpGL = (int)(paddingPixelGL * density);
-                   // gridLayout.setPadding(paddingDpGL-paddingDp*2,0,0,0);
+                    if(((ViewGroup) gridLayout).getChildCount()>2)
+                        gridLayout.setPadding(paddingDpGL-paddingDp/2,0,0,0);
                 }
             });
         }
 
+        /*
+        ** Setto l'immagine della localita
+         */
         Picasso.with(context)
                 .load(imageUrl)
                 .placeholder(null)
                 .error(R.drawable.placeholder2).into(iv);
 
+        /*
+        ** Setto l'immagine e la textview della classificazione
+         */
+        ImageView ivClassificazione = (ImageView) findViewById(R.id.iv_classificazione);
+        ivClassificazione.setImageResource(getResources().getIdentifier("class_" + (classificazione), "drawable", this.getPackageName()));
+        TextView tvClassificazione = (TextView) findViewById(R.id.tv_classificazione);
+        switch (classificazione){
+            case 1:
+                tvClassificazione.setText("Eccellente");
+                break;
+            case 2:
+                tvClassificazione.setText("Buona");
+                break;
+            case 3:
+                tvClassificazione.setText("Sufficiente");
+                break;
+            case 4:
+            tvClassificazione.setText("Scarso");
+            break;
+        }
+        if(divieto==1){
+            TextView tvDivieto = (TextView) findViewById(R.id.tvDivieto);
+            tvDivieto.setText("Divieto Temporaneo");
+            ivClassificazione.setImageResource(getResources().getIdentifier("divieto", "drawable", this.getPackageName()));
+        }
     }
 
 
@@ -173,7 +194,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        toolbar.setTitle(localita);
+        toolbar.setTitle("Località: "+localita);
 
         setSupportActionBar(toolbar);
 
