@@ -19,13 +19,24 @@
             android:id="@+id/my_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12dp"
+            android:textSize="16sp"
             android:textStyle="bold"/>
         <TextView
             android:id="@+id/my_snippet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10dp"/>
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/qualityWater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/divietoAcqua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#D32F2F"
+            android:textSize="14sp"/>
         <!--
         <Button
             android:id="@+id/detailsButton"

@@ -64,7 +64,8 @@ public class MapFragment extends Fragment{
     boolean change=true;
     Context context;
     ArrayList<Place> pointList = new ArrayList<Place>();
-
+   // private float previousZoomLevel = 13; TODO sistemare bloccaggio mappa
+  //  private boolean isZooming=false;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -78,7 +79,9 @@ public class MapFragment extends Fragment{
             case R.id.action_home:
                     Toast.makeText(getActivity().getApplicationContext(), "Centramento mappa ...", Toast.LENGTH_SHORT).show();
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(INITIAL_LATLNG, INITIAL_ZOOM));
-                    //zoomAnimateLevelToFitMarkers(120);
+              //    googleMap.getUiSettings().setScrollGesturesEnabled(false);
+
+                //zoomAnimateLevelToFitMarkers(120);
                 break;
             case R.id.action_terrain:
                 if(change){
@@ -168,7 +171,7 @@ public class MapFragment extends Fragment{
         googleMap.getUiSettings().setTiltGesturesEnabled(true);
         googleMap.getUiSettings().setZoomControlsEnabled(false);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-        googleMap.getUiSettings().setScrollGesturesEnabled(false);
+       // googleMap.getUiSettings().setScrollGesturesEnabled(false);
     }
 
     private void initializeMap() {
@@ -196,32 +199,45 @@ public class MapFragment extends Fragment{
 
 
                     TextView mysnippet= (TextView) v.findViewById(R.id.my_snippet);
+                    TextView myquality= (TextView) v.findViewById(R.id.qualityWater);
+                    TextView divietoA= (TextView) v.findViewById(R.id.divietoAcqua);
+
                     ImageView imageinfo= (ImageView) v.findViewById(R.id.image_info);
                     imageinfo.setScaleType(ImageView.ScaleType.FIT_XY);
                     myTitle.setText(str2[0]);// got first string as title
                     mysnippet.setText(marker.getSnippet());
 
-                   /* int image=0;
+                    int image=0;
                     if(str2[1].equals("1")){
                         image=R.drawable.marker_divieto;
-                    }else {
+                        divietoA.setText(R.string.prohibition);
+
+                    }
+
                         switch (str2[2]) {
                             case "1":
                                 image = R.drawable.marker3;
+                                myquality.setText(R.string.qlt_ecc);
                                 break;
                             case "2":
                                 image = R.drawable.marker2;
+                                myquality.setText(R.string.qlt_buo);
+
                                 break;
                             case "3":
                                 image = R.drawable.marker1;
+                                myquality.setText(R.string.qlt_suf);
+
                                 break;
                             case "4":
                                 image = R.drawable.marker0;
+                                myquality.setText(R.string.qlt_sca);
+
                                 break;
                             default:
                                 break;
                         }
-                    }*/
+
                     Picasso.with(context)
                             .load(str2[3])
                             .resize(80*(int) getDensityScale(),80* (int) getDensityScale() )
@@ -249,8 +265,14 @@ public class MapFragment extends Fragment{
                 // Make a web call for the locations
                 int minZoom = 11;
                 CameraPosition position = googleMap.getCameraPosition();
-                System.out.print(position.zoom);
+                System.out.print("Zoom level: "+position.zoom);
 
+              //  if(previousZoomLevel < position.zoom)
+              //  {
+               //     isZooming = true;
+               //     googleMap.getUiSettings().setScrollGesturesEnabled(true);
+
+              //  }
                 //String s = Float.toString(position.zoom);
                 //Log.d(TAG_LOG,s);
                 if (position.zoom < minZoom) {
@@ -258,6 +280,7 @@ public class MapFragment extends Fragment{
                 }
             }
         });
+
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
@@ -369,10 +392,11 @@ public class MapFragment extends Fragment{
 
         final Dialog dialog = new Dialog(getActivity(),R.style.Dialog);
         dialog.setContentView(R.layout.popup_custom);
+        //ImageView markerImg=(ImageView) v.findViewById(R.id.image_info);
         dialog.setTitle("Legenda");
         float scale=getDensityScale();
         float myWidth = 250;
-        float myHeight = 300;
+        float myHeight = 420;
         myWidth=myWidth*scale;
         myHeight=myHeight*scale;
         Log.v("ConvertView", "Width "+myWidth+", Height "+myHeight);

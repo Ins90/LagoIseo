@@ -98,7 +98,7 @@
             android:id="@+id/image0star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/class_4"
+            android:src="@drawable/class_legend_4"
             android:layout_column="1"
             android:background="@color/blue_500"
             android:padding="5dp" />
@@ -122,11 +122,12 @@
             android:id="@+id/image1star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/class_1"
+            android:src="@drawable/class_legend_3"
             android:cropToPadding="true"
             android:layout_column="1"
             android:background="@color/blue_500"
-            android:padding="5dp" />
+            android:padding="5dp"
+            android:adjustViewBounds="true"/>
 
         <TextView
             android:id="@+id/text1star"
@@ -137,6 +138,72 @@
             android:layout_column="3"
             android:paddingLeft="7dp" />
     </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
 
+        <ImageView
+            android:id="@+id/image2star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/class_legend_2"
+            android:layout_column="1"
+            android:background="@color/blue_500"
+            android:padding="5dp" />
+
+        <TextView
+            android:id="@+id/text2star"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#727272"
+            android:text="@string/qlt_buo"
+            android:layout_column="3"
+            android:paddingLeft="7dp" />
+    </TableRow><TableRow
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:id="@+id/image3star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/class_legend_1"
+        android:layout_column="1"
+        android:background="@color/blue_500"
+        android:padding="5dp" />
+
+    <TextView
+        android:id="@+id/text3star"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#727272"
+        android:text="@string/qlt_ecc"
+        android:layout_column="3"
+        android:paddingLeft="7dp" />
+</TableRow><TableRow
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:id="@+id/imageDivieto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/divieto_legend"
+        android:layout_column="1"
+        android:background="@color/blue_500"
+        android:padding="5dp" />
+
+    <TextView
+        android:id="@+id/textDivieto"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#727272"
+        android:text="@string/prohibition"
+        android:layout_column="3"
+        android:paddingLeft="7dp" />
+</TableRow>
 
 </TableLayout>
