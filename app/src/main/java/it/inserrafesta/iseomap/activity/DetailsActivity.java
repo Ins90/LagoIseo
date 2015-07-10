@@ -97,10 +97,11 @@ public class DetailsActivity extends AppCompatActivity {
         /*
         ** Aggiungo i servizi
          */
+
         final float density = context.getResources().getDisplayMetrics().density;
         final GridLayout gridLayout =(GridLayout) findViewById(R.id.GridLayout1);
-        int paddingPixel = 13;
-        final int paddingDp = (int)(paddingPixel * density);
+        int paddingPixel = 130;
+        final int paddingDp = (int)(paddingPixel / density);
         Boolean unServizio = false;
         for(int i=0;i<serviziNomi.size();i++){
             if(serviziVec.elementAt(i)) {
@@ -113,18 +114,16 @@ public class DetailsActivity extends AppCompatActivity {
                 textView.setGravity(Gravity.CENTER);
                 LinearLayout linearLayout = new LinearLayout(this);
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
-
                 linearLayout.setPadding(paddingDp,paddingDp,paddingDp,paddingDp);
                 linearLayout.addView(image);
                 linearLayout.addView(textView);
                 gridLayout.addView(linearLayout);
-
-
             }
         }
         /*
         ** Aggiusto le colonne del Grid Layout a runtime
          */
+
         if(unServizio){
             ViewTreeObserver vto = gridLayout.getViewTreeObserver();
             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -140,13 +139,16 @@ public class DetailsActivity extends AppCompatActivity {
                     }
                     int numColonne = (int) Math.ceil(gridLayout.getMeasuredWidth() / maxLLwidth);
                     gridLayout.setColumnCount(numColonne);
-                    int paddingPixelGL = (gridLayout.getMeasuredWidth()-(maxLLwidth*numColonne))/2;
-                    int paddingDpGL = (int)(paddingPixelGL * density);
+                /*    int paddingPixelGL = (gridLayout.getMeasuredWidth()-(maxLLwidth*numColonne))/2;
+                   int paddingDpGL = (int)(paddingPixelGL / density);
                     if(((ViewGroup) gridLayout).getChildCount()>2)
-                        gridLayout.setPadding(paddingDpGL-paddingDp/2,0,0,0);
+                        gridLayout.setPadding(paddingDpGL,0,0,0);
+                        */
                 }
             });
         }
+
+
 
         /*
         ** Setto l'immagine della localita

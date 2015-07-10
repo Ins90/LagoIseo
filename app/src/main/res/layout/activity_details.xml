@@ -89,10 +89,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:context=".GridXMLActivity"
-            android:columnCount="1">
+            android:columnCount="1"
+            >
 
         </GridLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/mygrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/red">
 
+        </LinearLayout>
 
     </LinearLayout>
 
