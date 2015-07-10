@@ -168,6 +168,7 @@ public class MapFragment extends Fragment{
         googleMap.getUiSettings().setTiltGesturesEnabled(true);
         googleMap.getUiSettings().setZoomControlsEnabled(false);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        googleMap.getUiSettings().setScrollGesturesEnabled(false);
     }
 
     private void initializeMap() {
@@ -223,7 +224,7 @@ public class MapFragment extends Fragment{
                     }*/
                     Picasso.with(context)
                             .load(str2[3])
-                            .resize(50, 50)
+                            .resize(80*(int) getDensityScale(),80* (int) getDensityScale() )
                             .centerCrop()
                             .placeholder(null)
                             .error(R.drawable.placeholder1).into(imageinfo);

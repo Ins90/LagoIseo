@@ -98,7 +98,7 @@
             android:id="@+id/image0star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/marker0"
+            android:src="@drawable/class_4"
             android:layout_column="1"
             android:background="@color/blue_500"
             android:padding="5dp" />
@@ -122,7 +122,8 @@
             android:id="@+id/image1star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/marker1"
+            android:src="@drawable/class_1"
+            android:cropToPadding="true"
             android:layout_column="1"
             android:background="@color/blue_500"
             android:padding="5dp" />
