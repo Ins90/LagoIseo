@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import android.support.v4.app.Fragment;
@@ -46,6 +49,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Vector;
 
 import it.inserrafesta.iseomap.Place;
@@ -64,6 +68,8 @@ public class MapFragment extends Fragment{
     boolean change=true;
     Context context;
     ArrayList<Place> pointList = new ArrayList<Place>();
+    boolean not_first_time_showing_info_window=false;
+    public static Map<Marker, String> imageStringMapMarker; //TODO togliere da place l inserimento dei marker!!!! Place rimane una classe punto!
    // private float previousZoomLevel = 13; TODO sistemare bloccaggio mappa
   //  private boolean isZooming=false;
 
@@ -178,9 +184,32 @@ public class MapFragment extends Fragment{
 
         /* Qui creo la mia view personalizzata per i marker, sfruttando l xml "custom info contents" */
         if (googleMap != null){
+
+            //Necessario per ricaricare istantaneamente l'Infowindow per visualizzare l immagine del posto
+            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+
+                @Override
+                public boolean onMarkerClick(final Marker mark) {
+
+                    mark.showInfoWindow();
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mark.showInfoWindow();
+
+                        }
+                    },200);
+
+                    return true;
+                }
+            });
+
             googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                 @Override
                 public View getInfoWindow(Marker marker) {
+
                     return null;
                 }
 
@@ -188,55 +217,54 @@ public class MapFragment extends Fragment{
                 public View getInfoContents(Marker marker) {
                     /* qui assegno tutte le variabili all'xml */
 
-                    //View v = inflater.inflate(R.layout.custom_info_contents, null);
-                    //LayoutInflater inflater = LayoutInflater.from(context);
                     View v = getActivity().getLayoutInflater().inflate(R.layout.custom_info_contents, null);
 
-                    String str=marker.getTitle();
-                    final String[] str2=str.split("_");
+                    String str = marker.getTitle();
+                    final String[] str2 = str.split("_");
 
                     TextView myTitle = (TextView) v.findViewById(R.id.my_title);
 
 
-                    TextView mysnippet= (TextView) v.findViewById(R.id.my_snippet);
-                    TextView myquality= (TextView) v.findViewById(R.id.qualityWater);
-                    TextView divietoA= (TextView) v.findViewById(R.id.divietoAcqua);
+                    TextView mysnippet = (TextView) v.findViewById(R.id.my_snippet);
+                    TextView myquality = (TextView) v.findViewById(R.id.qualityWater);
+                    TextView divietoA = (TextView) v.findViewById(R.id.divietoAcqua);
 
-                    ImageView imageinfo= (ImageView) v.findViewById(R.id.image_info);
-                    imageinfo.setScaleType(ImageView.ScaleType.FIT_XY);
+                    ImageView imageinfo = (ImageView) v.findViewById(R.id.image_info);
+
                     myTitle.setText(str2[0]);// got first string as title
                     mysnippet.setText(marker.getSnippet());
 
-                    int image=0;
-                    if(str2[1].equals("1")){
-                        image=R.drawable.marker_divieto;
+                    int image = 0;
+                    if (str2[1].equals("1")) {
+                        image = R.drawable.marker_divieto;
                         divietoA.setText(R.string.prohibition);
 
                     }
 
-                        switch (str2[2]) {
-                            case "1":
-                                image = R.drawable.marker3;
-                                myquality.setText(R.string.qlt_ecc);
-                                break;
-                            case "2":
-                                image = R.drawable.marker2;
-                                myquality.setText(R.string.qlt_buo);
+                    switch (str2[2]) {
+                        case "1":
+                            image = R.drawable.marker3;
+                            myquality.setText(R.string.qlt_ecc);
+                            break;
+                        case "2":
+                            image = R.drawable.marker2;
+                            myquality.setText(R.string.qlt_buo);
 
-                                break;
-                            case "3":
-                                image = R.drawable.marker1;
-                                myquality.setText(R.string.qlt_suf);
+                            break;
+                        case "3":
+                            image = R.drawable.marker1;
+                            myquality.setText(R.string.qlt_suf);
 
-                                break;
-                            case "4":
-                                image = R.drawable.marker0;
-                                myquality.setText(R.string.qlt_sca);
+                            break;
+                        case "4":
+                            image = R.drawable.marker0;
+                            myquality.setText(R.string.qlt_sca);
 
-                                break;
-                            default:
-                                break;
-                        }
+                            break;
+                        default:
+                            break;
+                    }
+
 
                     Picasso.with(context)
                             .load(str2[3])
@@ -418,6 +446,23 @@ public class MapFragment extends Fragment{
         return metrics.density;
     }
 
+
+    private class InfoWindowRefresher implements Callback {
+        private Marker markerToRefresh;
+
+        private InfoWindowRefresher(Marker markerToRefresh) {
+            this.markerToRefresh = markerToRefresh;
+        }
+
+        @Override
+        public void onSuccess() {
+            markerToRefresh.showInfoWindow();
+        }
+
+        @Override
+        public void onError() {}
+    }
+
     @Override
     public void onResume() {
         try{
@@ -446,5 +491,37 @@ public class MapFragment extends Fragment{
         }catch(NullPointerException e){
             Log.d("onLowMemory", "NullPointerException: " + e);
         }
+    }
+}
+
+
+class CustomWindowAdapter implements GoogleMap.InfoWindowAdapter {
+    LayoutInflater mInflater;
+    Map<Marker, String> imageStringMapMarker;
+    Context context;
+
+    public CustomWindowAdapter(LayoutInflater i,  Map<Marker, String> imageStringMapMarker2, Context context ){
+        mInflater = i;
+        imageStringMapMarker = imageStringMapMarker2;
+    }
+
+    @Override
+    public View getInfoContents(final Marker marker) {
+
+        View v = mInflater.inflate(R.layout.custom_info_contents, null);
+
+        ImageView ivThumbnail = (ImageView) v.findViewById(R.id.image_info);
+        String urlImage = imageStringMapMarker.get(marker);
+        Log.v("URL", urlImage);
+
+        Picasso.with(context).load(Uri.parse(urlImage)).resize(250,250).into(ivThumbnail);
+
+        return v;
+
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+        return null;
     }
 }

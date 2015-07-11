@@ -47,6 +47,10 @@
     <string name="qlt_buo">Qualità acqua: buona</string>
     <string name="qlt_suf">Qualità acqua: sufficiente</string>
     <string name="qlt_sca">Qualità acqua: scarsa</string>
+    <string name="title_activity_help">HelpActivity</string>
 
-
+    <string name="link1">www.balneazionelagoiseo.it</string>
+    <string name="link2">www.portaleacque.salute.gov.it</string>
+    <string name="link3">www.asl.bergamo.it</string>
+    <string name="linkdescription">L’Osservatorio sulla Qualità delle Acque del Sebino, istituito dall‘ASL della Provincia di Bergamo e dal Comune di Lovere, gestisce un sito internet per comunicare le informazioni utili sulla qualità delle acque di balneazione.</string>
 </resources>

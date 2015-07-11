@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="it.inserrafesta.iseomap.activity.AboutActivity"
+    tools:context="it.inserrafesta.iseomap.activity.HelpActivity"
     android:orientation="vertical">
 
         <include
@@ -12,13 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="#727272"
             android:text="Work in progress"
-             />
+            />
+
     </FrameLayout>
 
 </LinearLayout>

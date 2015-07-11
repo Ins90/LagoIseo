@@ -68,7 +68,8 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
             holder = new ViewHolder();
             holder.localita = (TextView) row.findViewById(R.id.title_name);
             holder.comune = (TextView) row.findViewById(R.id.description);
-            holder.classificazione = (TextView) row.findViewById(R.id.waterclas);
+           // holder.classificazione = (TextView) row.findViewById(R.id.waterclas);
+            holder.water = (ImageView) row.findViewById(R.id.waterImage);
             holder.imgV = (ImageView) row.findViewById(R.id.point_image);
             holder.imgV.setScaleType(ImageView.ScaleType.FIT_XY);
             row.setTag(holder);
@@ -82,16 +83,26 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
             holder.localita.setText(place.getLocalita());
 
             if(place.getDivieto()==1){
-                holder.classificazione.setText(R.string.prohibition);
-                holder.classificazione.setTextColor(Color.parseColor("#D32F2F"));
+               // holder.classificazione.setText(R.string.prohibition);
+                holder.water.setImageResource(R.drawable.divieto);
             }else {
                 if (place.getClassificazione() == 1) {
-                    holder.classificazione.setText(R.string.water_high);
+                //    holder.classificazione.setText(R.string.water_high);
+                    holder.water.setImageResource(R.drawable.class_1);
+
                 } else {
                     if (place.getClassificazione() == 2) {
-                        holder.classificazione.setText(R.string.water_good);
+                    //    holder.classificazione.setText(R.string.water_good);
+                        holder.water.setImageResource(R.drawable.class_2);
+
                     } else {
-                        holder.classificazione.setText(R.string.water_poor);
+                        if (place.getClassificazione() == 3) {
+                        //    holder.classificazione.setText(R.string.water_suff);
+                            holder.water.setImageResource(R.drawable.class_3);
+                        }else {
+                        //    holder.classificazione.setText(R.string.water_poor);
+                            holder.water.setImageResource(R.drawable.class_4);
+                        }
                     }
                 }
             }
@@ -120,9 +131,10 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
     public static class ViewHolder {
         TextView localita;
         TextView comune;
-        TextView classificazione;
+      //  TextView classificazione;
         TextView divieto;
         ImageView imgV;
+        ImageView water;
 
     }
 

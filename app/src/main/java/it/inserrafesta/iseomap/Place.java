@@ -3,9 +3,12 @@ package it.inserrafesta.iseomap;
 import android.util.Log;
 
 import it.inserrafesta.iseomap.R;
+import it.inserrafesta.iseomap.fragment.MapFragment;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Vector;
@@ -26,7 +29,7 @@ public class Place {
     private int classificazione; /* 1 eccellente 2 buono 3 sufficiente 4 scarso */
     private int divieto; /* 1 SI 0 NO */
     private String imageUrl;
-
+    int not_first_time_showing_info_window=0; //0 false, 1 true
     public Vector<Boolean> getServiziVec() {
         return serviziVec;
     }
@@ -75,13 +78,14 @@ public class Place {
         }
     }
         title="Localit\u00E0 " + localita+"_"+divieto+"_"+classificazione+"_"+imageUrl;
-    mMap.addMarker(new MarkerOptions()
+
+        mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(lat, lng))
                     .title(title)
                     .icon(BitmapDescriptorFactory.fromResource(image))
-                    .snippet("Comune: " + comune)
-    );
+                    .snippet("Comune: " + comune));
 
+        //MapFragment.imageStringMapMarker.put(marker,imageUrl);
     }
 
 

@@ -1,5 +1,6 @@
 package it.inserrafesta.iseomap.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.help:
+                        startActivity(new Intent(navigationView.getContext(), HelpActivity.class));
                         //startActivity(new Intent(view.getContext(), HelpActivity.class));
                         return true;
 
