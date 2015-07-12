@@ -33,6 +33,7 @@ dependencies {
     compile 'com.android.support:support-v4:22.0.0'
    // compile 'com.quinny898.library.persistentsearch:library:1.0.0-SNAPSHOT'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
 
     //compile 'com.github.amlcurran.showcaseview:library:5.0.0'
 }

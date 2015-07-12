@@ -62,16 +62,16 @@ public class Place {
     }else {
         switch (classificazione) {
             case 1:
-                image = R.drawable.marker3;
+                image = R.drawable.marker_1;
                 break;
             case 2:
-                image = R.drawable.marker2;
+                image = R.drawable.marker_2;
                 break;
             case 3:
-                image = R.drawable.marker1;
+                image = R.drawable.marker_3;
                 break;
             case 4:
-                image = R.drawable.marker0;
+                image = R.drawable.marker_4;
                 break;
             default:
                 break;

@@ -25,7 +25,7 @@
         <item
             android:id="@+id/link"
             android:checked="false"
-            android:icon="@drawable/ic_language_white_24dp"
+            android:icon="@drawable/ic_asl_24dp"
             android:title="@string/link_string" />
 
         <group android:id="@+id/subgroup">

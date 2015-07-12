@@ -18,12 +18,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import it.inserrafesta.iseomap.ConnectionDetector;
+import it.inserrafesta.iseomap.NetworkConnectivity;
+import it.inserrafesta.iseomap.NetworkMonitorListener;
 import it.inserrafesta.iseomap.R;
 
 import it.inserrafesta.iseomap.fragment.LinkFragment;
@@ -44,10 +47,9 @@ public class MainActivity extends AppCompatActivity {
     static LinkFragment linkFragment;
     static PointFragment exploreFragment;
     static WaterFragment waterFragment;
-
+    AlertDialog.Builder alert=null;
     private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
     private long mBackPressed;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        checkStatusConnection();
+        //checkStatusConnection(); //check only first time
+        checkRealTimeConnection(); //check all the time
+
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             // This method will trigger on item Click of navigation menu
@@ -72,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
 
                 //Closing menu_drawer on item click
                 drawerLayout.closeDrawers();
-
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
                     case R.id.home:
@@ -152,6 +155,35 @@ public class MainActivity extends AppCompatActivity {
             displayMapFragment();
         }
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    private void checkRealTimeConnection() {
+        NetworkConnectivity.sharedNetworkConnectivity().configure(this);
+        NetworkConnectivity.sharedNetworkConnectivity().startNetworkMonitor();
+        NetworkConnectivity.sharedNetworkConnectivity()
+                .addNetworkMonitorListener(new NetworkMonitorListener() {
+                    @Override
+                    public void connectionCheckInProgress() {
+                        // Okay to make UI updates (check-in-progress is rare)
+                    }
+
+                    @Override
+                    public void connectionEstablished() {
+                        // Okay to make UI updates -- do something now that
+                        // connection is avaialble
+                        try {
+                            alert.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void connectionLost() {
+                        // Okay to make UI updates -- bummer, no connection
+                        showAlertDialog(getApplicationContext(), "Connessione Internet assente", "Necessaria una connessione internet per usare l'applicazione", true);
+                    }
+                });
     }
 
     protected void checkStatusConnection(){
@@ -314,9 +346,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkSatus(){
         if (mapFragment.isHidden()) {
-            //TODO sistemare il fatto che quando si preme indietro non cambia l highlight del item su home
-            //navigationView.clearFocus();
-            displayMapFragment();
+            //displayMapFragment();
+            drawerLayout.openDrawer(Gravity.LEFT);
         } else {
             if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
                 finish();
@@ -335,18 +366,17 @@ public class MainActivity extends AppCompatActivity {
      * @param status - success/failure (used to set icon)
      * */
     public void showAlertDialog(Context context, String title, String message, Boolean status) {
-       final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert = new AlertDialog.Builder(this);
         alert.setTitle(title);
         alert.setIcon(R.drawable.ic_no_connection);
         alert.setMessage(message);
         alert.setCancelable(false);
 
         alert.setNegativeButton("Impostazioni", new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int id) {
+            public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
-                //finish();
+                finish();
                 //System.exit(0);
-            //TODO funziona ma se si preme il tasto indietro torna all app normalmente
                 startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
             }
         });

@@ -31,7 +31,7 @@ public class HelpActivity extends AppCompatActivity {
     private void initialise()
     {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.about_string);
+        toolbar.setTitle(R.string.help_and_feedback);
 
         setSupportActionBar(toolbar);
 

@@ -243,21 +243,21 @@ public class MapFragment extends Fragment{
 
                     switch (str2[2]) {
                         case "1":
-                            image = R.drawable.marker3;
+                            image = R.drawable.marker_1;
                             myquality.setText(R.string.qlt_ecc);
                             break;
                         case "2":
-                            image = R.drawable.marker2;
+                            image = R.drawable.marker_2;
                             myquality.setText(R.string.qlt_buo);
 
                             break;
                         case "3":
-                            image = R.drawable.marker1;
+                            image = R.drawable.marker_3;
                             myquality.setText(R.string.qlt_suf);
 
                             break;
                         case "4":
-                            image = R.drawable.marker0;
+                            image = R.drawable.marker_4;
                             myquality.setText(R.string.qlt_sca);
 
                             break;

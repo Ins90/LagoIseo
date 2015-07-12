@@ -4,7 +4,7 @@
     <string name="home_string">Home</string>
     <string name="explore_string">Punti di balneazione</string>
     <string name="classification_string">Classificazione acque</string>
-    <string name="link_string">Link utili</string>
+    <string name="link_string">ASL Nuotare Informati </string>
     <string name="action_settings">Settings</string>
     <string name="settings_string">Impostazioni</string>
     <string name="help_and_feedback"><![CDATA[Help & feedback]]></string>
@@ -49,8 +49,14 @@
     <string name="qlt_sca">Qualità acqua: scarsa</string>
     <string name="title_activity_help">HelpActivity</string>
 
+   <!-- Nuotare informati -->
     <string name="link1">www.balneazionelagoiseo.it</string>
     <string name="link2">www.portaleacque.salute.gov.it</string>
     <string name="link3">www.asl.bergamo.it</string>
     <string name="linkdescription">L’Osservatorio sulla Qualità delle Acque del Sebino, istituito dall‘ASL della Provincia di Bergamo e dal Comune di Lovere, gestisce un sito internet per comunicare le informazioni utili sulla qualità delle acque di balneazione.</string>
+
+
+    <string name="descriptionAcque">Per la valutazione e l\'attribuzione dello stato di qualità delle acque di balneazione (scarso, sufficiente, buono o eccellente) la normativa stabilisce l\'utilizzo di due indicatori microbiologici:</string>
+    <string name="indicatori">Escherichia coli - Enterococchi intestinali</string>
+    <string name="descriptionAcque2">Questi parametri microbiologici rappresentano la migliore corrispondenza possibile tra inquinamento di origine fecale e ripercussioni per la salute nelle acque destinate a scopi ricreativi</string>
 </resources>

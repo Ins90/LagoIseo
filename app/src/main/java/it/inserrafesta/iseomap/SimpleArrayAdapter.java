@@ -15,6 +15,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.LruCache;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -106,11 +107,15 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
                     }
                 }
             }
+            LruCache mCache;
+            Picasso mPicasso;
 
+            Picasso.with(context).setIndicatorsEnabled(true);
             Picasso.with(context).load(place.getImageUrl())
                     .placeholder(null)
                     .error(R.drawable.placeholder1)
                     .into(holder.imgV);
+            ;
 
             // Log.d("Adapter", "holder.v1.getText(): " + holder.v1.getText());
         }
