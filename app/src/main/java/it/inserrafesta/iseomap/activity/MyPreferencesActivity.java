@@ -1,12 +1,9 @@
 package it.inserrafesta.iseomap.activity;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -21,6 +18,7 @@ import android.support.v7.internal.widget.TintEditText;
 import android.support.v7.internal.widget.TintRadioButton;
 import android.support.v7.internal.widget.TintSpinner;
 */
+
 public class MyPreferencesActivity extends PreferenceActivity {
 
     @Override

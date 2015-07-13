@@ -2,10 +2,7 @@ package it.inserrafesta.iseomap;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,20 +12,14 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.LruCache;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+
 
 import it.inserrafesta.iseomap.activity.DetailsActivity;
 
-/**
- * Created by Andrea on 03/07/2015.
- */
+
 public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterable {
     private final Context context;
     private PointFilter filter;
@@ -39,9 +30,9 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
                               ArrayList<Place> pointList) {
         super(context, resource,pointList);
         this.context = context;
-        this.pointList = new ArrayList<Place>();
+        this.pointList = new ArrayList<>();
         this.pointList.addAll(pointList);
-        this.originalList = new ArrayList<Place>();
+        this.originalList = new ArrayList<>();
         this.originalList.addAll(pointList);
     }
 
@@ -58,7 +49,7 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
 
 
         View row =convertView;
-        ViewHolder holder = null;
+        ViewHolder holder;
         //Log.v("ConvertView", String.valueOf(position));
         if (row == null) {
 
@@ -107,15 +98,12 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
                     }
                 }
             }
-            LruCache mCache;
-            Picasso mPicasso;
 
             Picasso.with(context).setIndicatorsEnabled(true);
             Picasso.with(context).load(place.getImageUrl())
                     .placeholder(null)
                     .error(R.drawable.placeholder1)
                     .into(holder.imgV);
-            ;
 
             // Log.d("Adapter", "holder.v1.getText(): " + holder.v1.getText());
         }
@@ -137,7 +125,6 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
         TextView localita;
         TextView comune;
       //  TextView classificazione;
-        TextView divieto;
         ImageView imgV;
         ImageView water;
 
@@ -163,7 +150,7 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
             FilterResults result = new FilterResults();
             if(constraint != null && constraint.toString().length() > 0)
             {
-                ArrayList<Place> filteredItems = new ArrayList<Place>();
+                ArrayList<Place> filteredItems = new ArrayList<>();
 
                 //Gestione filtro
                 for(int i = 0, l = originalList.size(); i < l; i++)

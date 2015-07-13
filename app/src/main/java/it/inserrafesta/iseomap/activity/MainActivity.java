@@ -1,24 +1,18 @@
 package it.inserrafesta.iseomap.activity;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -34,8 +28,6 @@ import it.inserrafesta.iseomap.fragment.MapFragment;
 import it.inserrafesta.iseomap.fragment.PointFragment;
 import it.inserrafesta.iseomap.fragment.WaterFragment;
 
-import static android.content.DialogInterface.*;
-
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -50,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     AlertDialog.Builder alert=null;
     private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
     private long mBackPressed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        //checkStatusConnection(); //check only first time
-        checkRealTimeConnection(); //check all the time
+        checkStatusConnection(); //check only first time
+        //checkRealTimeConnection(); //check all the time
 
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -181,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void connectionLost() {
                         // Okay to make UI updates -- bummer, no connection
-                        showAlertDialog(getApplicationContext(), "Connessione Internet assente", "Necessaria una connessione internet per usare l'applicazione", true);
+                        showAlertDialog("Connessione Internet assente", "Necessaria una connessione internet per usare l'applicazione");
                     }
                 });
     }
@@ -193,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (!isInternetPresent) {
             // make HTTP requests
-            showAlertDialog(this, "Connessione Internet assente", "Necessaria una connessione internet per usare l'applicazione", true);
+            showAlertDialog("Connessione Internet assente", "Necessaria una connessione internet per usare l'applicazione");
         }
     }
 
@@ -299,13 +292,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }*/
 
-    /*
-    * Qui sono presenti tutti i listener per gli onclick dei file xml dei vari fragment, necessario farlo qui perche i fragmetn non possono ricevere chiamate dai onclick dei button
-     */
-    public void goToDetails(View view) {
-        Intent myIntent = new Intent(view.getContext(), DetailsActivity.class);
-        startActivity(myIntent);
-    }
 
     @Override
     public void onResume() {
@@ -347,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
     public void checkSatus(){
         if (mapFragment.isHidden()) {
             //displayMapFragment();
-            drawerLayout.openDrawer(Gravity.LEFT);
+            drawerLayout.openDrawer(GravityCompat.START);
         } else {
             if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
                 finish();
@@ -360,12 +346,10 @@ public class MainActivity extends AppCompatActivity {
     }
     /**
      * Function to display simple Alert Dialog
-     * @param context - application context
      * @param title - alert dialog title
      * @param message - alert message
-     * @param status - success/failure (used to set icon)
      * */
-    public void showAlertDialog(Context context, String title, String message, Boolean status) {
+    public void showAlertDialog(String title, String message) {
         alert = new AlertDialog.Builder(this);
         alert.setTitle(title);
         alert.setIcon(R.drawable.ic_no_connection);

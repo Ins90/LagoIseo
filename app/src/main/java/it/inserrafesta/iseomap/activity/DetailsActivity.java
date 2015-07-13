@@ -1,72 +1,46 @@
 package it.inserrafesta.iseomap.activity;
 
-import android.app.ActionBar;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.internal.widget.FitWindowsLinearLayout;
+
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.util.Log;
+
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.GridLayout;
-import android.widget.GridView;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Vector;
 
-import it.inserrafesta.iseomap.Place;
 import it.inserrafesta.iseomap.R;
 import it.inserrafesta.iseomap.fragment.MapFragment;
 
 
 public class DetailsActivity extends AppCompatActivity {
     static String[] serviziNomiArray = {"Area picnic", "Parco giochi","Servizi Igienici","Bar","Ristorante","Parcheggio"};
-    public static Vector<String> serviziNomi = new Vector<String>(Arrays.asList(serviziNomiArray));
+    public static Vector<String> serviziNomi = new Vector<>(Arrays.asList(serviziNomiArray));
     private Vector<Boolean> serviziVec;
     private String comune;
     private String localita;
     private String provincia;
-    private String title;
     private int classificazione; /* 1 eccellente 2 buono 3 sufficiente 4 scarso */
     private int divieto; /* 1 SI 0 NO */
     private String imageUrl;
-    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        context = getApplication();
+        Context context = getApplication();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         Bundle extras = getIntent().getExtras();
@@ -132,8 +106,8 @@ public class DetailsActivity extends AppCompatActivity {
                 public void onGlobalLayout() {
                     gridLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     int maxLLwidth = 0;
-                    for (int i = 0; i < ((ViewGroup) gridLayout).getChildCount(); ++i) {
-                        View nextChild = ((ViewGroup) gridLayout).getChildAt(i);
+                    for (int i = 0; i < (gridLayout).getChildCount(); ++i) {
+                        View nextChild = (gridLayout).getChildAt(i);
                         int LLwidth = nextChild.getMeasuredWidth();
                         if (LLwidth > maxLLwidth)
                             maxLLwidth = LLwidth;

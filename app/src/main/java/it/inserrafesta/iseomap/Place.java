@@ -1,21 +1,13 @@
 package it.inserrafesta.iseomap;
 
-import android.util.Log;
-
-import it.inserrafesta.iseomap.R;
-import it.inserrafesta.iseomap.fragment.MapFragment;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Vector;
 
-/**
- * Created by Nicolo on 09/06/2015.
- */
 public class Place {
 
 
@@ -23,13 +15,12 @@ public class Place {
     private String comune;
     private String localita;
     private String provincia;
-    private String title;
     private double lat;
     private double lng;
     private int classificazione; /* 1 eccellente 2 buono 3 sufficiente 4 scarso */
     private int divieto; /* 1 SI 0 NO */
     private String imageUrl;
-    int not_first_time_showing_info_window=0; //0 false, 1 true
+    // int not_first_time_showing_info_window=0; //0 false, 1 true
     public Vector<Boolean> getServiziVec() {
         return serviziVec;
     }
@@ -55,7 +46,6 @@ public class Place {
 
     public void makeMaker(GoogleMap mMap){
     int image = 0;
-        String s = Integer.toString(divieto);
 
     if(divieto==1){
         image= R.drawable.marker_divieto;
@@ -77,7 +67,7 @@ public class Place {
                 break;
         }
     }
-        title="Localit\u00E0 " + localita+"_"+divieto+"_"+classificazione+"_"+imageUrl;
+        String title = "Localit\u00E0 " + localita + "_" + divieto + "_" + classificazione + "_" + imageUrl;
 
         mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(lat, lng))

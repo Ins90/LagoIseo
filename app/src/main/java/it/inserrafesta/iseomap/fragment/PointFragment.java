@@ -1,11 +1,8 @@
 package it.inserrafesta.iseomap.fragment;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,13 +22,10 @@ import java.util.ArrayList;
 
 import it.inserrafesta.iseomap.SimpleArrayAdapter;
 
-/**
- * Created by Andrea on 04-06-2015.
- */
+
 public class PointFragment extends ListFragment implements SearchView.OnQueryTextListener {
-    private ListView lv;
     private SimpleArrayAdapter adapter;
-    ArrayList<Place> pointList = new ArrayList<Place>();
+    ArrayList<Place> pointList = new ArrayList<>();
     public static MenuItem searchItem;
     public static boolean ricercaCreata=false; //necessaria per il tasto indietro, se lo si preme appena aperta l'app
     Menu menuNew;
@@ -74,10 +68,6 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-      //  if(R.id.action_filter==id){
-       //     showSingleChoiceDialog(getActivity(), "Filtro punti di balneazione", "Necessaria una connessione internet per usare l'applicazione", true);
-      //  }
        return super.onOptionsItemSelected(item);
     }
 
@@ -101,7 +91,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
         setHasOptionsMenu(true); //necessario per visualizzare i pulsanti nella toolbar
 
         View rootView = inflater.inflate(R.layout.point_fragment, container, false);
-        lv = (ListView) rootView.findViewById(android.R.id.list);
+        ListView lv = (ListView) rootView.findViewById(android.R.id.list);
         lv.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
 
         //enables filtering for the contents of the given ListView
@@ -120,40 +110,6 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
                 pointList);
         setListAdapter(adapter);
     }
-    //TODO sistemare per i filtri, one choice
-    public void showSingleChoiceDialog(Context context, String title, String message, Boolean status) {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setTitle(title);
-        alert.setIcon(R.drawable.ic_no_connection);
-        alert.setMessage(message);
-        alert.setCancelable(false);
-        alert.setSingleChoiceItems(new String[]{"tutto"}, 0, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-                        /* User clicked on a radio button do some stuff */
-            }
-        });
-        alert.setSingleChoiceItems(new String[]{"Eccellente"}, 0, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-                        /* User clicked on a radio button do some stuff */
-            }
-        });
-        alert.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-                System.exit(0);
-            }
-        });
-        alert.show();
-    }
-
 
     @Override
     public boolean onQueryTextChange(String newText) {

@@ -21,16 +21,13 @@ import android.widget.TextView;
 
 import it.inserrafesta.iseomap.R;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import android.support.v4.app.Fragment;
@@ -48,7 +45,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Vector;
 
@@ -61,15 +57,11 @@ public class MapFragment extends Fragment{
     final int INITIAL_ZOOM = 11;
     MapView mMapView;
     private static GoogleMap googleMap;
-    private static CameraUpdate cu;
-    public static Vector<Place>  places = new Vector<Place>();
+    public static Vector<Place>  places = new Vector<>();
     Bundle bundle;
-    TextView mSearchText;
     boolean change=true;
     Context context;
-    ArrayList<Place> pointList = new ArrayList<Place>();
-    boolean not_first_time_showing_info_window=false;
-    public static Map<Marker, String> imageStringMapMarker; //TODO togliere da place l inserimento dei marker!!!! Place rimane una classe punto!
+    //public static Map<Marker, String> imageStringMapMarker; //TODO togliere da place l inserimento dei marker!!!! Place rimane una classe punto!
    // private float previousZoomLevel = 13; TODO sistemare bloccaggio mappa
   //  private boolean isZooming=false;
 
@@ -234,32 +226,23 @@ public class MapFragment extends Fragment{
                     myTitle.setText(str2[0]);// got first string as title
                     mysnippet.setText(marker.getSnippet());
 
-                    int image = 0;
                     if (str2[1].equals("1")) {
-                        image = R.drawable.marker_divieto;
                         divietoA.setText(R.string.prohibition);
 
                     }
 
                     switch (str2[2]) {
                         case "1":
-                            image = R.drawable.marker_1;
                             myquality.setText(R.string.qlt_ecc);
                             break;
                         case "2":
-                            image = R.drawable.marker_2;
                             myquality.setText(R.string.qlt_buo);
-
                             break;
                         case "3":
-                            image = R.drawable.marker_3;
                             myquality.setText(R.string.qlt_suf);
-
                             break;
                         case "4":
-                            image = R.drawable.marker_4;
                             myquality.setText(R.string.qlt_sca);
-
                             break;
                         default:
                             break;
@@ -322,32 +305,14 @@ public class MapFragment extends Fragment{
     }
 
     /*
-    * Sposta la visuale della mappa in modo che tutti i markers siano visibili
-    */
-    public static void zoomAnimateLevelToFitMarkers(int padding) {
-        LatLngBounds.Builder b = new LatLngBounds.Builder();
-        for(int i=0;i<places.size();i++){
-            LatLng ll = new LatLng(places.get(i).getLat(), places.get(i).getLng());
-            b.include(ll);
-        }
-
-        LatLngBounds bounds = b.build();
-
-        // Change the padding as per needed
-        cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        googleMap.animateCamera(cu);
-    }
-
-    /*
      * Converte un oggetto JSONArray in Vector<Place>
      */
     private void JSONArrayToVector(JSONArray jsonArray,Vector<Place> places) {
-        String s = "";
         for(int i=0;i<jsonArray.length();i++){
-            JSONObject json = null;
+            JSONObject json;
             try{
                 json = jsonArray.getJSONObject(i);
-                Vector<Boolean> serviziVec= new Vector<Boolean>();
+                Vector<Boolean> serviziVec= new Vector<>();
                for(int j=1;j<=DetailsActivity.serviziNomi.size();j++) {
                    String servizioString = json.getString(Integer.toString(j));
                    Boolean servizio = false;
@@ -389,9 +354,9 @@ public class MapFragment extends Fragment{
         try{
             BufferedReader reader = new BufferedReader(new InputStreamReader(isr,"iso-8859-1"),8);
             StringBuilder sb = new StringBuilder();
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
+                sb.append(line).append("\n");
             }
             isr.close();
             result=sb.toString();
@@ -439,28 +404,11 @@ public class MapFragment extends Fragment{
         dialog.show();
     }
 
-    private final float getDensityScale()
+    private float getDensityScale()
     {
         final DisplayMetrics metrics =
                 Resources.getSystem().getDisplayMetrics();
         return metrics.density;
-    }
-
-
-    private class InfoWindowRefresher implements Callback {
-        private Marker markerToRefresh;
-
-        private InfoWindowRefresher(Marker markerToRefresh) {
-            this.markerToRefresh = markerToRefresh;
-        }
-
-        @Override
-        public void onSuccess() {
-            markerToRefresh.showInfoWindow();
-        }
-
-        @Override
-        public void onError() {}
     }
 
     @Override
