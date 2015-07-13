@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -30,7 +31,7 @@ import it.inserrafesta.iseomap.fragment.MapFragment;
 public class DetailsActivity extends AppCompatActivity {
     static String[] serviziNomiArray = {"Area picnic", "Parco giochi","Servizi Igienici","Bar","Ristorante","Parcheggio"};
     public static Vector<String> serviziNomi = new Vector<>(Arrays.asList(serviziNomiArray));
-    private Vector<Boolean> serviziVec;
+    private ArrayList<Boolean> serviziVec;
     private String comune;
     private String localita;
     private String provincia;
@@ -79,7 +80,7 @@ public class DetailsActivity extends AppCompatActivity {
         final int paddingDp = (int)(paddingPixel / density);
         Boolean unServizio = false;
         for(int i=0;i<serviziNomi.size();i++){
-            if(serviziVec.elementAt(i)) {
+            if(serviziVec.get(i)) {
                 unServizio = true;
                 ImageView image = new ImageView(this);
                 image.setImageResource(getResources().getIdentifier("servizio_" + (i + 1), "drawable", this.getPackageName()));

@@ -45,6 +45,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Vector;
 
@@ -64,6 +65,8 @@ public class MapFragment extends Fragment{
     //public static Map<Marker, String> imageStringMapMarker; //TODO togliere da place l inserimento dei marker!!!! Place rimane una classe punto!
    // private float previousZoomLevel = 13; TODO sistemare bloccaggio mappa
   //  private boolean isZooming=false;
+    //JSONParser jParser = new JSONParser();
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -312,17 +315,19 @@ public class MapFragment extends Fragment{
             JSONObject json;
             try{
                 json = jsonArray.getJSONObject(i);
-                Vector<Boolean> serviziVec= new Vector<>();
+                ArrayList<String> serviziVec= new ArrayList<>();
                for(int j=1;j<=DetailsActivity.serviziNomi.size();j++) {
                    String servizioString = json.getString(Integer.toString(j));
+                   Log.v("URddL", servizioString);
+
                    Boolean servizio = false;
                    if(servizioString.equals("1"))
                        servizio = true;
-                   serviziVec.add(servizio);
+                   serviziVec.add(servizioString);
                 }
-                Place p = new Place(json.getString("comune"),json.getString("localita"),
-                        json.getString("provincia"),json.getDouble("lat"),json.getDouble("lng"),
-                        json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec);
+
+                Place p = new Place(json.getInt("ID"),json.getDouble("lat"),json.getDouble("lng"),json.getString("comune"),json.getString("localita"),
+                        json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString());
                 places.add(p);
 
             }catch(JSONException e){
@@ -330,6 +335,7 @@ public class MapFragment extends Fragment{
             }
         }
     }
+
 
     /*
      * Ottiene un oggetto JSONArray dal DB remoto

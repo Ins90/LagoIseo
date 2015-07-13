@@ -1,8 +1,10 @@
 package it.inserrafesta.iseomap.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -18,9 +20,16 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.android.gms.plus.model.people.Person;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import it.inserrafesta.iseomap.ConnectionDetector;
 import it.inserrafesta.iseomap.NetworkConnectivity;
 import it.inserrafesta.iseomap.NetworkMonitorListener;
+import it.inserrafesta.iseomap.Place;
+import it.inserrafesta.iseomap.PlaceDB;
 import it.inserrafesta.iseomap.R;
 
 import it.inserrafesta.iseomap.fragment.LinkFragment;
@@ -29,6 +38,8 @@ import it.inserrafesta.iseomap.fragment.PointFragment;
 import it.inserrafesta.iseomap.fragment.WaterFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    private PlaceDB dbPlace;
 
     private Toolbar toolbar;
     private NavigationView navigationView;
@@ -42,17 +53,25 @@ public class MainActivity extends AppCompatActivity {
     AlertDialog.Builder alert=null;
     private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
     private long mBackPressed;
+    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+        context = getApplicationContext();
+
+        //dbPlace = new PlaceDB();
+       // dbPlace.open();
+       // List<Place> values = dbPlace.getAllPlaces();
+
         // Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
         checkStatusConnection(); //check only first time
         //checkRealTimeConnection(); //check all the time
 
@@ -296,18 +315,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         //checkStatusConnection();
-        super.onResume();
 
         // TODO necessario per nascondere la navigation bar, problema la mapFragment pero non si estende sotto dove non c'e piu la navigation bar
-       /* View decorView = getWindow().getDecorView();
+  /*      View decorView = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= 19) {
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+                | View.SYSTEM_UI_FLAG_IMMERSIVE);
          }*/
+        super.onResume();
+
     }
 
     // Necessario per cambiare il comportamento del pulsante indietro, in modo che ogni qual volta lo si preme si riporta l utente alla mappa!
@@ -373,5 +393,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         alert.show();
+    }
+
+    public static Context getAppContext() {
+        return MainActivity.context;
     }
 }

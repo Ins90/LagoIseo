@@ -1,17 +1,23 @@
 package it.inserrafesta.iseomap;
 
 
+import android.util.Log;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 import java.util.Vector;
 
 public class Place {
 
-
-
+    private int ID;
     private String comune;
     private String localita;
     private String provincia;
@@ -20,19 +26,15 @@ public class Place {
     private int classificazione; /* 1 eccellente 2 buono 3 sufficiente 4 scarso */
     private int divieto; /* 1 SI 0 NO */
     private String imageUrl;
-    // int not_first_time_showing_info_window=0; //0 false, 1 true
-    public Vector<Boolean> getServiziVec() {
-        return serviziVec;
-    }
+    private ArrayList<String> serviziVecTemp=new ArrayList<>();;
+    private ArrayList<Boolean> serviziVec=new ArrayList<>();
+    private String serviziStr;
 
-    private Vector<Boolean> serviziVec;
+    public Place(int id, double _lat, double _lng, String _comune, String _localita, String _provincia, int _classificazione, int _divieto, String _imageUrl,String serviziString){
 
+        serviziStr=serviziString;
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public Place( String _comune, String _localita, String _provincia,double _lat, double _lng, int _classificazione, int _divieto,String _imageUrl,Vector<Boolean> _serviziVec){
+        ID=id;
         comune = _comune;
         localita = _localita;
         provincia = _provincia;
@@ -41,7 +43,21 @@ public class Place {
         classificazione = _classificazione;
         divieto = _divieto;
         imageUrl = _imageUrl;
-        serviziVec = _serviziVec;
+        serviziVecTemp.addAll(Arrays.asList(serviziString.substring(1, serviziString.length() - 1).split(", ")));
+        serviziVec=getBooleanArray(serviziVecTemp);
+
+    }
+
+
+    private ArrayList<Boolean> getBooleanArray(ArrayList<String> stringArray) {
+        ArrayList<Boolean> result = new ArrayList<>();
+        for(String stringValue : stringArray) {
+                Boolean servizio = false;
+                if(stringValue.equals("1"))
+                    servizio = true;
+            result.add(servizio);
+        }
+        return result;
     }
 
     public void makeMaker(GoogleMap mMap){
@@ -78,6 +94,17 @@ public class Place {
         //MapFragment.imageStringMapMarker.put(marker,imageUrl);
     }
 
+    public String getServiziStr() {
+        return serviziStr;
+    }
+
+    public ArrayList<Boolean> getServiziVec() {
+        return serviziVec;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
     public double getLng() {
         return lng;
@@ -105,5 +132,9 @@ public class Place {
 
     public int getDivieto() {
         return divieto;
+    }
+
+    public int getID() {
+        return ID;
     }
 }
