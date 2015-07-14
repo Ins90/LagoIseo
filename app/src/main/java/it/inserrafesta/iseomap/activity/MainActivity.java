@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,8 +24,21 @@ import android.widget.Toast;
 
 import com.google.android.gms.plus.model.people.Person;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import it.inserrafesta.iseomap.ConnectionDetector;
 import it.inserrafesta.iseomap.NetworkConnectivity;
@@ -39,7 +54,6 @@ import it.inserrafesta.iseomap.fragment.WaterFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PlaceDB dbPlace;
 
     private Toolbar toolbar;
     private NavigationView navigationView;
@@ -61,9 +75,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = getApplicationContext();
 
+
+
         //dbPlace = new PlaceDB();
-       // dbPlace.open();
-       // List<Place> values = dbPlace.getAllPlaces();
+        //dbPlace.open();
+        //placesList = dbPlace.getAllPlaces();
+
 
         // Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -72,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        checkStatusConnection(); //check only first time
+        //checkStatusConnection(); //check only first time
         //checkRealTimeConnection(); //check all the time
 
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
@@ -315,6 +332,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         //checkStatusConnection();
+       // dbPlace.open();
 
         // TODO necessario per nascondere la navigation bar, problema la mapFragment pero non si estende sotto dove non c'e piu la navigation bar
   /*      View decorView = getWindow().getDecorView();
@@ -397,5 +415,13 @@ public class MainActivity extends AppCompatActivity {
 
     public static Context getAppContext() {
         return MainActivity.context;
+    }
+
+
+
+    @Override
+    protected void onPause() {
+       // dbPlace.close();
+        super.onPause();
     }
 }

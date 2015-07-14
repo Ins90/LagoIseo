@@ -17,7 +17,7 @@ import java.util.Vector;
 
 public class Place {
 
-    private int ID;
+    private long ID;
     private String comune;
     private String localita;
     private String provincia;
@@ -30,7 +30,7 @@ public class Place {
     private ArrayList<Boolean> serviziVec=new ArrayList<>();
     private String serviziStr;
 
-    public Place(int id, double _lat, double _lng, String _comune, String _localita, String _provincia, int _classificazione, int _divieto, String _imageUrl,String serviziString){
+    public Place(long id, double _lat, double _lng, String _comune, String _localita, String _provincia, int _classificazione, int _divieto, String _imageUrl,String serviziString){
 
         serviziStr=serviziString;
 
@@ -47,6 +47,8 @@ public class Place {
         serviziVec=getBooleanArray(serviziVecTemp);
 
     }
+
+
 
 
     private ArrayList<Boolean> getBooleanArray(ArrayList<String> stringArray) {
@@ -134,7 +136,7 @@ public class Place {
         return divieto;
     }
 
-    public int getID() {
+    public long getID() {
         return ID;
     }
 }

@@ -25,9 +25,13 @@
     <string name="title_activity_water_fragment">WaterFragment</string>
 
 
-    <string name="action_home">Home - Zoom su tutti i punti di balneazione</string>
+    <string name="action_home">Zoom su tutti i punti di balneazione</string>
     <string name="action_filter">Filtro sui punti di balneazione</string>
     <string name="action_terrain">Stile Mappa</string>
+    <string name="action_info">Legenda</string>
+
+    <string name="action_refresh">Aggiorna Dati</string>
+
     <string name="action_search">Ricerca punto di balneazione</string>
 
     <string name="water_high">Eccellente</string>
@@ -59,4 +63,11 @@
     <string name="descriptionAcque">Per la valutazione e l\'attribuzione dello stato di qualità delle acque di balneazione (scarso, sufficiente, buono o eccellente) la normativa stabilisce l\'utilizzo di due indicatori microbiologici:</string>
     <string name="indicatori">Escherichia coli - Enterococchi intestinali</string>
     <string name="descriptionAcque2">Questi parametri microbiologici rappresentano la migliore corrispondenza possibile tra inquinamento di origine fecale e ripercussioni per la salute nelle acque destinate a scopi ricreativi</string>
+
+    <!-- Preferenze-->
+    <string name="vistaSat">Vista satellite</string>
+    <string name="descVistaSat">Se selezionata imposta la mappa con la vista satellitare, altrimenti usa quella stradale.</string>
+    <string name="strRefresh">Frequenza aggiornamento dati</string>
+<string name="descRefresh">Selezionare il tempo minimo tra un aggiornamento e l\'altro (Default 12 ore)</string>
+
 </resources>

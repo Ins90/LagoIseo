@@ -3,14 +3,14 @@
    <!-- <EditTextPreference android:title="Your Name"
         android:key="username"
         android:summary="Please provide your username"></EditTextPreference> -->
-    <CheckBoxPreference android:title="Vista satellite"
+    <CheckBoxPreference android:title="@string/vistaSat"
         android:defaultValue="true"
-        android:summary="Se selezionata imposta la mappa con la vista satellitare, altrimenti usa quella stradale."
+        android:summary="@string/descVistaSat"
         android:key="satellite" />
-   <!-- <ListPreference     android:title="Filtro sui punti di balneazione"
-        android:summary="Selezionare quali punti di balneazione saranno visibili sulla mappa"
-        android:key="filtroPunti"
-        android:defaultValue="1"
+    <ListPreference     android:title="@string/strRefresh"
+        android:summary="@string/descRefresh"
+        android:key="timeRefresh"
+        android:defaultValue="12"
         android:entries="@array/listArray"
-        android:entryValues="@array/listValues" /> -->
+        android:entryValues="@array/listValues" />
 </PreferenceScreen>

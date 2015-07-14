@@ -10,7 +10,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_PLACE = "localita_tbl";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_LAT = "lat";
-    public static final String COLUMN_LNG = "ing";
+    public static final String COLUMN_LNG = "lng";
     public static final String COLUMN_COMUNE = "comune";
     public static final String COLUMN_LOCALITA = "localita";
     public static final String COLUMN_PROVINCIA = "provincia";
@@ -27,7 +27,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     // database creation SQL statement
     private static final String DATABASE_CREATE = "create table "
             + TABLE_PLACE + "("
-            + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_ID + " integer primary key,"
             + COLUMN_LAT + " real not null,"
             + COLUMN_LNG + " real not null,"
             + COLUMN_COMUNE + " text not null,"
@@ -36,7 +36,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_CLAS + " integer not null,"
             + COLUMN_DIVIETO + " integer not null,"
             + COLUMN_IMAGE + " text not null,"
-            + COLUMN_SERVIZI + "text );";
+            + COLUMN_SERVIZI + " text); ";
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

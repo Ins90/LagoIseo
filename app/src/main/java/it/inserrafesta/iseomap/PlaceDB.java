@@ -3,6 +3,7 @@ package it.inserrafesta.iseomap;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class PlaceDB {
     // from Object to database
     private ContentValues placeToValues(Place place) {
         ContentValues values = new ContentValues();
-        values.put(MySQLiteHelper.COLUMN_ID, place.getID());
+        //values.put(MySQLiteHelper.COLUMN_ID, place.getID());
         values.put(MySQLiteHelper.COLUMN_LAT, place.getLat());
         values.put(MySQLiteHelper.COLUMN_LNG, place.getLng());
         values.put(MySQLiteHelper.COLUMN_COMUNE, place.getComune());
@@ -46,12 +47,13 @@ public class PlaceDB {
         values.put(MySQLiteHelper.COLUMN_DIVIETO, place.getDivieto());
         values.put(MySQLiteHelper.COLUMN_IMAGE, place.getImageUrl());
         values.put(MySQLiteHelper.COLUMN_SERVIZI, place.getServiziStr());
+
         return values;
     }
 
     // from database to Object
     private Place cursorToPlace(Cursor cursor) {
-        int id=cursor.getInt(0);
+        long id=cursor.getLong(0);
         double lat =cursor.getDouble(1);
         double lng =cursor.getDouble(2);
         String comune = cursor.getString(3);
@@ -60,19 +62,20 @@ public class PlaceDB {
         int clas =cursor.getInt(6);
         int divieto =cursor.getInt(7);
         String image = cursor.getString(8);
+
         String servizi = cursor.getString(9);
 
         return new Place(id,lat,lng,comune,localita,provincia,clas,divieto,image,servizi);
     }
 
     public Place insertPlace(Place place) {
-        int insertId =(int) database.insert(MySQLiteHelper.TABLE_PLACE,null,
+        long insertId = database.insertOrThrow(MySQLiteHelper.TABLE_PLACE, null,
                 placeToValues(place));
         // now read from DB the inserted person and return it
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_PLACE,allColumns,
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_PLACE, allColumns,
                 MySQLiteHelper.COLUMN_ID + " = ?",
-                new String[] {"" + insertId},null,null,null);
+                new String[]{"" + insertId}, null, null, null);
         cursor.moveToFirst();
         Place p = cursorToPlace(cursor);
         cursor.close();
@@ -84,11 +87,27 @@ public class PlaceDB {
 
         database.delete(MySQLiteHelper.TABLE_PLACE,
                 MySQLiteHelper.COLUMN_ID + " = ?",
-                new String[] {"" + id});
+                new String[]{"" + id});
     }
 
-    public List<Place> getAllPlaces() {
-        List<Place> places = new ArrayList<>();
+    public void deleteAllPlace(ArrayList<Place> places) {
+        for(int i=0;i< places.size();i++) {
+            long id = places.get(i).getID();
+
+            database.delete(MySQLiteHelper.TABLE_PLACE,
+                    MySQLiteHelper.COLUMN_ID + " = ?",
+                    new String[]{"" + id});
+        }
+    }
+
+    public void removeAll()
+    {
+        // db.delete(String tableName, String whereClause, String[] whereArgs);
+        // If whereClause is null, it will delete all rows.
+        database.delete(MySQLiteHelper.TABLE_PLACE, null, null);
+    }
+    public ArrayList<Place> getAllPlaces() {
+        ArrayList<Place> places = new ArrayList<>();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_PLACE,
                 allColumns,null,null,null,null,null);
         cursor.moveToFirst();

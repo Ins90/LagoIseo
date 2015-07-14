@@ -99,7 +99,7 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
                 }
             }
 
-            Picasso.with(context).setIndicatorsEnabled(true);
+           // Picasso.with(context).setIndicatorsEnabled(true);
             Picasso.with(context).load(place.getImageUrl())
                     .placeholder(null)
                     .error(R.drawable.placeholder1)

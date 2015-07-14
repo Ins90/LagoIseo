@@ -2,12 +2,15 @@ package it.inserrafesta.iseomap.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +22,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import it.inserrafesta.iseomap.ConnectionDetector;
+import it.inserrafesta.iseomap.NetworkConnectivity;
+import it.inserrafesta.iseomap.NetworkMonitorListener;
+import it.inserrafesta.iseomap.PlaceDB;
 import it.inserrafesta.iseomap.R;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,25 +50,34 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 import it.inserrafesta.iseomap.Place;
 import it.inserrafesta.iseomap.activity.DetailsActivity;
+import it.inserrafesta.iseomap.activity.MainActivity;
 
 public class MapFragment extends Fragment{
+    private PlaceDB dbPlace;
 
     static final LatLng INITIAL_LATLNG = new LatLng(45.733815962451354, 10.05103312432766);
     final int INITIAL_ZOOM = 11;
     MapView mMapView;
     private static GoogleMap googleMap;
-    public static Vector<Place>  places = new Vector<>();
+    public static ArrayList<Place>  places = new ArrayList<>();
     Bundle bundle;
     boolean change=true;
     Context context;
+    long timeToCheck=0;
+    SharedPreferences prefs;
     //public static Map<Marker, String> imageStringMapMarker; //TODO togliere da place l inserimento dei marker!!!! Place rimane una classe punto!
    // private float previousZoomLevel = 13; TODO sistemare bloccaggio mappa
   //  private boolean isZooming=false;
@@ -105,11 +121,14 @@ public class MapFragment extends Fragment{
                 showLegend();
 
                 break;
+            case R.id.action_refresh:
+                checkStatusConnection();
+
+                break;
         }
         return super.onOptionsItemSelected(item);
 
     }
-
 
     // Context context = getActivity().getApplicationContext();
     @Override
@@ -118,6 +137,7 @@ public class MapFragment extends Fragment{
         context = getActivity().getApplicationContext();
         bundle=getArguments(); //necessario per le preferenze passate dalla mainActivity
         setHasOptionsMenu(true);
+        prefs = context.getSharedPreferences("time", Context.MODE_PRIVATE);
 
         /*
          * Istruzioni magiche per consentire la connessione a internet
@@ -181,11 +201,10 @@ public class MapFragment extends Fragment{
         if (googleMap != null){
 
             //Necessario per ricaricare istantaneamente l'Infowindow per visualizzare l immagine del posto
-            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+          /*  googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
 
                 @Override
                 public boolean onMarkerClick(final Marker mark) {
-
                     mark.showInfoWindow();
 
                     final Handler handler = new Handler();
@@ -195,11 +214,11 @@ public class MapFragment extends Fragment{
                             mark.showInfoWindow();
 
                         }
-                    },200);
+                    },250);
 
                     return true;
                 }
-            });
+            });*/
 
             googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                 @Override
@@ -252,12 +271,12 @@ public class MapFragment extends Fragment{
                     }
 
 
-                    Picasso.with(context)
+                   /* Picasso.with(context)
                             .load(str2[3])
                             .resize(80*(int) getDensityScale(),80* (int) getDensityScale() )
                             .centerCrop()
                             .placeholder(null)
-                            .error(R.drawable.placeholder1).into(imageinfo);
+                            .error(R.drawable.placeholder1).into(imageinfo);*/
 
                     return v;
                }
@@ -267,10 +286,24 @@ public class MapFragment extends Fragment{
         //Move the camera instantly to center of lake Iseo
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(INITIAL_LATLNG, INITIAL_ZOOM));
 
-        /* 1  Creo il JSON dal db, 2 trasformo in un vector di markers, 3 inserisco i marker sulla mappa */
-        JSONArray jsonArrayPlaces = getJSONFromDB();
-        JSONArrayToVector(jsonArrayPlaces, places);
-        putMakers(places, googleMap);
+        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+        int timeRefresh =Integer.parseInt(SP.getString("timeRefresh", "12"));
+        timeRefresh=timeRefresh*60*60; //il tempo tra un aggiornmaento e l'altro espresso in secondi
+
+        //Toast.makeText(getActivity().getApplicationContext(), "tempo di aggiornamento "+timeRefresh, Toast.LENGTH_SHORT).show();
+
+        if((System.currentTimeMillis()/1000)-prefs.getLong("time",0)>timeRefresh) {
+
+            checkStatusConnection();
+        }else {
+           // Log.v("dii2iiiiiiiiiiiiiii", String.valueOf(prefs.getLong("time", 0)));
+            dbPlace = new PlaceDB();
+            dbPlace.open();
+            places=dbPlace.getAllPlaces();
+            putMakers(places, googleMap);
+            Toast.makeText(getActivity().getApplicationContext(), "Dati già aggiornati", Toast.LENGTH_SHORT).show();
+
+        }
 
         /* Se lo zoom e troppo basso ritorno allo zoom minimo consentito*/
         googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
@@ -279,14 +312,14 @@ public class MapFragment extends Fragment{
                 // Make a web call for the locations
                 int minZoom = 11;
                 CameraPosition position = googleMap.getCameraPosition();
-                System.out.print("Zoom level: "+position.zoom);
+                System.out.print("Zoom level: " + position.zoom);
 
-              //  if(previousZoomLevel < position.zoom)
-              //  {
-               //     isZooming = true;
-               //     googleMap.getUiSettings().setScrollGesturesEnabled(true);
+                //  if(previousZoomLevel < position.zoom)
+                //  {
+                //     isZooming = true;
+                //     googleMap.getUiSettings().setScrollGesturesEnabled(true);
 
-              //  }
+                //  }
                 //String s = Float.toString(position.zoom);
                 //Log.d(TAG_LOG,s);
                 if (position.zoom < minZoom) {
@@ -308,26 +341,62 @@ public class MapFragment extends Fragment{
     }
 
     /*
-     * Converte un oggetto JSONArray in Vector<Place>
+     * Aggiunge i makers alla mappa passata costruendoli da places
      */
-    private void JSONArrayToVector(JSONArray jsonArray,Vector<Place> places) {
+    private void putMakers(List<Place> places,GoogleMap mMap){
+        for(int i=0;i<places.size();i++)
+            places.get(i).makeMaker(mMap);
+    }
+
+    public void showLegend(){
+
+        final Dialog dialog = new Dialog(getActivity(),R.style.Dialog);
+        dialog.setContentView(R.layout.popup_custom);
+        //ImageView markerImg=(ImageView) v.findViewById(R.id.image_info);
+        dialog.setTitle("Legenda");
+        float scale=getDensityScale();
+        float myWidth = 250;
+        float myHeight = 420;
+        myWidth=myWidth*scale;
+        myHeight=myHeight*scale;
+        Log.v("ConvertView", "Width " + myWidth + ", Height " + myHeight);
+
+        // set the custom dialog components - text, image and button
+        //TextView text = (TextView) dialog.findViewById(R.id.text);
+        //text.setText("Android custom dialog example!");
+        //ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        //image.setImageResource(R.mipmap.ic_icon);
+
+        dialog.getWindow().setLayout((int) myWidth, (int) myHeight);
+        dialog.show();
+    }
+
+    private float getDensityScale()
+    {
+        final DisplayMetrics metrics =
+                Resources.getSystem().getDisplayMetrics();
+        return metrics.density;
+    }
+
+
+    /*
+* Converte un oggetto JSONArray in Vector<Place>
+*/
+    private void JSONArrayToVector(JSONArray jsonArray) {
         for(int i=0;i<jsonArray.length();i++){
             JSONObject json;
             try{
                 json = jsonArray.getJSONObject(i);
                 ArrayList<String> serviziVec= new ArrayList<>();
-               for(int j=1;j<=DetailsActivity.serviziNomi.size();j++) {
-                   String servizioString = json.getString(Integer.toString(j));
-                   Log.v("URddL", servizioString);
+                for(int j=1;j<=DetailsActivity.serviziNomi.size();j++) {
+                    String servizioString = json.getString(Integer.toString(j));
+                    // Log.v("URddL", servizioString);
 
-                   Boolean servizio = false;
-                   if(servizioString.equals("1"))
-                       servizio = true;
-                   serviziVec.add(servizioString);
+                    serviziVec.add(servizioString);
                 }
 
-                Place p = new Place(json.getInt("ID"),json.getDouble("lat"),json.getDouble("lng"),json.getString("comune"),json.getString("localita"),
-                        json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString());
+                Place p =dbPlace.insertPlace(new Place (json.getLong("ID"),json.getDouble("lat"),json.getDouble("lng"),json.getString("comune"),json.getString("localita"),
+                        json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString()));
                 places.add(p);
 
             }catch(JSONException e){
@@ -336,10 +405,9 @@ public class MapFragment extends Fragment{
         }
     }
 
-
     /*
-     * Ottiene un oggetto JSONArray dal DB remoto
-     */
+  * Ottiene un oggetto JSONArray dal DB remoto
+  */
     private JSONArray getJSONFromDB(){
         JSONArray jsa = null;
         String result = "";
@@ -354,7 +422,7 @@ public class MapFragment extends Fragment{
         }
         catch(Exception e){
             Log.e("log_tag", "Error in http connection "+e.toString());
-          //  resultView.setText("Couldnt connect to database");
+            //  resultView.setText("Couldnt connect to database");
         }
         //convert response to string
         try{
@@ -379,42 +447,29 @@ public class MapFragment extends Fragment{
         return jsa;
     }
 
-    /*
-     * Aggiunge i makers alla mappa passata costruendoli da places
-     */
-    private void putMakers(Vector<Place> places,GoogleMap mMap){
-        for(int i=0;i<places.size();i++)
-            places.get(i).makeMaker(mMap);
-    }
+    protected void checkStatusConnection(){
+     /*check if is present internet connection */
+        ConnectionDetector cd = new ConnectionDetector(getActivity().getApplicationContext());
+        Boolean isInternetPresent = cd.isConnectingToInternet();
 
-    public void showLegend(){
+        if (!isInternetPresent) {
+            Toast.makeText(getActivity().getApplicationContext(), "Connessione necessaria per aggiornare il Database", Toast.LENGTH_SHORT).show();
+        }else{
+            prefs.edit().putLong("time", System.currentTimeMillis() / 1000).apply();
+            if(places.size()!=0) {
+                dbPlace.removeAll();
+                places= new ArrayList<>();
+            }
+            dbPlace = new PlaceDB();
+            dbPlace.open();
 
-        final Dialog dialog = new Dialog(getActivity(),R.style.Dialog);
-        dialog.setContentView(R.layout.popup_custom);
-        //ImageView markerImg=(ImageView) v.findViewById(R.id.image_info);
-        dialog.setTitle("Legenda");
-        float scale=getDensityScale();
-        float myWidth = 250;
-        float myHeight = 420;
-        myWidth=myWidth*scale;
-        myHeight=myHeight*scale;
-        Log.v("ConvertView", "Width "+myWidth+", Height "+myHeight);
+            JSONArray jsonArrayPlaces = getJSONFromDB();
+            JSONArrayToVector(jsonArrayPlaces);
+            googleMap.clear();
+            putMakers(places, googleMap);
+            Toast.makeText(getActivity().getApplicationContext(), "Aggiornamento effettuato", Toast.LENGTH_SHORT).show();
 
-        // set the custom dialog components - text, image and button
-        //TextView text = (TextView) dialog.findViewById(R.id.text);
-        //text.setText("Android custom dialog example!");
-        //ImageView image = (ImageView) dialog.findViewById(R.id.image);
-        //image.setImageResource(R.mipmap.ic_icon);
-
-        dialog.getWindow().setLayout((int) myWidth, (int) myHeight);
-        dialog.show();
-    }
-
-    private float getDensityScale()
-    {
-        final DisplayMetrics metrics =
-                Resources.getSystem().getDisplayMetrics();
-        return metrics.density;
+        }
     }
 
     @Override
@@ -445,6 +500,11 @@ public class MapFragment extends Fragment{
         }catch(NullPointerException e){
             Log.d("onLowMemory", "NullPointerException: " + e);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }
 

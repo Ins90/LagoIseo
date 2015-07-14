@@ -7,7 +7,7 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
-        <!-- Customize your theme here. -->
+         <!--Customize your theme here. -->
 
     </style>
 

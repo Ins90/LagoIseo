@@ -1,15 +1,13 @@
 <resources>
     <string-array name="listArray">
-        <item>Tutti</item>
-        <item>Qualità eccellente</item>
-        <item>Qualità buona</item>
-        <item>Qualità scarsa</item>
+        <item>12 ore</item>
+        <item>1 giorno</item>
+        <item>1 settimana</item>
     </string-array>
 
     <string-array name="listValues">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
+        <item>12</item>
+        <item>24</item>
+        <item>168</item>
     </string-array>
 </resources>

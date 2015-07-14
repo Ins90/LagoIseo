@@ -3,18 +3,23 @@
         android:title="@string/action_home"
         android:icon="@drawable/ic_gps_fixed_white_36dp"
         app:showAsAction="ifRoom|collapseActionView"
-        android:orderInCategory="300"/>
+        android:orderInCategory="200"/>
 
     <item android:id="@+id/action_terrain"
         android:title="@string/action_terrain"
         android:icon="@drawable/ic_street_white_36dp"
         app:showAsAction="ifRoom|collapseActionView"
-        android:orderInCategory="200"/>
+        android:orderInCategory="100"/>
+
+    <item android:id="@+id/action_refresh"
+        android:title="@string/action_refresh"
+        android:icon="@drawable/ic_refresh_white_36dp"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:orderInCategory="300"/>
 
     <item android:id="@+id/action_info"
-        android:title="@string/action_terrain"
+        android:title="@string/action_info"
         android:icon="@drawable/ic_info_white_36dp"
         app:showAsAction="ifRoom|collapseActionView"
         android:orderInCategory="400"/>
-
 </menu>

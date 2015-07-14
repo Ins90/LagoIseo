@@ -1,15 +1,21 @@
 package it.inserrafesta.iseomap.activity;
 
 import android.content.Context;
+import android.location.Criteria;
+import android.location.GpsStatus;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.GridLayout;
@@ -17,6 +23,7 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -35,27 +42,65 @@ public class DetailsActivity extends AppCompatActivity {
     private String comune;
     private String localita;
     private String provincia;
+    private double lat;
+    private double lng;
     private int classificazione; /* 1 eccellente 2 buono 3 sufficiente 4 scarso */
     private int divieto; /* 1 SI 0 NO */
     private String imageUrl;
+    private LocationManager locationManager;
+    private LocationListener mlocListener;
+    private boolean locManDisable=false;
+    private Runnable closeLocation;
+    private Handler handler= new Handler();
+    private float distanza; //in Km
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Context context = getApplication();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
         Bundle extras = getIntent().getExtras();
         localita = extras.getString("localita");
+
         initialise();
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        //timeToStopGPS=System.currentTimeMillis()/1000;
+        mlocListener = new MyLocationListener();
+        locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 6000,50, mlocListener);
+
+
+        /* Se dopo 10 secondi il gps non ha trovato la posizione elimino la richiesta per risparmiare la batteria */
+        //final Handler handler = new Handler();
+
+        closeLocation=new Runnable() {
+            @Override
+            public void run() {
+                if(!locManDisable) {
+                    locationManager.removeUpdates(mlocListener);
+                    locationManager = null;
+                    locManDisable=true;
+                    //Toast.makeText(getApplicationContext(), "wwww ",Toast.LENGTH_SHORT ).show();
+                    //Do something after 10000ms
+                }
+            }
+        };
+
+        handler.postDelayed(closeLocation, 10000);
+
+        // TODO implementare una variabile in preferences per mantenere le coordinate del gps per 10 minuti
 
         for (int i = 0; i < MapFragment.places.size(); i++) {
             if (MapFragment.places.get(i).getLocalita().equals(localita)) {
                 comune = MapFragment.places.get(i).getComune();
                 provincia = MapFragment.places.get(i).getProvincia();
-            //    lat = MapFragment.places.get(i).getLat();
-             //   lng = MapFragment.places.get(i).getLng();
+                lat = MapFragment.places.get(i).getLat();
+                lng = MapFragment.places.get(i).getLng();
                 classificazione = MapFragment.places.get(i).getClassificazione();
                 divieto = MapFragment.places.get(i).getDivieto();
                 imageUrl = MapFragment.places.get(i).getImageUrl();
@@ -188,7 +233,88 @@ public class DetailsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * @return the last know best location
+     */
+    private Location getLastBestLocation() {
+        Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        long GPSLocationTime = 0;
+        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+
+        long NetLocationTime = 0;
+
+        if (null != locationNet) {
+            NetLocationTime = locationNet.getTime();
+        }
+
+        if ( 0 < GPSLocationTime - NetLocationTime ) {
+            return locationGPS;
+        }
+        else {
+            return locationNet;
+        }
+    }
 
 
+
+    @Override
+    protected void onStop() {
+    if(!locManDisable) {
+        locationManager.removeUpdates(mlocListener);
+        locationManager = null;
+        locManDisable=true;
+        //handler.removeCallbacks(closeLocation);
+
+    }
+        super.onStop();
+    }
+
+    public static float getDistance(double startLati, double startLongi, double goalLati, double goalLongi){
+        float[] resultArray = new float[99];
+        Location.distanceBetween(startLati, startLongi, goalLati, goalLongi, resultArray);
+        return resultArray[0];
+    }
+
+public class MyLocationListener implements LocationListener
+
+{
+
+    @Override
+
+    public void onLocationChanged(Location loc)
+    {
+        if (loc == null) return;
+
+        //mLastLocationMillis = SystemClock.elapsedRealtime();
+        locationManager.removeUpdates(mlocListener);
+        locationManager = null;
+        locManDisable=true;
+        handler.removeCallbacks(closeLocation);
+
+        /* TODO Inserire istruzioni per inserire in un campo la distanza! */
+
+        distanza=getDistance(loc.getLatitude(),loc.getLongitude(),lat,lng)/1000;
+        String Text ="My current location is: " +"Latitud = " + loc.getLatitude() + "Longitud = " + loc.getLongitude() +" distanza= " +distanza +" Km";
+        Toast.makeText( getApplicationContext(),Text,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Toast.makeText(getApplicationContext(), "Gps Disabled1",Toast.LENGTH_SHORT ).show();
+        handler.removeCallbacks(closeLocation);
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Toast.makeText(getApplicationContext(),"Gps Enabled1",Toast.LENGTH_SHORT).show();
+        handler.postDelayed(closeLocation, 10000);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
 }
 
+}
