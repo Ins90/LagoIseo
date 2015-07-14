@@ -1,6 +1,7 @@
 package it.inserrafesta.iseomap.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.GpsStatus;
 import android.location.Location;
@@ -53,6 +54,11 @@ public class DetailsActivity extends AppCompatActivity {
     private Runnable closeLocation;
     private Handler handler= new Handler();
     private float distanza; //in Km
+    private String bestProvider;
+    SharedPreferences prefs;
+    //SharedPreferences prefsLat;
+    //SharedPreferences prefsLng;
+
 
 
     @Override
@@ -64,16 +70,21 @@ public class DetailsActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         localita = extras.getString("localita");
+        prefs = context.getSharedPreferences("timeToGps", Context.MODE_PRIVATE);
 
         initialise();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        // Get the location manager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        //timeToStopGPS=System.currentTimeMillis()/1000;
-        mlocListener = new MyLocationListener();
-        locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 6000,50, mlocListener);
 
+        //timeToStopGPS=System.currentTimeMillis()/1000;
+
+        int timeRefreshGPS=20*60; // le coordinate gps rimangono valide per i 20 minuti successivi
+        Criteria criteria = new Criteria();
+        bestProvider = locationManager.getBestProvider(criteria, false);
+        Location location = locationManager.getLastKnownLocation(bestProvider);
 
         /* Se dopo 10 secondi il gps non ha trovato la posizione elimino la richiesta per risparmiare la batteria */
         //final Handler handler = new Handler();
@@ -83,7 +94,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void run() {
                 if(!locManDisable) {
                     locationManager.removeUpdates(mlocListener);
-                    locationManager = null;
+                    //locationManager = null;
                     locManDisable=true;
                     //Toast.makeText(getApplicationContext(), "wwww ",Toast.LENGTH_SHORT ).show();
                     //Do something after 10000ms
@@ -91,7 +102,7 @@ public class DetailsActivity extends AppCompatActivity {
             }
         };
 
-        handler.postDelayed(closeLocation, 10000);
+        handler.postDelayed(closeLocation, 20000);
 
         // TODO implementare una variabile in preferences per mantenere le coordinate del gps per 10 minuti
 
@@ -108,6 +119,22 @@ public class DetailsActivity extends AppCompatActivity {
                 break;
             }
         }
+
+        if((System.currentTimeMillis()/1000)-prefs.getLong("timeToGps",0)>timeRefreshGPS) {
+
+            mlocListener = new MyLocationListener();
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 6000, 50, mlocListener);
+
+        }else{
+            locManDisable=true;
+            //Utilizzo location per creare la distanza!!!
+            distanza=getDistance(location.getLatitude(),location.getLongitude(),lat,lng)/1000;
+            Toast.makeText( getApplicationContext(),"La distanza dalla tua posizione è: "+distanza +"Km",Toast.LENGTH_SHORT).show();
+
+        }
+
+
+
         /*
         ** Set Views content
          */
@@ -263,7 +290,7 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onStop() {
     if(!locManDisable) {
         locationManager.removeUpdates(mlocListener);
-        locationManager = null;
+        //locationManager = null;
         locManDisable=true;
         //handler.removeCallbacks(closeLocation);
 
@@ -289,7 +316,7 @@ public class MyLocationListener implements LocationListener
 
         //mLastLocationMillis = SystemClock.elapsedRealtime();
         locationManager.removeUpdates(mlocListener);
-        locationManager = null;
+        //locationManager = null;
         locManDisable=true;
         handler.removeCallbacks(closeLocation);
 
@@ -298,6 +325,8 @@ public class MyLocationListener implements LocationListener
         distanza=getDistance(loc.getLatitude(),loc.getLongitude(),lat,lng)/1000;
         String Text ="My current location is: " +"Latitud = " + loc.getLatitude() + "Longitud = " + loc.getLongitude() +" distanza= " +distanza +" Km";
         Toast.makeText( getApplicationContext(),Text,Toast.LENGTH_SHORT).show();
+        prefs.edit().putLong("timeToGps", System.currentTimeMillis() / 1000).apply();
+
     }
 
     @Override
