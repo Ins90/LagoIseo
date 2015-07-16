@@ -1,11 +1,16 @@
 package it.inserrafesta.iseomap.fragment;
 
+import it.inserrafesta.iseomap.PlaceDB;
+import it.inserrafesta.iseomap.PopupAdapterMap;
+
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +40,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import android.support.v4.app.Fragment;
@@ -97,8 +103,6 @@ public class MapFragment extends Fragment{
                     Toast.makeText(getActivity().getApplicationContext(), "Centramento mappa ...", Toast.LENGTH_SHORT).show();
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(INITIAL_LATLNG, INITIAL_ZOOM));
               //    googleMap.getUiSettings().setScrollGesturesEnabled(false);
-
-                //zoomAnimateLevelToFitMarkers(120);
                 break;
             case R.id.action_terrain:
                 if(change){
@@ -219,19 +223,20 @@ public class MapFragment extends Fragment{
                     return true;
                 }
             });*/
-
-            googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            googleMap.setInfoWindowAdapter(new PopupAdapterMap(context,
+                    getActivity().getLayoutInflater()));
+         /*   googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                 @Override
                 public View getInfoWindow(Marker marker) {
-
                     return null;
                 }
 
+                @SuppressLint("InflateParams")
                 @Override
                 public View getInfoContents(Marker marker) {
                     /* qui assegno tutte le variabili all'xml */
 
-                    View v = getActivity().getLayoutInflater().inflate(R.layout.custom_info_contents, null);
+           /*         View v = getActivity().getLayoutInflater().inflate(R.layout.custom_info_contents, null);
 
                     String str = marker.getTitle();
                     final String[] str2 = str.split("_");
@@ -244,7 +249,6 @@ public class MapFragment extends Fragment{
                     TextView divietoA = (TextView) v.findViewById(R.id.divietoAcqua);
 
                     ImageView imageinfo = (ImageView) v.findViewById(R.id.image_info);
-
                     myTitle.setText(str2[0]);// got first string as title
                     mysnippet.setText(marker.getSnippet());
 
@@ -270,17 +274,16 @@ public class MapFragment extends Fragment{
                             break;
                     }
 
-
-                   /* Picasso.with(context)
+                    Picasso.with(context)
                             .load(str2[3])
                             .resize(80*(int) getDensityScale(),80* (int) getDensityScale() )
-                            .centerCrop()
-                            .placeholder(null)
-                            .error(R.drawable.placeholder1).into(imageinfo);*/
+                            .centerCrop().noFade()
+                            .placeholder(R.drawable.placeholder1)
+                            .into(imageinfo);
 
                     return v;
                }
-           });
+           });*/
         }
 
         //Move the camera instantly to center of lake Iseo
@@ -505,37 +508,5 @@ public class MapFragment extends Fragment{
     @Override
     public void onPause() {
         super.onPause();
-    }
-}
-
-
-class CustomWindowAdapter implements GoogleMap.InfoWindowAdapter {
-    LayoutInflater mInflater;
-    Map<Marker, String> imageStringMapMarker;
-    Context context;
-
-    public CustomWindowAdapter(LayoutInflater i,  Map<Marker, String> imageStringMapMarker2, Context context ){
-        mInflater = i;
-        imageStringMapMarker = imageStringMapMarker2;
-    }
-
-    @Override
-    public View getInfoContents(final Marker marker) {
-
-        View v = mInflater.inflate(R.layout.custom_info_contents, null);
-
-        ImageView ivThumbnail = (ImageView) v.findViewById(R.id.image_info);
-        String urlImage = imageStringMapMarker.get(marker);
-        Log.v("URL", urlImage);
-
-        Picasso.with(context).load(Uri.parse(urlImage)).resize(250,250).into(ivThumbnail);
-
-        return v;
-
-    }
-
-    @Override
-    public View getInfoWindow(Marker marker) {
-        return null;
     }
 }
