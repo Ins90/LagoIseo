@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.GpsStatus;
 import android.location.Location;
-import android.location.LocationListener;
+//import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -35,8 +36,17 @@ import java.util.Vector;
 import it.inserrafesta.iseomap.R;
 import it.inserrafesta.iseomap.fragment.MapFragment;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
+
     static String[] serviziNomiArray = {"Area picnic", "Parco giochi","Servizi Igienici","Bar","Ristorante","Parcheggio"};
     public static Vector<String> serviziNomi = new Vector<>(Arrays.asList(serviziNomiArray));
     private ArrayList<Boolean> serviziVec;
@@ -48,18 +58,18 @@ public class DetailsActivity extends AppCompatActivity {
     private int classificazione; /* 1 eccellente 2 buono 3 sufficiente 4 scarso */
     private int divieto; /* 1 SI 0 NO */
     private String imageUrl;
-    private LocationManager locationManager;
-    private LocationListener mlocListener;
     private boolean locManDisable=false;
     private Runnable closeLocation;
     private Handler handler= new Handler();
-    private float distanza; //in Km
-    private String bestProvider;
     SharedPreferences prefs;
-    //SharedPreferences prefsLat;
-    //SharedPreferences prefsLng;
-
-
+    SharedPreferences prefLat;
+    SharedPreferences prefLng;
+    int timeRefreshGPS;
+    private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
+    private final String TAG = "MyAwesomeApp";
+    private TextView testt;
+    private double distanza;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,39 +80,35 @@ public class DetailsActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         localita = extras.getString("localita");
-        prefs = context.getSharedPreferences("timeToGps", Context.MODE_PRIVATE);
+
+         prefs = context.getSharedPreferences("timeToGps", Context.MODE_PRIVATE);
+        prefLat = context.getSharedPreferences("prefLat", Context.MODE_PRIVATE);
+        prefLng = context.getSharedPreferences("prefLng", Context.MODE_PRIVATE);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
 
         initialise();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        // Get the location manager
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        //timeToStopGPS=System.currentTimeMillis()/1000;
-
-        int timeRefreshGPS=20*60; // le coordinate gps rimangono valide per i 20 minuti successivi
-        Criteria criteria = new Criteria();
-        bestProvider = locationManager.getBestProvider(criteria, false);
-        Location location = locationManager.getLastKnownLocation(bestProvider);
-
-        /* Se dopo 10 secondi il gps non ha trovato la posizione elimino la richiesta per risparmiare la batteria */
-        //final Handler handler = new Handler();
+        timeRefreshGPS=20*60; // le coordinate gps rimangono valide per i 20 minuti successivi
 
         closeLocation=new Runnable() {
             @Override
             public void run() {
                 if(!locManDisable) {
-                    locationManager.removeUpdates(mlocListener);
-                    //locationManager = null;
+                    mGoogleApiClient.disconnect();
                     locManDisable=true;
-                    //Toast.makeText(getApplicationContext(), "wwww ",Toast.LENGTH_SHORT ).show();
-                    //Do something after 10000ms
+                   // Toast.makeText(getApplicationContext(), "blocco runnable ",Toast.LENGTH_SHORT ).show();
                 }
             }
         };
 
-        handler.postDelayed(closeLocation, 20000);
+        handler.postDelayed(closeLocation, 20000); //Dopo 20 secondi interrompe la localizzazione
 
         // TODO implementare una variabile in preferences per mantenere le coordinate del gps per 10 minuti
 
@@ -121,19 +127,13 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         if((System.currentTimeMillis()/1000)-prefs.getLong("timeToGps",0)>timeRefreshGPS) {
-
-            mlocListener = new MyLocationListener();
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 6000, 50, mlocListener);
-
+            mGoogleApiClient.connect();
         }else{
+            mGoogleApiClient.disconnect();
             locManDisable=true;
-            //Utilizzo location per creare la distanza!!!
-            distanza=getDistance(location.getLatitude(),location.getLongitude(),lat,lng)/1000;
+            distanza=getDistance(Double.valueOf(prefs.getString("prefLat", null)),Double.valueOf(prefs.getString("prefLng",null)),lat,lng)/1000;
             Toast.makeText( getApplicationContext(),"La distanza dalla tua posizione è: "+distanza +"Km",Toast.LENGTH_SHORT).show();
-
         }
-
-
 
         /*
         ** Set Views content
@@ -196,8 +196,6 @@ public class DetailsActivity extends AppCompatActivity {
             });
         }
 
-
-
         /*
         ** Setto l'immagine della localita
          */
@@ -233,9 +231,6 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
-
-
-
     /**
      * Create, bind and set up the resources
      */
@@ -260,40 +255,45 @@ public class DetailsActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * @return the last know best location
-     */
-    private Location getLastBestLocation() {
-        Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+    @Override
+    public void onConnected(Bundle bundle) {
+        if((System.currentTimeMillis()/1000)-prefs.getLong("timeToGps",0)>timeRefreshGPS) {
+            mLocationRequest = LocationRequest.create();
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+           // mLocationRequest.setInterval(10000); // Update location every 10 second
 
-        long GPSLocationTime = 0;
-        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
+            prefs.edit().putLong("timeToGps", System.currentTimeMillis() / 1000).apply();
 
-        long NetLocationTime = 0;
-
-        if (null != locationNet) {
-            NetLocationTime = locationNet.getTime();
-        }
-
-        if ( 0 < GPSLocationTime - NetLocationTime ) {
-            return locationGPS;
-        }
-        else {
-            return locationNet;
+        }else {
+            LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         }
     }
 
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "GoogleApiClient connection has been suspend");
+    }
 
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i(TAG, "GoogleApiClient connection has failed");
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Toast.makeText( getApplicationContext(),"Location received: " + location.getLatitude(),Toast.LENGTH_SHORT).show();
+        prefs.edit().putString("prefLat", String.valueOf(location.getLatitude())).apply();
+        prefs.edit().putString("prefLng", String.valueOf(location.getLongitude())).apply();
+        distanza=getDistance(location.getLatitude(),location.getLongitude(),lat,lng)/1000;
+    }
 
     @Override
     protected void onStop() {
     if(!locManDisable) {
-        locationManager.removeUpdates(mlocListener);
-        //locationManager = null;
         locManDisable=true;
-        //handler.removeCallbacks(closeLocation);
-
+        mGoogleApiClient.disconnect();
     }
         super.onStop();
     }
@@ -303,47 +303,4 @@ public class DetailsActivity extends AppCompatActivity {
         Location.distanceBetween(startLati, startLongi, goalLati, goalLongi, resultArray);
         return resultArray[0];
     }
-
-public class MyLocationListener implements LocationListener
-
-{
-
-    @Override
-
-    public void onLocationChanged(Location loc)
-    {
-        if (loc == null) return;
-
-        //mLastLocationMillis = SystemClock.elapsedRealtime();
-        locationManager.removeUpdates(mlocListener);
-        //locationManager = null;
-        locManDisable=true;
-        handler.removeCallbacks(closeLocation);
-
-        /* TODO Inserire istruzioni per inserire in un campo la distanza! */
-
-        distanza=getDistance(loc.getLatitude(),loc.getLongitude(),lat,lng)/1000;
-        String Text ="My current location is: " +"Latitud = " + loc.getLatitude() + "Longitud = " + loc.getLongitude() +" distanza= " +distanza +" Km";
-        Toast.makeText( getApplicationContext(),Text,Toast.LENGTH_SHORT).show();
-        prefs.edit().putLong("timeToGps", System.currentTimeMillis() / 1000).apply();
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Toast.makeText(getApplicationContext(), "Gps Disabled1",Toast.LENGTH_SHORT ).show();
-        handler.removeCallbacks(closeLocation);
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Toast.makeText(getApplicationContext(),"Gps Enabled1",Toast.LENGTH_SHORT).show();
-        handler.postDelayed(closeLocation, 10000);
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-}
-
 }
