@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
         alert.setMessage(message);
         alert.setCancelable(false);
 
-        alert.setNegativeButton("Impostazioni", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(R.string.settings_string, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
                 finish();

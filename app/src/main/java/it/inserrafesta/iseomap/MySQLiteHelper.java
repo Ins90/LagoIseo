@@ -22,7 +22,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
 
     public static final String DATABASE_NAME = "place.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     // database creation SQL statement
     private static final String DATABASE_CREATE = "create table "

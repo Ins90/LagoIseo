@@ -45,7 +45,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="@string/title_name"
         android:textColor="@android:color/primary_text_light"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -61,7 +60,6 @@
         android:layout_below="@id/title_name"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="@string/descrizione"
         android:textSize="15sp"
         android:textColor="#727272"
         tools:ignore="SmallSp" />

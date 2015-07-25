@@ -7,6 +7,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
@@ -20,7 +21,6 @@ public class PopupAdapterMap implements InfoWindowAdapter {
     private View popup=null;
     private LayoutInflater inflater=null;
     private Context ctxt=null;
-
     public PopupAdapterMap(Context ctxt, LayoutInflater inflater) {
         this.ctxt=ctxt;
         this.inflater=inflater;
@@ -60,16 +60,16 @@ public class PopupAdapterMap implements InfoWindowAdapter {
 
         switch (str2[2]) {
             case "1":
-                myquality.setText(R.string.qlt+R.string.qlt_ecc);
+                myquality.setText(R.string.qlt_ecc);
                 break;
             case "2":
-                myquality.setText(R.string.qlt+R.string.qlt_buo);
+                myquality.setText(R.string.qlt_buo);
                 break;
             case "3":
-                myquality.setText(R.string.qlt+R.string.qlt_suf);
+                myquality.setText(R.string.qlt_suf);
                 break;
             case "4":
-                myquality.setText(R.string.qlt+R.string.qlt_sca);
+                myquality.setText(R.string.qlt_sca);
                 break;
             default:
                 break;
@@ -107,7 +107,8 @@ public class PopupAdapterMap implements InfoWindowAdapter {
         public void onSuccess() {
             if (marker != null && marker.isInfoWindowShown()) {
                 marker.hideInfoWindow();
-                marker.showInfoWindow();            }
+                marker.showInfoWindow();
+            }
         }
     }
 }

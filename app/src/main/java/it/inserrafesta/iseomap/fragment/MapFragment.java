@@ -54,7 +54,9 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 
 import it.inserrafesta.iseomap.Place;
 import it.inserrafesta.iseomap.activity.DetailsActivity;
@@ -83,7 +85,9 @@ public class MapFragment extends Fragment implements
     private boolean locManDisable=false;
     private int timeRefreshGPS;
     private final String TAG = "IseoAcque";
-
+    static String[] serviziNomiArray;
+    public static Vector<String> serviziNomi;
+    private ArrayList<Boolean> serviziVec;
     //public static Map<Marker, String> imageStringMapMarker; //TODO togliere da place l inserimento dei marker!!!! Place rimane una classe punto!
 
     @Override
@@ -138,6 +142,12 @@ public class MapFragment extends Fragment implements
         bundle=getArguments(); //necessario per le preferenze passate dalla mainActivity
         setHasOptionsMenu(true);
         prefs = context.getSharedPreferences("time", Context.MODE_PRIVATE);
+
+        String services=getResources().getString(R.string.allServices);
+        serviziNomiArray=services.split(",");
+
+        serviziNomi= new Vector<>(Arrays.asList(serviziNomiArray));
+        Log.d("Adapter", "array " + serviziNomi.size());
 
         //cerco di ottenere la posizione direttamente appena si apre l app
         prefGPS = context.getSharedPreferences("timeToGps", Context.MODE_PRIVATE);
@@ -245,15 +255,17 @@ public class MapFragment extends Fragment implements
 
         SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
         int timeRefresh =Integer.parseInt(SP.getString("timeRefresh", "12"));
-        timeRefresh=timeRefresh*60*60; //il tempo tra un aggiornmaento e l'altro espresso in secondi
+        timeRefresh=timeRefresh; //il tempo tra un aggiornmaento e l'altro espresso in secondi
 
         //Toast.makeText(getActivity().getApplicationContext(), "tempo di aggiornamento "+timeRefresh, Toast.LENGTH_SHORT).show();
 
         if((System.currentTimeMillis()/1000)-prefs.getLong("time",0)>timeRefresh) {
+            Toast.makeText(getActivity().getApplicationContext(),"proviano", Toast.LENGTH_SHORT).show();
 
             checkStatusConnection();
         }else {
            // Log.v("dii2iiiiiiiiiiiiiii", String.valueOf(prefs.getLong("time", 0)));
+
             dbPlace = new PlaceDB();
             dbPlace.open();
             places=dbPlace.getAllPlaces();
@@ -337,7 +349,7 @@ public class MapFragment extends Fragment implements
             try{
                 json = jsonArray.getJSONObject(i);
                 ArrayList<String> serviziVec= new ArrayList<>();
-                for(int j=1;j<=DetailsActivity.serviziNomi.size();j++) {
+                for(int j=1;j<=DetailsActivity.getNumServizi();j++) {
                     String servizioString = json.getString(Integer.toString(j));
                     // Log.v("URddL", servizioString);
 
@@ -404,19 +416,19 @@ public class MapFragment extends Fragment implements
         if (!isInternetPresent) {
             Toast.makeText(getActivity().getApplicationContext(), R.string.noConnection, Toast.LENGTH_SHORT).show();
         }else{
-            prefs.edit().putLong("time", System.currentTimeMillis() / 1000).apply();
             if(places.size()!=0) {
                 dbPlace.removeAll();
                 places= new ArrayList<>();
             }
             dbPlace = new PlaceDB();
             dbPlace.open();
-
             JSONArray jsonArrayPlaces = getJSONFromDB();
             JSONArrayToVector(jsonArrayPlaces);
+
             googleMap.clear();
             putMakers(places, googleMap);
             Toast.makeText(getActivity().getApplicationContext(), R.string.updateOK, Toast.LENGTH_SHORT).show();
+            prefs.edit().putLong("time", System.currentTimeMillis() / 1000).apply();
 
         }
     }

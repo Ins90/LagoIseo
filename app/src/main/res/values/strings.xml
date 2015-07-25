@@ -5,7 +5,6 @@
     <string name="explore_string">Punti di balneazione</string>
     <string name="classification_string">Classificazione acque</string>
     <string name="link_string">ASL Nuotare Informati </string>
-    <string name="action_settings">Settings</string>
     <string name="settings_string">Impostazioni</string>
     <string name="help_and_feedback"><![CDATA[Help & feedback]]></string>
     <string name="about_string">About</string>
@@ -14,14 +13,10 @@
     <string name="openDrawer">Navigation View Closed</string>
     <string name="title_activity_my_preferences">MyPreferencesActivity</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_about">About</string>
     <string name="title_activity_details">Dettagli</string>
-
-
-    <string name="title_name"></string>
-    <string name="descrizione"></string>
-    <string name="title_activity_water_fragment">WaterFragment</string>
+    <string name="localita">Località</string>
+    <string name="comune">Comune</string>
 
 
     <string name="action_home">Zoom su tutti i punti di balneazione</string>
@@ -48,10 +43,9 @@
 
     <!-- Dialog information -->
     <string name="titleLegend">Legenda</string>
-
     <string name="map_sat">Mappa satellitare</string>
     <string name="map_str">Mappa stradale</string>
-    <string name="zoom_iseo">Zoom sul lago d Iseo</string>
+    <string name="zoom_iseo">Zoom sul lago d\'Iseo</string>
     <string name="qlt">Qualità acqua: </string>
     <string name="qlt_ecc">Qualità acqua: Eccellente</string>
     <string name="qlt_buo">Qualità acqua: Buona</string>
@@ -75,5 +69,21 @@
     <string name="descVistaSat">Se selezionata, imposta la mappa satellitare come predefinita all’apertura dell’app</string>
     <string name="strRefresh">Frequenza aggiornamento dati</string>
     <string name="descRefresh">Selezionare il tempo minimo tra un aggiornamento e l\'altro (Default 12 ore)</string>
+
+    <!-- Servizi -->
+    <string name="allServices">Area picnic,Parco giochi,Servizi Igienici,Bar,Ristorante,Parcheggio,Area Camping,Biciclette,Area verde,Accesso ai cani,Handicap</string>
+    <string name="service1">Area picnic</string>
+    <string name="service2">Parco giochi</string>
+    <string name="service3">Servizi Igienici</string>
+    <string name="service4">Bar</string>
+    <string name="service5">Ristorante</string>
+    <string name="service6">Parcheggio</string>
+    <string name="service7">Area Camping</string>
+    <string name="service8">Biciclette</string>
+    <string name="service9">Area verde</string>
+    <string name="service10">Accesso ai cani</string>
+    <string name="service11">Handicap</string>
+
+
 
 </resources>

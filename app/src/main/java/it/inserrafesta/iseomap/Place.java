@@ -91,7 +91,7 @@ public class Place {
                     .position(new LatLng(lat, lng))
                     .title(title)
                     .icon(BitmapDescriptorFactory.fromResource(image))
-                    .snippet("Comune: " + comune));
+                    .snippet("Comune: " + comune));  //TODO codificare in string.xml
 
         //MapFragment.imageStringMapMarker.put(marker,imageUrl);
     }

@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -34,9 +35,11 @@ import it.inserrafesta.iseomap.fragment.MapFragment;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    static String[] serviziNomiArray = {"Area picnic", "Parco giochi","Servizi Igienici","Bar","Ristorante","Parcheggio"};
-    public static Vector<String> serviziNomi = new Vector<>(Arrays.asList(serviziNomiArray));
-    private ArrayList<Boolean> serviziVec;
+
+    static int numServizi=11;
+    static String[] serviziNomiArray;
+    public static Vector<String> serviziNomi;
+    private static ArrayList<Boolean> serviziVec;
     private String comune;
     private String localita;
     private String provincia;
@@ -52,6 +55,11 @@ public class DetailsActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         Context context = getApplication();
 
+        String services=getResources().getString(R.string.allServices);
+        serviziNomiArray=services.split(",");
+
+        serviziNomi= new Vector<>(Arrays.asList(serviziNomiArray));
+        //Log.d("Adapter", "array " + serviziNomiArray[10].toString());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
@@ -192,8 +200,7 @@ public class DetailsActivity extends AppCompatActivity {
     {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        toolbar.setTitle("Località: " + localita);
+        toolbar.setTitle(getResources().getString(R.string.localita)+": "+localita);
 
         setSupportActionBar(toolbar);
 
@@ -224,5 +231,9 @@ public class DetailsActivity extends AppCompatActivity {
         float[] resultArray = new float[99];
         Location.distanceBetween(startLati, startLongi, goalLati, goalLongi, resultArray);
         return resultArray[0];
+    }
+
+    public static int getNumServizi() {
+        return numServizi;
     }
 }
