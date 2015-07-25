@@ -61,7 +61,6 @@ public class DetailsActivity extends AppCompatActivity {
         prefLat = context.getSharedPreferences("prefLat", Context.MODE_PRIVATE);
         prefLng = context.getSharedPreferences("prefLng", Context.MODE_PRIVATE);
 
-
         initialise();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -167,21 +166,21 @@ public class DetailsActivity extends AppCompatActivity {
         TextView tvClassificazione = (TextView) findViewById(R.id.tv_classificazione);
         switch (classificazione){
             case 1:
-                tvClassificazione.setText("Eccellente");
+                tvClassificazione.setText(R.string.water_high);
                 break;
             case 2:
-                tvClassificazione.setText("Buona");
+                tvClassificazione.setText(R.string.water_good);
                 break;
             case 3:
-                tvClassificazione.setText("Sufficiente");
+                tvClassificazione.setText(R.string.water_suff);
                 break;
             case 4:
-            tvClassificazione.setText("Scarso");
+            tvClassificazione.setText(R.string.water_poor);
             break;
         }
         if(divieto==1){
             TextView tvDivieto = (TextView) findViewById(R.id.tvDivieto);
-            tvDivieto.setText("Divieto Temporaneo");
+            tvDivieto.setText(R.string.prohibition);
             ivClassificazione.setImageResource(getResources().getIdentifier("divieto", "drawable", this.getPackageName()));
         }
     }
@@ -212,10 +211,6 @@ public class DetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-   // if(!locManDisable) {
-     //   locManDisable=true;
-    //    mGoogleApiClient.disconnect();
-   // }
         super.onStop();
     }
 

@@ -60,16 +60,16 @@ public class PopupAdapterMap implements InfoWindowAdapter {
 
         switch (str2[2]) {
             case "1":
-                myquality.setText(R.string.qlt_ecc);
+                myquality.setText(R.string.qlt+R.string.qlt_ecc);
                 break;
             case "2":
-                myquality.setText(R.string.qlt_buo);
+                myquality.setText(R.string.qlt+R.string.qlt_buo);
                 break;
             case "3":
-                myquality.setText(R.string.qlt_suf);
+                myquality.setText(R.string.qlt+R.string.qlt_suf);
                 break;
             case "4":
-                myquality.setText(R.string.qlt_sca);
+                myquality.setText(R.string.qlt+R.string.qlt_sca);
                 break;
             default:
                 break;

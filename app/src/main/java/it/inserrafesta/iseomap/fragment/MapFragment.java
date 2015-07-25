@@ -130,10 +130,10 @@ public class MapFragment extends Fragment implements
 
     }
 
-    // Context context = getActivity().getApplicationContext();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        
         context = getActivity().getApplicationContext();
         bundle=getArguments(); //necessario per le preferenze passate dalla mainActivity
         setHasOptionsMenu(true);
@@ -166,7 +166,7 @@ public class MapFragment extends Fragment implements
 
 
         if((System.currentTimeMillis()/1000)-prefGPS.getLong("timeToGps",0)>timeRefreshGPS) {
-            Toast.makeText( context,"tempo salvato: "+String.valueOf(System.currentTimeMillis()/1000-prefGPS.getLong("timeToGps",0)) +"tempo",Toast.LENGTH_SHORT).show();
+          //  Toast.makeText( context,"tempo salvato: "+String.valueOf(System.currentTimeMillis()/1000-prefGPS.getLong("timeToGps",0)) +"tempo",Toast.LENGTH_SHORT).show();
             mGoogleApiClient.connect();
         }else{
             mGoogleApiClient.disconnect();
@@ -258,7 +258,7 @@ public class MapFragment extends Fragment implements
             dbPlace.open();
             places=dbPlace.getAllPlaces();
             putMakers(places, googleMap);
-            Toast.makeText(getActivity().getApplicationContext(), "Dati già aggiornati", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(),R.string.noUpdate, Toast.LENGTH_SHORT).show();
 
         }
 
@@ -294,7 +294,6 @@ public class MapFragment extends Fragment implements
                 startActivity(intent);
             }
         });
-
     }
 
     /*
@@ -310,7 +309,7 @@ public class MapFragment extends Fragment implements
         final Dialog dialog = new Dialog(getActivity(),R.style.Dialog);
         dialog.setContentView(R.layout.popup_custom);
         //ImageView markerImg=(ImageView) v.findViewById(R.id.image_info);
-        dialog.setTitle("Legenda");
+        dialog.setTitle(R.string.titleLegend);
         float scale=getDensityScale();
         float myWidth = 250;
         float myHeight = 420;
@@ -403,7 +402,7 @@ public class MapFragment extends Fragment implements
         Boolean isInternetPresent = cd.isConnectingToInternet();
 
         if (!isInternetPresent) {
-            Toast.makeText(getActivity().getApplicationContext(), "Connessione necessaria per aggiornare il Database", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), R.string.noConnection, Toast.LENGTH_SHORT).show();
         }else{
             prefs.edit().putLong("time", System.currentTimeMillis() / 1000).apply();
             if(places.size()!=0) {
@@ -417,7 +416,7 @@ public class MapFragment extends Fragment implements
             JSONArrayToVector(jsonArrayPlaces);
             googleMap.clear();
             putMakers(places, googleMap);
-            Toast.makeText(getActivity().getApplicationContext(), "Aggiornamento effettuato", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), R.string.updateOK, Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -478,7 +477,7 @@ public class MapFragment extends Fragment implements
 
     @Override
     public void onLocationChanged(Location location) {
-        Toast.makeText(context, "Location received: " + location.getLatitude(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(context, "Location received: " + location.getLatitude(), Toast.LENGTH_SHORT).show();
         prefLat.edit().putString("prefLat", String.valueOf(location.getLatitude())).apply();
         prefLng.edit().putString("prefLng", String.valueOf(location.getLongitude())).apply();
         prefGPS.edit().putLong("timeToGps", System.currentTimeMillis() / 1000).apply();

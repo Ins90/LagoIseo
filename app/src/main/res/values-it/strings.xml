@@ -42,21 +42,14 @@
     <string name="search_hint">Ricerca per Località o Comune ... </string>
     <string name="empty_list">Nessun risultato trovato</string>
 
-    <string name="noConnection">Connessione necessaria per aggiornare il Database</string>
-    <string name="updateOK">Aggiornamento effettuato</string>
-    <string name="noUpdate">Dati già aggiornati</string>
-
     <!-- Dialog information -->
-    <string name="titleLegend">Legenda</string>
-
     <string name="map_sat">Mappa satellitare</string>
     <string name="map_str">Mappa stradale</string>
     <string name="zoom_iseo">Zoom sul lago d Iseo</string>
-    <string name="qlt">Qualità acqua: </string>
-    <string name="qlt_ecc">Qualità acqua: Eccellente</string>
-    <string name="qlt_buo">Qualità acqua: Buona</string>
-    <string name="qlt_suf">Qualità acqua: Sufficiente</string>
-    <string name="qlt_sca">Qualità acqua: Scarsa</string>
+    <string name="qlt_ecc">Qualità acqua: eccellente</string>
+    <string name="qlt_buo">Qualità acqua: buona</string>
+    <string name="qlt_suf">Qualità acqua: sufficiente</string>
+    <string name="qlt_sca">Qualità acqua: scarsa</string>
     <string name="title_activity_help">HelpActivity</string>
 
    <!-- Nuotare informati -->
@@ -74,6 +67,6 @@
     <string name="vistaSat">Vista satellite</string>
     <string name="descVistaSat">Se selezionata, imposta la mappa satellitare come predefinita all’apertura dell’app</string>
     <string name="strRefresh">Frequenza aggiornamento dati</string>
-    <string name="descRefresh">Selezionare il tempo minimo tra un aggiornamento e l\'altro (Default 12 ore)</string>
+<string name="descRefresh">Selezionare il tempo minimo tra un aggiornamento e l\'altro (Default 12 ore)</string>
 
 </resources>

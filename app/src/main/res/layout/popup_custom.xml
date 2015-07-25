@@ -36,7 +36,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/map_sat"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:layout_column="3"
             android:paddingLeft="7dp" />
     </TableRow>
@@ -62,7 +62,7 @@
             android:textColor="#727272"
             android:text="@string/map_str"
             android:layout_column="3"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:paddingLeft="7dp" />
     </TableRow>
 
@@ -87,7 +87,7 @@
             android:textColor="#727272"
             android:text="@string/zoom_iseo"
             android:layout_column="3"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:paddingLeft="7dp" />
     </TableRow>
 
@@ -112,7 +112,7 @@
             android:textColor="#727272"
             android:text="@string/qlt_sca"
             android:layout_column="3"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:paddingLeft="7dp" />
     </TableRow>
 
@@ -139,7 +139,7 @@
             android:textColor="#727272"
             android:text="@string/qlt_suf"
             android:layout_column="3"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:paddingLeft="7dp" />
     </TableRow>
     <TableRow
@@ -163,7 +163,7 @@
             android:textColor="#727272"
             android:text="@string/qlt_buo"
             android:layout_column="3"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:paddingLeft="7dp" />
     </TableRow>
 
@@ -188,7 +188,7 @@
         android:textColor="#727272"
         android:text="@string/qlt_ecc"
         android:layout_column="3"
-        android:textSize="15sp"
+        android:textSize="17sp"
         android:paddingLeft="7dp" />
 </TableRow><TableRow
     android:layout_width="match_parent"
@@ -211,7 +211,7 @@
         android:textColor="#727272"
         android:text="@string/prohibition"
         android:layout_column="3"
-        android:textSize="15sp"
+        android:textSize="17sp"
         android:paddingLeft="7dp" />
 </TableRow>
 
