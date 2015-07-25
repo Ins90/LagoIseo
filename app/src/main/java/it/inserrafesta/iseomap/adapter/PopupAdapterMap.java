@@ -1,4 +1,4 @@
-package it.inserrafesta.iseomap;
+package it.inserrafesta.iseomap.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,6 +13,8 @@ import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.Marker;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import it.inserrafesta.iseomap.R;
 
 public class PopupAdapterMap implements InfoWindowAdapter {
     private View popup=null;

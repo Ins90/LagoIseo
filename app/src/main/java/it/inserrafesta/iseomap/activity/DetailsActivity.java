@@ -2,20 +2,13 @@ package it.inserrafesta.iseomap.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.Criteria;
-import android.location.GpsStatus;
 import android.location.Location;
-//import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 
-import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -25,10 +18,11 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
@@ -36,16 +30,9 @@ import java.util.Vector;
 import it.inserrafesta.iseomap.R;
 import it.inserrafesta.iseomap.fragment.MapFragment;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 
-public class DetailsActivity extends AppCompatActivity implements
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+
+public class DetailsActivity extends AppCompatActivity {
 
     static String[] serviziNomiArray = {"Area picnic", "Parco giochi","Servizi Igienici","Bar","Ristorante","Parcheggio"};
     public static Vector<String> serviziNomi = new Vector<>(Arrays.asList(serviziNomiArray));
@@ -58,18 +45,8 @@ public class DetailsActivity extends AppCompatActivity implements
     private int classificazione; /* 1 eccellente 2 buono 3 sufficiente 4 scarso */
     private int divieto; /* 1 SI 0 NO */
     private String imageUrl;
-    private boolean locManDisable=false;
-    private Runnable closeLocation;
-    private Handler handler= new Handler();
-    SharedPreferences prefs;
     SharedPreferences prefLat;
     SharedPreferences prefLng;
-    int timeRefreshGPS;
-    private GoogleApiClient mGoogleApiClient;
-    private LocationRequest mLocationRequest;
-    private final String TAG = "MyAwesomeApp";
-    private TextView testt;
-    private double distanza;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,36 +58,13 @@ public class DetailsActivity extends AppCompatActivity implements
         Bundle extras = getIntent().getExtras();
         localita = extras.getString("localita");
 
-         prefs = context.getSharedPreferences("timeToGps", Context.MODE_PRIVATE);
         prefLat = context.getSharedPreferences("prefLat", Context.MODE_PRIVATE);
         prefLng = context.getSharedPreferences("prefLng", Context.MODE_PRIVATE);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
 
         initialise();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        timeRefreshGPS=20*60; // le coordinate gps rimangono valide per i 20 minuti successivi
-
-        closeLocation=new Runnable() {
-            @Override
-            public void run() {
-                if(!locManDisable) {
-                    mGoogleApiClient.disconnect();
-                    locManDisable=true;
-                   // Toast.makeText(getApplicationContext(), "blocco runnable ",Toast.LENGTH_SHORT ).show();
-                }
-            }
-        };
-
-        handler.postDelayed(closeLocation, 20000); //Dopo 20 secondi interrompe la localizzazione
-
-        // TODO implementare una variabile in preferences per mantenere le coordinate del gps per 10 minuti
 
         for (int i = 0; i < MapFragment.places.size(); i++) {
             if (MapFragment.places.get(i).getLocalita().equals(localita)) {
@@ -126,20 +80,21 @@ public class DetailsActivity extends AppCompatActivity implements
             }
         }
 
-        if((System.currentTimeMillis()/1000)-prefs.getLong("timeToGps",0)>timeRefreshGPS) {
-            mGoogleApiClient.connect();
-        }else{
-            mGoogleApiClient.disconnect();
-            locManDisable=true;
-            distanza=getDistance(Double.valueOf(prefs.getString("prefLat", null)),Double.valueOf(prefs.getString("prefLng",null)),lat,lng)/1000;
-            Toast.makeText( getApplicationContext(),"La distanza dalla tua posizione è: "+distanza +"Km",Toast.LENGTH_SHORT).show();
-        }
+        double distanza = getDistance(Double.valueOf(prefLat.getString("prefLat", null)), Double.valueOf(prefLng.getString("prefLng", null)), lat, lng) / 1000;
 
         /*
         ** Set Views content
          */
         TextView tvComune = (TextView) findViewById(R.id.tv_comune);
         tvComune.setText(Html.fromHtml("<B>Comune: </B>" + comune + " (" + provincia + ")"));
+
+        TextView distance = (TextView) findViewById(R.id.distance);
+        if (distanza !=0) {
+            DecimalFormat df = new DecimalFormat("##.##");
+            df.setRoundingMode(RoundingMode.DOWN);
+            distance.setText(Html.fromHtml("<B>Distanza dalla località: </B>" + df.format(distanza) + " Km"));
+        }
+
         ImageView iv = (ImageView) findViewById(R.id.iv_details_place);
         iv.setScaleType(ImageView.ScaleType.FIT_XY);
         /*
@@ -239,7 +194,7 @@ public class DetailsActivity extends AppCompatActivity implements
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        toolbar.setTitle("Località: "+localita);
+        toolbar.setTitle("Località: " + localita);
 
         setSupportActionBar(toolbar);
 
@@ -256,47 +211,19 @@ public class DetailsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onConnected(Bundle bundle) {
-        if((System.currentTimeMillis()/1000)-prefs.getLong("timeToGps",0)>timeRefreshGPS) {
-            mLocationRequest = LocationRequest.create();
-            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-           // mLocationRequest.setInterval(10000); // Update location every 10 second
-
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                    mGoogleApiClient, mLocationRequest, this);
-            prefs.edit().putLong("timeToGps", System.currentTimeMillis() / 1000).apply();
-
-        }else {
-            LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.i(TAG, "GoogleApiClient connection has been suspend");
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.i(TAG, "GoogleApiClient connection has failed");
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Toast.makeText( getApplicationContext(),"Location received: " + location.getLatitude(),Toast.LENGTH_SHORT).show();
-        prefs.edit().putString("prefLat", String.valueOf(location.getLatitude())).apply();
-        prefs.edit().putString("prefLng", String.valueOf(location.getLongitude())).apply();
-        distanza=getDistance(location.getLatitude(),location.getLongitude(),lat,lng)/1000;
-    }
-
-    @Override
     protected void onStop() {
-    if(!locManDisable) {
-        locManDisable=true;
-        mGoogleApiClient.disconnect();
-    }
+   // if(!locManDisable) {
+     //   locManDisable=true;
+    //    mGoogleApiClient.disconnect();
+   // }
         super.onStop();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
 
     public static float getDistance(double startLati, double startLongi, double goalLati, double goalLongi){
         float[] resultArray = new float[99];

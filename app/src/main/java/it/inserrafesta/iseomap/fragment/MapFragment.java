@@ -1,17 +1,14 @@
 package it.inserrafesta.iseomap.fragment;
 
 import it.inserrafesta.iseomap.PlaceDB;
-import it.inserrafesta.iseomap.PopupAdapterMap;
+import it.inserrafesta.iseomap.adapter.PopupAdapterMap;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.net.Uri;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -24,15 +21,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import it.inserrafesta.iseomap.ConnectionDetector;
-import it.inserrafesta.iseomap.NetworkConnectivity;
-import it.inserrafesta.iseomap.NetworkMonitorListener;
-import it.inserrafesta.iseomap.PlaceDB;
 import it.inserrafesta.iseomap.R;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -40,8 +37,6 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
@@ -56,22 +51,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 
 import it.inserrafesta.iseomap.Place;
 import it.inserrafesta.iseomap.activity.DetailsActivity;
-import it.inserrafesta.iseomap.activity.MainActivity;
 
-public class MapFragment extends Fragment{
+public class MapFragment extends Fragment implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
     private PlaceDB dbPlace;
 
     static final LatLng INITIAL_LATLNG = new LatLng(45.733815962451354, 10.05103312432766);
@@ -82,13 +73,18 @@ public class MapFragment extends Fragment{
     Bundle bundle;
     boolean change=true;
     Context context;
-    long timeToCheck=0;
-    SharedPreferences prefs;
-    //public static Map<Marker, String> imageStringMapMarker; //TODO togliere da place l inserimento dei marker!!!! Place rimane una classe punto!
-   // private float previousZoomLevel = 13; TODO sistemare bloccaggio mappa
-  //  private boolean isZooming=false;
-    //JSONParser jParser = new JSONParser();
 
+    SharedPreferences prefs;
+    SharedPreferences prefLat;
+    SharedPreferences prefLng;
+    SharedPreferences prefGPS;
+    private GoogleApiClient mGoogleApiClient;
+    private Handler handler= new Handler();
+    private boolean locManDisable=false;
+    private int timeRefreshGPS;
+    private final String TAG = "IseoAcque";
+
+    //public static Map<Marker, String> imageStringMapMarker; //TODO togliere da place l inserimento dei marker!!!! Place rimane una classe punto!
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -142,6 +138,42 @@ public class MapFragment extends Fragment{
         bundle=getArguments(); //necessario per le preferenze passate dalla mainActivity
         setHasOptionsMenu(true);
         prefs = context.getSharedPreferences("time", Context.MODE_PRIVATE);
+
+        //cerco di ottenere la posizione direttamente appena si apre l app
+        prefGPS = context.getSharedPreferences("timeToGps", Context.MODE_PRIVATE);
+        prefLat = context.getSharedPreferences("prefLat", Context.MODE_PRIVATE);
+        prefLng = context.getSharedPreferences("prefLng", Context.MODE_PRIVATE);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity().getApplicationContext())
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
+        Runnable closeLocation = new Runnable() {
+            @Override
+            public void run() {
+                if (!locManDisable) {
+                    mGoogleApiClient.disconnect();
+                    locManDisable = true;
+                    // Toast.makeText(getApplicationContext(), "blocco runnable ",Toast.LENGTH_SHORT ).show();
+                }
+            }
+        };
+
+        handler.postDelayed(closeLocation, 20000); //Dopo 20 secondi interrompe la localizzazione
+        timeRefreshGPS=60*20; // le coordinate gps rimangono valide per i 20 minuti successivi
+
+
+        if((System.currentTimeMillis()/1000)-prefGPS.getLong("timeToGps",0)>timeRefreshGPS) {
+            Toast.makeText( context,"tempo salvato: "+String.valueOf(System.currentTimeMillis()/1000-prefGPS.getLong("timeToGps",0)) +"tempo",Toast.LENGTH_SHORT).show();
+            mGoogleApiClient.connect();
+        }else{
+            mGoogleApiClient.disconnect();
+            locManDisable=true;
+        }
+
+
 
         /*
          * Istruzioni magiche per consentire la connessione a internet
@@ -204,86 +236,8 @@ public class MapFragment extends Fragment{
         /* Qui creo la mia view personalizzata per i marker, sfruttando l xml "custom info contents" */
         if (googleMap != null){
 
-            //Necessario per ricaricare istantaneamente l'Infowindow per visualizzare l immagine del posto
-          /*  googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-
-                @Override
-                public boolean onMarkerClick(final Marker mark) {
-                    mark.showInfoWindow();
-
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mark.showInfoWindow();
-
-                        }
-                    },250);
-
-                    return true;
-                }
-            });*/
             googleMap.setInfoWindowAdapter(new PopupAdapterMap(context,
                     getActivity().getLayoutInflater()));
-         /*   googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-                @Override
-                public View getInfoWindow(Marker marker) {
-                    return null;
-                }
-
-                @SuppressLint("InflateParams")
-                @Override
-                public View getInfoContents(Marker marker) {
-                    /* qui assegno tutte le variabili all'xml */
-
-           /*         View v = getActivity().getLayoutInflater().inflate(R.layout.custom_info_contents, null);
-
-                    String str = marker.getTitle();
-                    final String[] str2 = str.split("_");
-
-                    TextView myTitle = (TextView) v.findViewById(R.id.my_title);
-
-
-                    TextView mysnippet = (TextView) v.findViewById(R.id.my_snippet);
-                    TextView myquality = (TextView) v.findViewById(R.id.qualityWater);
-                    TextView divietoA = (TextView) v.findViewById(R.id.divietoAcqua);
-
-                    ImageView imageinfo = (ImageView) v.findViewById(R.id.image_info);
-                    myTitle.setText(str2[0]);// got first string as title
-                    mysnippet.setText(marker.getSnippet());
-
-                    if (str2[1].equals("1")) {
-                        divietoA.setText(R.string.prohibition);
-
-                    }
-
-                    switch (str2[2]) {
-                        case "1":
-                            myquality.setText(R.string.qlt_ecc);
-                            break;
-                        case "2":
-                            myquality.setText(R.string.qlt_buo);
-                            break;
-                        case "3":
-                            myquality.setText(R.string.qlt_suf);
-                            break;
-                        case "4":
-                            myquality.setText(R.string.qlt_sca);
-                            break;
-                        default:
-                            break;
-                    }
-
-                    Picasso.with(context)
-                            .load(str2[3])
-                            .resize(80*(int) getDensityScale(),80* (int) getDensityScale() )
-                            .centerCrop().noFade()
-                            .placeholder(R.drawable.placeholder1)
-                            .into(imageinfo);
-
-                    return v;
-               }
-           });*/
         }
 
         //Move the camera instantly to center of lake Iseo
@@ -362,13 +316,7 @@ public class MapFragment extends Fragment{
         float myHeight = 420;
         myWidth=myWidth*scale;
         myHeight=myHeight*scale;
-        Log.v("ConvertView", "Width " + myWidth + ", Height " + myHeight);
-
-        // set the custom dialog components - text, image and button
-        //TextView text = (TextView) dialog.findViewById(R.id.text);
-        //text.setText("Android custom dialog example!");
-        //ImageView image = (ImageView) dialog.findViewById(R.id.image);
-        //image.setImageResource(R.mipmap.ic_icon);
+        //Log.v("ConvertView", "Width " + myWidth + ", Height " + myHeight);
 
         dialog.getWindow().setLayout((int) myWidth, (int) myHeight);
         dialog.show();
@@ -380,7 +328,6 @@ public class MapFragment extends Fragment{
                 Resources.getSystem().getDisplayMetrics();
         return metrics.density;
     }
-
 
     /*
 * Converte un oggetto JSONArray in Vector<Place>
@@ -503,6 +450,39 @@ public class MapFragment extends Fragment{
         }catch(NullPointerException e){
             Log.d("onLowMemory", "NullPointerException: " + e);
         }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        if((System.currentTimeMillis()/1000)-prefGPS.getLong("timeToGps",0)>timeRefreshGPS) {
+            LocationRequest mLocationRequest = LocationRequest.create();
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            // mLocationRequest.setInterval(10000); // Update location every 10 second
+
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
+        }else {
+            LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "GoogleApiClient connection has been suspend");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i(TAG, "GoogleApiClient connection has failed");
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Toast.makeText(context, "Location received: " + location.getLatitude(), Toast.LENGTH_SHORT).show();
+        prefLat.edit().putString("prefLat", String.valueOf(location.getLatitude())).apply();
+        prefLng.edit().putString("prefLng", String.valueOf(location.getLongitude())).apply();
+        prefGPS.edit().putLong("timeToGps", System.currentTimeMillis() / 1000).apply();
+
     }
 
     @Override

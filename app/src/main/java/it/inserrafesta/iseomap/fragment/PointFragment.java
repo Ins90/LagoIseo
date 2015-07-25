@@ -20,7 +20,7 @@ import it.inserrafesta.iseomap.R;
 
 import java.util.ArrayList;
 
-import it.inserrafesta.iseomap.SimpleArrayAdapter;
+import it.inserrafesta.iseomap.adapter.SimpleArrayAdapter;
 
 
 public class PointFragment extends ListFragment implements SearchView.OnQueryTextListener {

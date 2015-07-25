@@ -14,12 +14,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import java.lang.reflect.Field;
 
 import it.inserrafesta.iseomap.ConnectionDetector;
 import it.inserrafesta.iseomap.NetworkConnectivity;
@@ -63,6 +64,20 @@ public class MainActivity extends AppCompatActivity {
         //checkStatusConnection(); //check only first time
         //checkRealTimeConnection(); //check all the time
 
+       /* try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        }
+        catch (Exception e) {
+            // presumably, not relevant
+        }
+
+        */
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             // This method will trigger on item Click of navigation menu
@@ -278,32 +293,9 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
-   /* public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_map, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
-
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     // Necessario per cambiare il comportamento del pulsante indietro, in modo che ogni qual volta lo si preme si riporta l utente alla mappa!
@@ -326,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // TODO sistemare il fatto che premendo il tasto menu (presente sui galaxy) esce una schifezza!!!
     public void checkSatus(){
         if (mapFragment.isHidden()) {
             //displayMapFragment();
@@ -374,8 +367,6 @@ public class MainActivity extends AppCompatActivity {
     public static Context getAppContext() {
         return MainActivity.context;
     }
-
-
 
     @Override
     protected void onPause() {

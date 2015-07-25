@@ -1,5 +1,6 @@
-package it.inserrafesta.iseomap;
+package it.inserrafesta.iseomap.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 
@@ -17,6 +18,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 
+import it.inserrafesta.iseomap.Place;
+import it.inserrafesta.iseomap.R;
 import it.inserrafesta.iseomap.activity.DetailsActivity;
 
 
@@ -44,6 +47,7 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
         return filter;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
