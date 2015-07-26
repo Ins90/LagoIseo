@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -373,4 +375,27 @@ public class MainActivity extends AppCompatActivity {
        // dbPlace.close();
         super.onPause();
     }
+
+    @Override
+    public boolean onKeyDown(int keycode, KeyEvent e) {
+        switch(keycode) {
+            case KeyEvent.KEYCODE_MENU:
+                return true;
+        }
+
+        return super.onKeyDown(keycode, e);
+    }
+
+    @Override
+    protected void onStop() {
+       //TODO testare se così si evita il problema delle sovrapposizioni
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.remove(linkFragment);
+        ft.remove(waterFragment);
+        ft.remove(exploreFragment);
+        //ft.remove(mapFragment);
+        //finish();
+        super.onStop();
+    }
+
 }

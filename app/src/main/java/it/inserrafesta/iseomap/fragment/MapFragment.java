@@ -87,8 +87,6 @@ public class MapFragment extends Fragment implements
     private final String TAG = "IseoAcque";
     static String[] serviziNomiArray;
     public static Vector<String> serviziNomi;
-    private ArrayList<Boolean> serviziVec;
-    //public static Map<Marker, String> imageStringMapMarker; //TODO togliere da place l inserimento dei marker!!!! Place rimane una classe punto!
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -183,8 +181,6 @@ public class MapFragment extends Fragment implements
             locManDisable=true;
         }
 
-
-
         /*
          * Istruzioni magiche per consentire la connessione a internet
          */
@@ -255,7 +251,7 @@ public class MapFragment extends Fragment implements
 
         SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
         int timeRefresh =Integer.parseInt(SP.getString("timeRefresh", "12"));
-        timeRefresh=timeRefresh; //il tempo tra un aggiornmaento e l'altro espresso in secondi
+        timeRefresh=timeRefresh*60*60; //il tempo tra un aggiornmaento e l'altro espresso in secondi
 
         //Toast.makeText(getActivity().getApplicationContext(), "tempo di aggiornamento "+timeRefresh, Toast.LENGTH_SHORT).show();
 
@@ -268,9 +264,9 @@ public class MapFragment extends Fragment implements
 
             dbPlace = new PlaceDB();
             dbPlace.open();
-            places=dbPlace.getAllPlaces();
+            places = dbPlace.getAllPlaces();
             putMakers(places, googleMap);
-            Toast.makeText(getActivity().getApplicationContext(),R.string.noUpdate, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), R.string.noUpdate, Toast.LENGTH_SHORT).show();
 
         }
 

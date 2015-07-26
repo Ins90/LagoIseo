@@ -71,7 +71,6 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
        return super.onOptionsItemSelected(item);
     }
 
-
     public void onCreate(Bundle savedInstanceState) {
         boolean singolo=true;
         super.onCreate(savedInstanceState);

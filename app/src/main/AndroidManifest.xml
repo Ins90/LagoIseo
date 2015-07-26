@@ -48,13 +48,13 @@
 
         <activity
             android:name=".activity.MyPreferencesActivity"
-            android:screenOrientation="portrait"
-        android:label="@string/title_activity_my_preferences" >
+            android:label="@string/title_activity_my_preferences"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.AboutActivity"
-            android:screenOrientation="portrait"
-        android:label="@string/title_activity_about" >
+            android:label="@string/title_activity_about"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.DetailsActivity"
@@ -63,9 +63,10 @@
         </activity>
         <activity
             android:name=".activity.HelpActivity"
-            android:screenOrientation="portrait"
-        android:label="@string/title_activity_help" >
+            android:label="@string/title_activity_help"
+            android:screenOrientation="portrait" >
         </activity>
+        
     </application>
 
 </manifest>
