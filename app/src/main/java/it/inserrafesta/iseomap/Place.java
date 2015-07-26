@@ -30,6 +30,7 @@ public class Place {
     private ArrayList<Boolean> serviziVec=new ArrayList<>();
     private String serviziStr;
 
+
     public Place(long id, double _lat, double _lng, String _comune, String _localita, String _provincia, int _classificazione, int _divieto, String _imageUrl,String serviziString){
 
         serviziStr=serviziString;
