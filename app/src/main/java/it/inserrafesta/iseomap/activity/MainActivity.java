@@ -393,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
         ft.remove(linkFragment);
         ft.remove(waterFragment);
         ft.remove(exploreFragment);
-        //ft.remove(mapFragment);
+        ft.remove(mapFragment);
         //finish();
         super.onStop();
     }
