@@ -256,8 +256,6 @@ public class MapFragment extends Fragment implements
         //Toast.makeText(getActivity().getApplicationContext(), "tempo di aggiornamento "+timeRefresh, Toast.LENGTH_SHORT).show();
 
         if((System.currentTimeMillis()/1000)-prefs.getLong("time",0)>timeRefresh) {
-            Toast.makeText(getActivity().getApplicationContext(),"proviano", Toast.LENGTH_SHORT).show();
-
             checkStatusConnection();
         }else {
            // Log.v("dii2iiiiiiiiiiiiiii", String.valueOf(prefs.getLong("time", 0)));

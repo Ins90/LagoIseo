@@ -20,12 +20,10 @@
 
 
     <string name="action_home">Zoom su tutti i punti di balneazione</string>
-    <string name="action_filter">Filtro sui punti di balneazione</string>
+    <string name="action_filter">Filtro sui servizi disponibili</string>
     <string name="action_terrain">Stile Mappa</string>
     <string name="action_info">Legenda</string>
-
     <string name="action_refresh">Aggiorna Dati</string>
-
     <string name="action_search">Ricerca punto di balneazione</string>
 
     <string name="water_high">Eccellente</string>
@@ -76,5 +74,10 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <!-- filter -->
+    <string name="title_filter">Seleziona i servizi essenziali per te!</string>
+    <string name="neutral_button">Cancella</string>
+
 
 </resources>
