@@ -1,5 +1,6 @@
 package it.inserrafesta.iseomap.activity;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.GridLayout;
@@ -111,6 +113,7 @@ public class DetailsActivity extends AppCompatActivity {
         iv.setScaleType(ImageView.ScaleType.FIT_XY);
         /*
         ** Aggiungo i servizi
+        * /
          */
 
         final float density = context.getResources().getDisplayMetrics().density;
@@ -154,21 +157,22 @@ public class DetailsActivity extends AppCompatActivity {
                     }
                     int numColonne = (int) Math.ceil(gridLayout.getMeasuredWidth() / maxLLwidth);
                     gridLayout.setColumnCount(numColonne);
-                /*    int paddingPixelGL = (gridLayout.getMeasuredWidth()-(maxLLwidth*numColonne))/2;
+                    int paddingPixelGL = (gridLayout.getMeasuredWidth()-(maxLLwidth*numColonne))/2;
                    int paddingDpGL = (int)(paddingPixelGL / density);
                     if(((ViewGroup) gridLayout).getChildCount()>2)
                         gridLayout.setPadding(paddingDpGL,0,0,0);
-                        */
+
                 }
             });
         }
+
         /*
          * Aggiungo le informazioni utili
          */
         String infoServices=getResources().getString(R.string.allInfo);
         infoNomiArray=infoServices.split(",");
         LinearLayout infoContainer = (LinearLayout) findViewById(R.id.info_container);
-        for(int i=0;i<this.numInfo;i++){
+        for(int i=0;i< numInfo;i++){
             InformazioneUtile info = infoVec.get(i);
             if(info.exists()) {
                 String nome = info.getNome();
@@ -199,6 +203,7 @@ public class DetailsActivity extends AppCompatActivity {
                 nomeTv.setPadding(30,10,10,10);
                 telefonoTv.setPadding(30,10,10,10);
                 indirizzoTv.setPadding(30,10,10,10);
+                infoRow.setPadding(0,40,0,0);
             }
         }
         /*
@@ -234,6 +239,84 @@ public class DetailsActivity extends AppCompatActivity {
             tvDivieto.setText(R.string.prohibition);
             ivClassificazione.setImageResource(getResources().getIdentifier("divieto", "drawable", this.getPackageName()));
         }
+    }
+
+    /*
+     * rowSize : numero di dettagli per riga
+     * screenWidth : larghezza dello schermo (della riga)
+     */
+    public void adjustGrid(int rowSize,int screenWidth){
+        final LinearLayout detailsContainer = (LinearLayout) findViewById(R.id.details_container);
+        LinearLayout firstRow = (LinearLayout) detailsContainer.getChildAt(0);
+        detailsContainer.removeAllViews();
+        final int numRighe = (int)Math.ceil(numServizi/rowSize);
+        LinearLayout detailsRowArray[] = new LinearLayout[numRighe];
+        Log.w("numRighe",""+numRighe);
+        int rowIndex = 0;
+        int serviziEsistenti=0;
+        boolean unServizio = false;
+        for(int i=0;i<numServizi;i++){
+            if(serviziVec.get(i)) {
+                serviziEsistenti++;
+                if(serviziEsistenti%rowSize==0||serviziEsistenti==1){
+                    Log.w("servizi esistenti",""+serviziEsistenti);
+                    if(rowIndex!=0)
+                        rowIndex++;
+                    detailsRowArray[rowIndex] = new LinearLayout(this);
+                    detailsRowArray[rowIndex].setOrientation(LinearLayout.HORIZONTAL);
+                    detailsContainer.addView(detailsRowArray[rowIndex]);
+                }
+                LinearLayout detail = new LinearLayout(this);
+                detail.setOrientation(LinearLayout.VERTICAL);
+                detailsRowArray[rowIndex].addView(detail);
+                LinearLayout detail_image = new LinearLayout(this);
+                detail_image.setOrientation(LinearLayout.VERTICAL);
+                detail.addView(detail_image);
+                LinearLayout detail_name = new LinearLayout(this);
+                detail_name.setOrientation(LinearLayout.VERTICAL);
+               // detail_name.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                //detail_name.setBackgroundColor(Color.parseColor("green"));
+                detail.addView(detail_name);
+                ImageView image = new ImageView(this);
+                image.setImageResource(getResources().getIdentifier("servizio_" + (i + 1), "drawable", this.getPackageName()));
+                detail_image.addView(image);
+                TextView textView = new TextView(this);
+                textView.setText(serviziNomi.elementAt(i));
+                detail_name.addView(textView);
+                textView.setMinimumWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+                textView.setMaxWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+                textView.setGravity(Gravity.CENTER);
+                detail.setPadding(15,20,15,20);
+
+            }
+        }
+
+       /* if(serviziEsistenti>0){
+            ViewTreeObserver vto = detailsContainer.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                @Override
+                public void onGlobalLayout() {
+                    detailsContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                   for (int i = 0; i < numRighe; ++i) {
+                        LinearLayout row = (LinearLayout) (detailsContainer).getChildAt(i);
+                       row.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                       for(int j= 0; j < row.getChildCount();j++){
+                           LinearLayout detail = (LinearLayout) (row).getChildAt(j);
+                           detail.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                           for(int k=0;k<detail.getChildCount();k++){
+                                LinearLayout detail_internal = (LinearLayout) (detail).getChildAt(k);
+                               detail_internal.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                               for(int h=0;h<detail_internal.getChildCount();h++){
+                                   View leaf = detail_internal.getChildAt(h);
+                                   leaf.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                               }
+                           }
+                       }
+                    }
+                }
+            });
+        }*/
     }
 
     /**
