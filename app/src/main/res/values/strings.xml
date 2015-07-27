@@ -79,5 +79,8 @@
     <string name="title_filter">Seleziona i servizi essenziali per te!</string>
     <string name="neutral_button">Cancella</string>
 
+    <!-- Informazioni utili -->
+    <string name="allInfo">Guardia medica,Farmacia,Ospedale,Carabinieri,Polizia provinciale,Polizia locale</string>
+    <string name="tel">tel.</string>
 
 </resources>

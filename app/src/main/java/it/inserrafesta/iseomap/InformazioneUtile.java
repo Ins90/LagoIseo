@@ -10,6 +10,11 @@ public class InformazioneUtile {
         indirizzo = _indirizzo;
         telefono = _telefono;
     }
+    public boolean exists(){
+        if(!nome.equals("")||!indirizzo.equals("")||!telefono.equals(""))
+            return true;
+        return false;
+    }
     public String getNome(){
         return nome;
     }

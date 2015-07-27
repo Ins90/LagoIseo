@@ -1,5 +1,6 @@
 package it.inserrafesta.iseomap.fragment;
 
+import it.inserrafesta.iseomap.InformazioneUtile;
 import it.inserrafesta.iseomap.PlaceDB;
 import it.inserrafesta.iseomap.adapter.PopupAdapterMap;
 
@@ -349,9 +350,18 @@ public class MapFragment extends Fragment implements
 
                     serviziVec.add(servizioString);
                 }
-
-                Place p =dbPlace.insertPlace(new Place (json.getLong("ID"),json.getDouble("lat"),json.getDouble("lng"),json.getString("comune"),json.getString("localita"),
-                        json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString()));
+                ArrayList<InformazioneUtile> infoVec = new ArrayList<>();
+                for(int infoIndex=1;infoIndex<=DetailsActivity.numInfo;infoIndex++){
+                    String nome,telefono,indirizzo;
+                    nome = json.getString("nome_"+infoIndex);
+                    telefono = json.getString("telefono_"+infoIndex);
+                    indirizzo = json.getString("indirizzo_" + infoIndex);
+                    InformazioneUtile info = new InformazioneUtile(nome,indirizzo,telefono);
+                    infoVec.add(info);
+                }
+              //  Place p =dbPlace.insertPlace(new Place (json.getLong("ID"),json.getDouble("lat"),json.getDouble("lng"),json.getString("comune"),json.getString("localita"),
+              //          json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString()));
+                Place p = new Place (json.getLong("ID"),json.getDouble("lat"),json.getDouble("lng"),json.getString("comune"),json.getString("localita"),json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString(),infoVec);
                 places.add(p);
 
             }catch(JSONException e){

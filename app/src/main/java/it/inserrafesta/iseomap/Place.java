@@ -31,9 +31,31 @@ public class Place {
     private String serviziStr;
 
 
+
+    private ArrayList<InformazioneUtile> infoVec = new ArrayList<>();
+
+    public Place(long id, double _lat, double _lng, String _comune, String _localita, String _provincia, int _classificazione, int _divieto, String _imageUrl,String serviziString,ArrayList<InformazioneUtile> _infoVec){
+
+        serviziStr=serviziString;
+        infoVec = _infoVec;
+
+        ID=id;
+        comune = _comune;
+        localita = _localita;
+        provincia = _provincia;
+        lat = _lat;
+        lng = _lng;
+        classificazione = _classificazione;
+        divieto = _divieto;
+        imageUrl = _imageUrl;
+        serviziVecTemp.addAll(Arrays.asList(serviziString.substring(1, serviziString.length() - 1).split(", ")));
+        serviziVec=getBooleanArray(serviziVecTemp);
+
+    }
     public Place(long id, double _lat, double _lng, String _comune, String _localita, String _provincia, int _classificazione, int _divieto, String _imageUrl,String serviziString){
 
         serviziStr=serviziString;
+
 
         ID=id;
         comune = _comune;
@@ -139,5 +161,9 @@ public class Place {
 
     public long getID() {
         return ID;
+    }
+
+    public ArrayList<InformazioneUtile> getInfoVec() {
+        return infoVec;
     }
 }
