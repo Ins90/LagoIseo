@@ -104,6 +104,22 @@ public class Place {
         return serviziVec;
     }
 
+    public boolean[] getServiziVectoArray() {
+        //Boolean[] serviziArr = new Boolean[serviziVec.size()];
+        //serviziArr = serviziVec.toArray(serviziArr);
+        boolean[] finalArray=toPrimitiveArray(serviziVec);
+        return finalArray;
+    }
+
+    private boolean[] toPrimitiveArray(final List<Boolean> booleanList) {
+        final boolean[] primitives = new boolean[booleanList.size()];
+        int index = 0;
+        for (Boolean object : booleanList) {
+            primitives[index++] = object;
+        }
+        return primitives;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }

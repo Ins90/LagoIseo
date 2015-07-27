@@ -297,6 +297,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
+        //TODO Testare!!!
+        //displayMapFragment();
         super.onResume();
     }
 
@@ -390,10 +392,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
        //TODO testare se così si evita il problema delle sovrapposizioni
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.remove(linkFragment);
-        ft.remove(waterFragment);
-        ft.remove(exploreFragment);
-        ft.remove(mapFragment);
+       // ft.remove(linkFragment);
+        //ft.remove(waterFragment);
+        //ft.remove(exploreFragment);
+        //ft.remove(mapFragment);
         //finish();
         super.onStop();
     }

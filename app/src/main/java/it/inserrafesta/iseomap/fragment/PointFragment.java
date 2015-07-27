@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import it.inserrafesta.iseomap.adapter.SimpleArrayAdapter;
@@ -37,9 +36,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
     public static boolean ricercaCreata=false; //necessaria per il tasto indietro, se lo si preme appena aperta l'app
     Menu menuNew;
 
-    boolean[] preCheckedItemsLast=new boolean[11];
-    ArrayList<String> servicesFiltered = new ArrayList<>();
-
+    boolean[] preCheckedItemsLast= new boolean[]{ false, false, false, false, false, false, false, false, false, false, false} ;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -51,6 +48,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
         searchView.setIconifiedByDefault(true);
         searchView.setQueryHint(getResources().getString(R.string.search_hint));
         ricercaCreata=true;
+
         searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean queryTextFocused) {
@@ -64,6 +62,10 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
+                final TextView tv = (TextView) getActivity().findViewById(R.id.testFilter);
+                tv.setVisibility(View.VISIBLE);
+                setItemsVisibility(menuNew, searchItem, true);
+
                 //  if (menuNew != null)
                 //      menuNew.findItem(R.id.action_filter).setVisible(true);
                 return true;  // Return true to collapse action view
@@ -71,11 +73,25 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                preCheckedItemsLast= new boolean[]{ false, false, false, false, false, false, false, false, false, false, false} ;
+                checkFilterUpdateAdapter();
+                final TextView tv = (TextView) getActivity().findViewById(R.id.testFilter);
+                tv.setText(R.string.noFilter);
+                tv.setVisibility(View.GONE);
+                setItemsVisibility(menuNew, searchItem, false); //nascondo l item del filtro quando apro la ricerca
+
                 //  if (menuNew != null)
                 //     menuNew.findItem(R.id.action_filter).setVisible(false);
                 return true;  // Return true to expand action view
             }
         });
+    }
+
+    private void setItemsVisibility(Menu menu, MenuItem exception, boolean visible) {
+        for (int i=0; i<menu.size(); ++i) {
+            MenuItem item = menu.getItem(i);
+            if (item != exception) item.setVisible(visible);
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -89,9 +105,10 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
     }
 
     public void onCreate(Bundle savedInstanceState) {
-        boolean singolo=true;
+
         super.onCreate(savedInstanceState);
         for(int i=0;i<MapFragment.places.size();i++) { //previene l eventualita di un inserimento doppio
+            boolean singolo=true;
             for(int j=0;j<pointList.size();j++) {
                 if (MapFragment.places.get(i).getLocalita().equals(pointList.get(j).getLocalita())) {
                     singolo=false;
@@ -154,16 +171,15 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
         final String[] serviziNomi=services.split(",");
 
         //ArrayList to store Alert Dialog selected items index position
-        final ArrayList<Integer> selectedItems = new ArrayList<Integer>();
+        final ArrayList<Integer> selectedItems = new ArrayList<>();
 
         //Array to store pre checked/selected items
         boolean[] preCheckedItems;
-        // TODO magari riesci a passare i valori selezionati precedentemente
             if (preCheckedItemsLast.length != 0) {
                 preCheckedItems = preCheckedItemsLast;
                 //ricerco i true, in modo che siano realmente selezionati se l utente non li tocca!!
                 for(int i=0;i<preCheckedItemsLast.length;i++){
-                    if(preCheckedItemsLast[i]==true)
+                    if(preCheckedItemsLast[i])
                         selectedItems.add(i);
                 }
             } else {
@@ -171,25 +187,13 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
             }
 
         //Define the AlertBuilder as a multiple choice items collection.
- /*
-  AlertDialog.builder.setMultiChoiceItems() method
-  setMultiChoiceItems(CharSequence[] items, boolean[] checkedItems,
-  DialogInterface.OnMultiChoiceClickListener listener)
 
-  First argument to pass an Array of items
-
-  Second argument pass the pre checked/selected items.
-  if we don't want to display any pre checked items,
-  We can pass the second parameter value as null.
-
-  Third argument set a Click Listener for Multiple Choice.
-  */
         adb.setMultiChoiceItems(serviziNomi, preCheckedItems, new DialogInterface.OnMultiChoiceClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked){
 
                 //You can update the preCheckedItems array here
-                //In this tutorial i ignored this feature
+
                 if(isChecked)
                 {
                     //Add the checked item to checked items collection
@@ -197,12 +201,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
                 }
                 else if(selectedItems.contains(which))
                 {
-
                     selectedItems.removeAll(Collections.singleton(which));
-    /*If the clicked checkbox item is unchecked now
-     and it already contains in the selected items collection
-     then we remove it from selected items collection*/
-                   // selectedItems.remove(which);
                 }
             }
         });
@@ -212,33 +211,25 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
             @Override
             public void onClick(DialogInterface dialog, int which){
                 //When user click the positive button from alert dialog
-
                 //Set a message to show user at top
-                tv.setText("i servizi che vuoi sono...\n");
+            if(selectedItems.size()!=0) {
+                tv.setText(R.string.yesFilter);
 
                 //Loop/iterate through ArrayList
-                servicesFiltered=new ArrayList<>();
                 Log.d("Adapter", "elementi di selected: " + selectedItems.toString());
-                transformArray(selectedItems);
-                for(int i=0;i<selectedItems.size();i++){
-                    //selectedItems ArrayList current item's correspondent
-                    //index position of Services Array
+                for (int i = 0; i < selectedItems.size(); i++) {
+
                     int IndexOfServicesArray = selectedItems.get(i);
 
-                    //Get the selectedItems array specific index position's
-                    //corresponded item from Services array
                     String selectedService = Arrays.asList(serviziNomi).get(IndexOfServicesArray);
-                    servicesFiltered.add(selectedService);
                     //Display the selected services to TextView
-                    tv.setText(tv.getText() + selectedService + "\n");
-
+                    tv.setText(tv.getText() + " "+ selectedService + "; ");
                 }
-
-                //Write a message for user
-                String message = "bravo!";
-                //Display the additional message to user on new line
-                tv.setText(tv.getText() + "\n\n" + message);
-
+            }else{
+                tv.setText(R.string.noFilter);
+            }
+                transformArray(selectedItems);
+                checkFilterUpdateAdapter();
             }
         });
 
@@ -246,7 +237,9 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
         adb.setNeutralButton(R.string.neutral_button, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which){
-                //When user click the neutral/cancel button from alert dialog
+                preCheckedItemsLast= new boolean[]{ false, false, false, false, false, false, false, false, false, false, false} ;
+                tv.setText(R.string.noFilter);
+                checkFilterUpdateAdapter();
             }
         });
 
@@ -260,7 +253,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
             preCheckedItemsLast[i]=false;
         }
 
-            //rimuovo i duplicati da i servizi selezionati
+        //rimuovo i duplicati da i servizi selezionati
         Set<Integer> hs = new HashSet<>();
         hs.addAll(selectedItems);
         selectedItems.clear();
@@ -270,7 +263,31 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
             preCheckedItemsLast[selectedItems.get(i)]=true;
         }
         Log.d("Adapter", "test check element 0: " + preCheckedItemsLast[0]);
+    }
 
+    public void checkFilterUpdateAdapter(){
+        pointList = new ArrayList<>();
+        for(int i=0;i<MapFragment.places.size();i++) { //previene l eventualita di un inserimento doppio
+            boolean match=true;
+            boolean singolo=true;
+            for(int j=0;j<pointList.size();j++) {
+                if (MapFragment.places.get(i).getLocalita().equals(pointList.get(j).getLocalita())) {
+                    singolo=false;
+                }
+            }
+
+            for(int k=0;k<preCheckedItemsLast.length;k++){
+                if(preCheckedItemsLast[k] && !MapFragment.places.get(i).getServiziVectoArray()[k]){ //controllo se esiste almeno un servizio che la località NON ha ma che è utilizzato nel filtro
+                    match=false;
+                }
+            }
+
+            if(singolo && match) pointList.add(MapFragment.places.get(i));
+        }
+
+        adapter = new SimpleArrayAdapter(getActivity(), android.R.id.list,
+                pointList);
+        setListAdapter(adapter);
     }
 }
 

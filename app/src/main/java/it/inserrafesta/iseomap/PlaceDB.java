@@ -64,7 +64,6 @@ public class PlaceDB {
         String image = cursor.getString(8);
 
         String servizi = cursor.getString(9);
-
         return new Place(id,lat,lng,comune,localita,provincia,clas,divieto,image,servizi);
     }
 
