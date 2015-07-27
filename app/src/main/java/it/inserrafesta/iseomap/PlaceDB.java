@@ -3,10 +3,8 @@ package it.inserrafesta.iseomap;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import it.inserrafesta.iseomap.activity.DetailsActivity;
 import it.inserrafesta.iseomap.activity.MainActivity;
@@ -37,10 +35,10 @@ public class PlaceDB {
         database = dbHelper.getWritableDatabase();
     }
 
-    public void close() {
+ /*   public void close() {
         dbHelper.close();
     }
-
+*/
     // from Object to database
     private ContentValues placeToValues(Place place) {
         ContentValues values = new ContentValues();
@@ -105,7 +103,7 @@ public class PlaceDB {
         return p;
     }
 
-    public void deletePlace(Place place) {
+  /*  public void deletePlace(Place place) {
         long id = place.getID();
 
         database.delete(MySQLiteHelper.TABLE_PLACE,
@@ -122,7 +120,7 @@ public class PlaceDB {
                     new String[]{"" + id});
         }
     }
-
+*/
     public void removeAll()
     {
         // db.delete(String tableName, String whereClause, String[] whereArgs);

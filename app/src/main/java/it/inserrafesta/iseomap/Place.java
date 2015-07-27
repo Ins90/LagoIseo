@@ -1,19 +1,13 @@
 package it.inserrafesta.iseomap;
 
-
-import android.util.Log;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
-import java.util.Vector;
 
 public class Place {
 
@@ -26,7 +20,6 @@ public class Place {
     private int classificazione; /* 1 eccellente 2 buono 3 sufficiente 4 scarso */
     private int divieto; /* 1 SI 0 NO */
     private String imageUrl;
-    private ArrayList<String> serviziVecTemp=new ArrayList<>();;
     private ArrayList<Boolean> serviziVec=new ArrayList<>();
     private ArrayList<InformazioneUtile> infoVec = new ArrayList<>();
     private String serviziStr;
@@ -46,6 +39,7 @@ public class Place {
         classificazione = _classificazione;
         divieto = _divieto;
         imageUrl = _imageUrl;
+        ArrayList<String> serviziVecTemp = new ArrayList<>();
         serviziVecTemp.addAll(Arrays.asList(serviziString.substring(1, serviziString.length() - 1).split(", ")));
         serviziVec=getBooleanArray(serviziVecTemp);
 
@@ -107,8 +101,7 @@ public class Place {
     public boolean[] getServiziVectoArray() {
         //Boolean[] serviziArr = new Boolean[serviziVec.size()];
         //serviziArr = serviziVec.toArray(serviziArr);
-        boolean[] finalArray=toPrimitiveArray(serviziVec);
-        return finalArray;
+        return toPrimitiveArray(serviziVec);
     }
 
     private boolean[] toPrimitiveArray(final List<Boolean> booleanList) {
@@ -152,10 +145,6 @@ public class Place {
         return divieto;
     }
 
-    public long getID() {
-        return ID;
-    }
-
     public ArrayList<InformazioneUtile> getInfoVec() {
         return infoVec;
     }
@@ -182,5 +171,9 @@ public class Place {
         }
 
         return strInfo;
+    }
+
+    public long getID() {
+        return ID;
     }
 }

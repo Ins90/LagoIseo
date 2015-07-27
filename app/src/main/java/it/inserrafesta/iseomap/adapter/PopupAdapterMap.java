@@ -55,7 +55,8 @@ public class PopupAdapterMap implements InfoWindowAdapter {
 
         if (str2[1].equals("1")) {
             divietoA.setText(R.string.prohibition);
-
+        }else{
+            divietoA.setText("");
         }
 
         switch (str2[2]) {

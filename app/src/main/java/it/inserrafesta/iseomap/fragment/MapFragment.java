@@ -363,10 +363,6 @@ public class MapFragment extends Fragment implements
               //          json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString()));
                 Place p = new Place (json.getLong("ID"),json.getDouble("lat"),json.getDouble("lng"),json.getString("comune"),json.getString("localita"),json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString(),infoVec);
                 dbPlace.insertPlace(p);
-                Log.d("onDestroy", p.getInformazioneIndex(0));
-                String[] e=p.getInformazioneIndex(0).split(",,");
-                Log.d("onDestroy","e"+ e[1]+"r");
-
                 places.add(p);
 
             }catch(JSONException e){
