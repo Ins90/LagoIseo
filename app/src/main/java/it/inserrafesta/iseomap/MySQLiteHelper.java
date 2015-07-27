@@ -18,11 +18,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_DIVIETO = "divieto";
     public static final String COLUMN_IMAGE = "image";
     public static final String COLUMN_SERVIZI = "servizi";
+    public static final String COLUMN_MEDICO = "medico";
+    public static final String COLUMN_FARMACIA = "farmacia";
+    public static final String COLUMN_OSPEDALE = "ospedale";
+    public static final String COLUMN_CARABINIERI = "carabinieri";
+    public static final String COLUMN_PPROVINCIALE = "provinciale";
+    public static final String COLUMN_PLOCALE = "locale";
 
 
 
     public static final String DATABASE_NAME = "place.db";
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 1;
 
     // database creation SQL statement
     private static final String DATABASE_CREATE = "create table "
@@ -36,7 +42,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_CLAS + " integer not null,"
             + COLUMN_DIVIETO + " integer not null,"
             + COLUMN_IMAGE + " text not null,"
-            + COLUMN_SERVIZI + " text); ";
+            + COLUMN_SERVIZI + " text,"
+            + COLUMN_MEDICO + " text,"
+            + COLUMN_FARMACIA + " text,"
+            + COLUMN_OSPEDALE + " text,"
+            + COLUMN_CARABINIERI + " text,"
+            + COLUMN_PPROVINCIALE + " text,"
+            + COLUMN_PLOCALE + " text); ";
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

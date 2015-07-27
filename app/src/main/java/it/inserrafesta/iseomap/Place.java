@@ -28,11 +28,9 @@ public class Place {
     private String imageUrl;
     private ArrayList<String> serviziVecTemp=new ArrayList<>();;
     private ArrayList<Boolean> serviziVec=new ArrayList<>();
+    private ArrayList<InformazioneUtile> infoVec = new ArrayList<>();
     private String serviziStr;
 
-
-
-    private ArrayList<InformazioneUtile> infoVec = new ArrayList<>();
 
     public Place(long id, double _lat, double _lng, String _comune, String _localita, String _provincia, int _classificazione, int _divieto, String _imageUrl,String serviziString,ArrayList<InformazioneUtile> _infoVec){
 
@@ -52,27 +50,6 @@ public class Place {
         serviziVec=getBooleanArray(serviziVecTemp);
 
     }
-    public Place(long id, double _lat, double _lng, String _comune, String _localita, String _provincia, int _classificazione, int _divieto, String _imageUrl,String serviziString){
-
-        serviziStr=serviziString;
-
-
-        ID=id;
-        comune = _comune;
-        localita = _localita;
-        provincia = _provincia;
-        lat = _lat;
-        lng = _lng;
-        classificazione = _classificazione;
-        divieto = _divieto;
-        imageUrl = _imageUrl;
-        serviziVecTemp.addAll(Arrays.asList(serviziString.substring(1, serviziString.length() - 1).split(", ")));
-        serviziVec=getBooleanArray(serviziVecTemp);
-
-    }
-
-
-
 
     private ArrayList<Boolean> getBooleanArray(ArrayList<String> stringArray) {
         ArrayList<Boolean> result = new ArrayList<>();
@@ -181,5 +158,29 @@ public class Place {
 
     public ArrayList<InformazioneUtile> getInfoVec() {
         return infoVec;
+    }
+
+    public String getInformazioneIndex(int indexInfo){
+        String strInfo;
+        if(infoVec.get(indexInfo).getNome().isEmpty()){
+            strInfo="null";
+        }else{
+            strInfo=infoVec.get(indexInfo).getNome();
+        }
+        strInfo=strInfo+",,";
+        if(infoVec.get(indexInfo).getIndirizzo().isEmpty()){
+            strInfo=strInfo+"null";
+        }else{
+            strInfo=strInfo+infoVec.get(indexInfo).getIndirizzo();
+        }
+        strInfo=strInfo+",,";
+
+        if(infoVec.get(indexInfo).getTelefono().isEmpty()){
+            strInfo=strInfo+"null";
+        }else{
+            strInfo=strInfo+infoVec.get(indexInfo).getTelefono();
+        }
+
+        return strInfo;
     }
 }

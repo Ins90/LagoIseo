@@ -72,9 +72,6 @@
     <string name="allServices">Area picnic,Parco giochi,Servizi Igienici,Bar,Ristorante,Parcheggio,Area campeggio,Pista ciclopedonali,Area verde,Accesso ai cani,Accessibili a portatori di Handicap (Festa)</string>
     <string name="title_activity_activity__filter">Activity_Filter</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-
     <!-- filter -->
     <string name="title_filter">Seleziona i servizi essenziali per te!</string>
     <string name="neutral_button">Reset</string>

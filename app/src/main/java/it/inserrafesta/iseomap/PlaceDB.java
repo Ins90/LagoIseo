@@ -8,6 +8,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.inserrafesta.iseomap.activity.DetailsActivity;
 import it.inserrafesta.iseomap.activity.MainActivity;
 
 public class PlaceDB {
@@ -22,7 +23,13 @@ public class PlaceDB {
             MySQLiteHelper.COLUMN_CLAS,
             MySQLiteHelper.COLUMN_DIVIETO,
             MySQLiteHelper.COLUMN_IMAGE,
-            MySQLiteHelper.COLUMN_SERVIZI};
+            MySQLiteHelper.COLUMN_SERVIZI,
+            MySQLiteHelper.COLUMN_MEDICO,
+            MySQLiteHelper.COLUMN_FARMACIA,
+            MySQLiteHelper.COLUMN_OSPEDALE,
+            MySQLiteHelper.COLUMN_CARABINIERI,
+            MySQLiteHelper.COLUMN_PPROVINCIALE,
+            MySQLiteHelper.COLUMN_PLOCALE};
 
     public void open() {
         if(dbHelper == null) dbHelper =
@@ -47,6 +54,12 @@ public class PlaceDB {
         values.put(MySQLiteHelper.COLUMN_DIVIETO, place.getDivieto());
         values.put(MySQLiteHelper.COLUMN_IMAGE, place.getImageUrl());
         values.put(MySQLiteHelper.COLUMN_SERVIZI, place.getServiziStr());
+        values.put(MySQLiteHelper.COLUMN_MEDICO, place.getInformazioneIndex(0));
+        values.put(MySQLiteHelper.COLUMN_FARMACIA, place.getInformazioneIndex(1));
+        values.put(MySQLiteHelper.COLUMN_OSPEDALE, place.getInformazioneIndex(2));
+        values.put(MySQLiteHelper.COLUMN_CARABINIERI, place.getInformazioneIndex(3));
+        values.put(MySQLiteHelper.COLUMN_PPROVINCIALE, place.getInformazioneIndex(4));
+        values.put(MySQLiteHelper.COLUMN_PLOCALE, place.getInformazioneIndex(5));
 
         return values;
     }
@@ -64,7 +77,18 @@ public class PlaceDB {
         String image = cursor.getString(8);
 
         String servizi = cursor.getString(9);
-        return new Place(id,lat,lng,comune,localita,provincia,clas,divieto,image,servizi);
+        ArrayList<InformazioneUtile> infoVec = new ArrayList<>();
+
+        for(int i=0;i<DetailsActivity.numInfo;i++) {
+            String strInfo=cursor.getString(i + 10);
+            String[] arrayInfo=strInfo.split(",,");
+            InformazioneUtile info = new InformazioneUtile(arrayInfo[0],arrayInfo[1],arrayInfo[2]);
+
+            infoVec.add(info);
+
+        }
+
+       return new Place(id,lat,lng,comune,localita,provincia,clas,divieto,image,servizi,infoVec);
     }
 
     public Place insertPlace(Place place) {
