@@ -20,7 +20,7 @@
 
 
     <string name="action_home">Zoom su tutti i punti di balneazione</string>
-    <string name="action_filter">Filtro sui servizi disponibili</string>
+    <string name="action_filter">Filtro</string>
     <string name="action_terrain">Stile Mappa</string>
     <string name="action_info">Legenda</string>
     <string name="action_refresh">Aggiorna Dati</string>
@@ -69,12 +69,14 @@
     <string name="descRefresh">Selezionare il tempo minimo tra un aggiornamento e l\'altro (Default 12 ore)</string>
 
     <!-- Servizi -->
-    <string name="allServices">Area picnic,Parco giochi,Servizi Igienici,Bar,Ristorante,Parcheggio,Area campeggio,Pista ciclopedonali,Area verde,Accesso ai cani,Accessibili a portatori di Handicap (Festa)</string>
+    <string name="allServices">Area Picnic,Parco giochi,Servizi Igienici,Bar,Ristorante,Parcheggio,Area campeggio,Pista ciclabile,Area verde,Accesso ai cani,Accessibile a portatori di Handicap</string>
     <string name="title_activity_activity__filter">Activity_Filter</string>
 
     <!-- filter -->
     <string name="title_filter">Seleziona i servizi essenziali per te!</string>
     <string name="neutral_button">Reset</string>
+    <string name="negative_button">Annulla</string>
+
     <string name="noFilter">Nessun filtro attivo</string>
     <string name="yesFilter">Filtro attivo:</string>
 

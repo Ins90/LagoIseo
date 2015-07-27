@@ -107,6 +107,8 @@ public class DetailsActivity extends AppCompatActivity {
             DecimalFormat df = new DecimalFormat("##.##");
             df.setRoundingMode(RoundingMode.DOWN);
             distance.setText(Html.fromHtml("<B>Distanza dalla località: </B>" + df.format(distanza) + " Km"));
+
+
         }
 
         ImageView iv = (ImageView) findViewById(R.id.iv_details_place);
@@ -184,7 +186,10 @@ public class DetailsActivity extends AppCompatActivity {
                 TextView nomeTv = new TextView(this);
                 TextView telefonoTv = new TextView(this);
                 TextView indirizzoTv = new TextView(this);
-                titoloTv.setText(infoNomiArray[i]);
+
+                titoloTv.setText(Html.fromHtml("<B>" + infoNomiArray[i]+"</B>"));
+                //titoloTv.setTextSize(getResources().getDimension(R.dimen.textTitleInfo));
+
                 nomeTv.setText(nome);
                 telefonoTv.setText(getResources().getString(R.string.tel)+" "+telefono);
                 indirizzoTv.setText(indirizzo);

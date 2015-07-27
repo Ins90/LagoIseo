@@ -4,12 +4,16 @@ import it.inserrafesta.iseomap.InformazioneUtile;
 import it.inserrafesta.iseomap.PlaceDB;
 import it.inserrafesta.iseomap.adapter.PopupAdapterMap;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -38,6 +42,8 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
@@ -88,7 +94,7 @@ public class MapFragment extends Fragment implements
     private final String TAG = "IseoAcque";
     static String[] serviziNomiArray;
     public static Vector<String> serviziNomi;
-
+    private Handler mHandler = new Handler();
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_map, menu);
@@ -125,7 +131,8 @@ public class MapFragment extends Fragment implements
 
                 break;
             case R.id.action_refresh:
-                checkStatusConnection();
+                BackgroundTask task = new BackgroundTask(getActivity());
+                task.execute();
 
                 break;
         }
@@ -257,7 +264,14 @@ public class MapFragment extends Fragment implements
         //Toast.makeText(getActivity().getApplicationContext(), "tempo di aggiornamento "+timeRefresh, Toast.LENGTH_SHORT).show();
 
         if((System.currentTimeMillis()/1000)-prefs.getLong("time",0)>timeRefresh) {
-            checkStatusConnection();
+            ConnectionDetector cd = new ConnectionDetector(getActivity().getApplicationContext());
+            Boolean isInternetPresent = cd.isConnectingToInternet();
+
+            if (!isInternetPresent) {
+               Toast.makeText(getActivity().getApplicationContext(), R.string.noConnection, Toast.LENGTH_SHORT).show();
+             }else {
+                checkStatusConnection();
+            }
         }else {
            // Log.v("dii2iiiiiiiiiiiiiii", String.valueOf(prefs.getLong("time", 0)));
 
@@ -415,12 +429,12 @@ public class MapFragment extends Fragment implements
 
     protected void checkStatusConnection(){
      /*check if is present internet connection */
-        ConnectionDetector cd = new ConnectionDetector(getActivity().getApplicationContext());
-        Boolean isInternetPresent = cd.isConnectingToInternet();
+       // ConnectionDetector cd = new ConnectionDetector(getActivity().getApplicationContext());
+       // Boolean isInternetPresent = cd.isConnectingToInternet();
 
-        if (!isInternetPresent) {
-            Toast.makeText(getActivity().getApplicationContext(), R.string.noConnection, Toast.LENGTH_SHORT).show();
-        }else{
+        //if (!isInternetPresent) {
+         //   Toast.makeText(getActivity().getApplicationContext(), R.string.noConnection, Toast.LENGTH_SHORT).show();
+       // }else{
             if(places.size()!=0) {
                 dbPlace.removeAll();
                 places= new ArrayList<>();
@@ -432,10 +446,16 @@ public class MapFragment extends Fragment implements
 
             googleMap.clear();
             putMakers(places, googleMap);
-            Toast.makeText(getActivity().getApplicationContext(), R.string.updateOK, Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.updateOK, Toast.LENGTH_SHORT).show();
+                }
+            }, 1800);
             prefs.edit().putLong("time", System.currentTimeMillis() / 1000).apply();
 
-        }
+        //}
     }
 
     @Override
@@ -505,4 +525,57 @@ public class MapFragment extends Fragment implements
     public void onPause() {
         super.onPause();
     }
+
+    private class BackgroundTask extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog dialog;
+
+        public BackgroundTask(Activity activity) {
+            dialog = new ProgressDialog(activity);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setMessage("Aggiornamento in corso...");
+            dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            ConnectionDetector cd = new ConnectionDetector(getActivity().getApplicationContext());
+            Boolean isInternetPresent = cd.isConnectingToInternet();
+
+            if (!isInternetPresent) {
+                getActivity().runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity().getApplicationContext(), R.string.noConnection, Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            } else {
+                try {
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            checkStatusConnection();
+                        }
+                    });
+                    Thread.sleep(2000);
+                } catch (
+                        InterruptedException e
+                        )
+                {
+                    e.printStackTrace();
+                }
+            }
+                return null;
+            }
+            }
 }
