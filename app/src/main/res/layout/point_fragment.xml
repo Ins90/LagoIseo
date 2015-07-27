@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="1dp"
         android:paddingLeft="5dp"
-
+        android:textSize="17sp"
         android:text="@string/noFilter"
         />
 
@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         android:text="@string/empty_list"
         android:layout_gravity="center_horizontal"
+        android:textSize="20sp"
         android:paddingTop="50dp"/>
 </LinearLayout>
 

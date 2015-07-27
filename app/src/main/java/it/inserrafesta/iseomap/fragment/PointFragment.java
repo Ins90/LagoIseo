@@ -66,8 +66,6 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
                 tv.setVisibility(View.VISIBLE);
                 setItemsVisibility(menuNew, searchItem, true);
 
-                //  if (menuNew != null)
-                //      menuNew.findItem(R.id.action_filter).setVisible(true);
                 return true;  // Return true to collapse action view
             }
 
@@ -80,8 +78,6 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
                 tv.setVisibility(View.GONE);
                 setItemsVisibility(menuNew, searchItem, false); //nascondo l item del filtro quando apro la ricerca
 
-                //  if (menuNew != null)
-                //     menuNew.findItem(R.id.action_filter).setVisible(false);
                 return true;  // Return true to expand action view
             }
         });
@@ -138,7 +134,6 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("Adapter", "items.size(): " + pointList.size());
         adapter = new SimpleArrayAdapter(getActivity(), android.R.id.list,
                 pointList);
         setListAdapter(adapter);
@@ -215,8 +210,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
             if(selectedItems.size()!=0) {
                 tv.setText(R.string.yesFilter);
 
-                //Loop/iterate through ArrayList
-                Log.d("Adapter", "elementi di selected: " + selectedItems.toString());
+                //iterate through ArrayList
                 for (int i = 0; i < selectedItems.size(); i++) {
 
                     int IndexOfServicesArray = selectedItems.get(i);
@@ -248,7 +242,6 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
     }
 
     public void transformArray(ArrayList<Integer> selectedItems ){
-        Log.d("Adapter", "numero di elementi di selected: " + selectedItems.size());
         for(int i=0;i<preCheckedItemsLast.length;i++) {
             preCheckedItemsLast[i]=false;
         }
@@ -262,7 +255,6 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
         for(int i=0;i<selectedItems.size();i++){
             preCheckedItemsLast[selectedItems.get(i)]=true;
         }
-        Log.d("Adapter", "test check element 0: " + preCheckedItemsLast[0]);
     }
 
     public void checkFilterUpdateAdapter(){
