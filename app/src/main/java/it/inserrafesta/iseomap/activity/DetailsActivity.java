@@ -2,6 +2,7 @@ package it.inserrafesta.iseomap.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
+import it.inserrafesta.iseomap.InformazioneUtile;
 import it.inserrafesta.iseomap.R;
 import it.inserrafesta.iseomap.fragment.MapFragment;
 
@@ -35,7 +37,9 @@ import it.inserrafesta.iseomap.fragment.MapFragment;
 
 public class DetailsActivity extends AppCompatActivity {
 
-
+    public static int numInfo = 6;
+    private ArrayList<InformazioneUtile> infoVec = new ArrayList<>();
+    String[] infoNomiArray;
     static int numServizi=11;
     static String[] serviziNomiArray;
     public static Vector<String> serviziNomi;
@@ -83,6 +87,7 @@ public class DetailsActivity extends AppCompatActivity {
                 divieto = MapFragment.places.get(i).getDivieto();
                 imageUrl = MapFragment.places.get(i).getImageUrl();
                 serviziVec = MapFragment.places.get(i).getServiziVec();
+                infoVec = MapFragment.places.get(i).getInfoVec();
                 break;
             }
         }
@@ -157,7 +162,45 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             });
         }
-
+        /*
+         * Aggiungo le informazioni utili
+         */
+        String infoServices=getResources().getString(R.string.allInfo);
+        infoNomiArray=infoServices.split(",");
+        LinearLayout infoContainer = (LinearLayout) findViewById(R.id.info_container);
+        for(int i=0;i<this.numInfo;i++){
+            InformazioneUtile info = infoVec.get(i);
+            if(info.exists()) {
+                String nome = info.getNome();
+                String indirizzo = info.getIndirizzo();
+                String telefono = info.getTelefono();
+                LinearLayout infoRow = new LinearLayout(this);
+                infoRow.setOrientation(LinearLayout.VERTICAL);
+                TextView titoloTv = new TextView(this);
+                TextView nomeTv = new TextView(this);
+                TextView telefonoTv = new TextView(this);
+                TextView indirizzoTv = new TextView(this);
+                titoloTv.setText(infoNomiArray[i]);
+                nomeTv.setText(nome);
+                telefonoTv.setText(getResources().getString(R.string.tel)+" "+telefono);
+                indirizzoTv.setText(indirizzo);
+                infoRow.addView(titoloTv);
+                if(!nome.equals(""))
+                    infoRow.addView(nomeTv);
+                if(!telefono.equals(""))
+                    infoRow.addView(telefonoTv);
+                if(!indirizzo.equals(""))
+                    infoRow.addView(indirizzoTv);
+                infoContainer.addView(infoRow);
+                titoloTv.setBackgroundColor(Color.parseColor("#3D51B4"));
+                titoloTv.setTextColor(Color.WHITE);
+                titoloTv.setPadding(30,20,20,20);
+                titoloTv.setTextSize(15);
+                nomeTv.setPadding(30,10,10,10);
+                telefonoTv.setPadding(30,10,10,10);
+                indirizzoTv.setPadding(30,10,10,10);
+            }
+        }
         /*
         ** Setto l'immagine della localita
          */
