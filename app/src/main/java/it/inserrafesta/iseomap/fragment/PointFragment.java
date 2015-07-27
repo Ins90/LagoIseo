@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,7 +36,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
     public static MenuItem searchItem;
     public static boolean ricercaCreata=false; //necessaria per il tasto indietro, se lo si preme appena aperta l'app
     Menu menuNew;
-
+    boolean[] saveItemForCancelDialog;
     boolean[] preCheckedItemsLast= new boolean[]{ false, false, false, false, false, false, false, false, false, false, false} ;
 
     @Override
@@ -159,14 +160,14 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
         AlertDialog.Builder adb = new AlertDialog.Builder(this.getActivity());
 
         //Set a title for alert dialog
-        adb.setTitle(R.string.title_filter);
-
+        adb.setTitle(Html.fromHtml("<B><font color='#727272'>" + getActivity().getResources().getString(R.string.title_filter) + " </font></B>"));;
         //Initialize a new String Array
         String services=getResources().getString(R.string.allServices);
         final String[] serviziNomi=services.split(",");
 
         //ArrayList to store Alert Dialog selected items index position
         final ArrayList<Integer> selectedItems = new ArrayList<>();
+
 
         //Array to store pre checked/selected items
         boolean[] preCheckedItems;
@@ -182,60 +183,65 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
             }
 
         //Define the AlertBuilder as a multiple choice items collection.
-
-        adb.setMultiChoiceItems(serviziNomi, preCheckedItems, new DialogInterface.OnMultiChoiceClickListener(){
+        adb.setMultiChoiceItems(serviziNomi, preCheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked){
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 
                 //You can update the preCheckedItems array here
 
-                if(isChecked)
-                {
+                if (isChecked) {
                     //Add the checked item to checked items collection
                     selectedItems.add(which);
-                }
-                else if(selectedItems.contains(which))
-                {
+                } else if (selectedItems.contains(which)) {
                     selectedItems.removeAll(Collections.singleton(which));
                 }
             }
         });
 
         //Define the AlertDialog positive/ok/yes button
-        adb.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+        adb.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which){
+            public void onClick(DialogInterface dialog, int which) {
                 //When user click the positive button from alert dialog
                 //Set a message to show user at top
-            if(selectedItems.size()!=0) {
-                tv.setText(R.string.yesFilter);
+                if (selectedItems.size() != 0) {
+                    tv.setText(R.string.yesFilter);
 
-                //iterate through ArrayList
-                for (int i = 0; i < selectedItems.size(); i++) {
+                    //iterate through ArrayList
+                    for (int i = 0; i < selectedItems.size(); i++) {
 
-                    int IndexOfServicesArray = selectedItems.get(i);
+                        int IndexOfServicesArray = selectedItems.get(i);
 
-                    String selectedService = Arrays.asList(serviziNomi).get(IndexOfServicesArray);
-                    //Display the selected services to TextView
-                    tv.setText(tv.getText() + " "+ selectedService + "; ");
+                        String selectedService = Arrays.asList(serviziNomi).get(IndexOfServicesArray);
+                        //Display the selected services to TextView
+                        tv.setText(tv.getText() + " " + selectedService + "; ");
+                    }
+                } else {
+                    tv.setText(R.string.noFilter);
                 }
-            }else{
-                tv.setText(R.string.noFilter);
-            }
                 transformArray(selectedItems);
                 checkFilterUpdateAdapter();
             }
         });
 
         //Define the Neutral/Cancel button in AlertDialog
-        adb.setNeutralButton(R.string.neutral_button, new DialogInterface.OnClickListener(){
+        adb.setNeutralButton(R.string.neutral_button, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which){
-                preCheckedItemsLast= new boolean[]{ false, false, false, false, false, false, false, false, false, false, false} ;
+            public void onClick(DialogInterface dialog, int which) {
+                preCheckedItemsLast = new boolean[]{false, false, false, false, false, false, false, false, false, false, false};
                 tv.setText(R.string.noFilter);
                 checkFilterUpdateAdapter();
             }
         });
+
+        adb.setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                preCheckedItemsLast = saveItemForCancelDialog; //TODO non funge
+
+            }
+        });
+        adb.setCancelable(false);
 
         //Display the Alert Dialog on app interface
         adb.show();

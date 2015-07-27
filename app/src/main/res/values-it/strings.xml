@@ -20,12 +20,10 @@
 
 
     <string name="action_home">Zoom su tutti i punti di balneazione</string>
-    <string name="action_filter">Filtro sui punti di balneazione</string>
+    <string name="action_filter">Filtro</string>
     <string name="action_terrain">Stile Mappa</string>
     <string name="action_info">Legenda</string>
-
     <string name="action_refresh">Aggiorna Dati</string>
-
     <string name="action_search">Ricerca punto di balneazione</string>
 
     <string name="water_high">Eccellente</string>
@@ -34,7 +32,7 @@
     <string name="water_poor">Scarsa</string>
     <string name="prohibition">Divieto temporaneo</string>
 
-    <string name="search_hint">Ricerca per Località o Comune ... </string>
+    <string name="search_hint">Ricerca per Località o Comune … </string>
     <string name="empty_list">Nessun risultato trovato</string>
 
     <string name="noConnection">Connessione necessaria per aggiornare il Database</string>
@@ -65,24 +63,25 @@
     <string name="descriptionAcque2">Questi parametri microbiologici rappresentano la migliore corrispondenza possibile tra inquinamento di origine fecale e ripercussioni per la salute nelle acque destinate a scopi ricreativi</string>
 
     <!-- Preferenze-->
-    <string name="vistaSat">Vista satellite</string>
+    <string name="vistaSat">Vista satellitare</string>
     <string name="descVistaSat">Se selezionata, imposta la mappa satellitare come predefinita all’apertura dell’app</string>
     <string name="strRefresh">Frequenza aggiornamento dati</string>
     <string name="descRefresh">Selezionare il tempo minimo tra un aggiornamento e l\'altro (Default 12 ore)</string>
 
     <!-- Servizi -->
-    <string name="picnic">Area picnic</string>
-    <string name="parco">Parco giochi</string>
-    <string name="igienici">Servizi Igienici</string>
-    <string name="bar">Bar</string>
-    <string name="rist">Ristorante</string>
-    <string name="parcheggio">Parcheggio</string>
-    <string name="handicap">Handicap</string>
-    <string name="cane">Cane</string>
-    <string name="camping">Area Camping</string>
-    <string name="areaVerde">Area verde</string>
-    <string name="bike">Biciclette</string>
+    <string name="allServices">Area picnic,Parco giochi,Servizi Igienici,Bar,Ristorante,Parcheggio,Area campeggio,Pista ciclopedonali,Area verde,Accesso ai cani,Accessibili a portatori di Handicap (Festa)</string>
+    <string name="title_activity_activity__filter">Activity_Filter</string>
+
+    <!-- filter -->
+    <string name="title_filter">Seleziona i servizi essenziali per te!</string>
+    <string name="neutral_button">Reset</string>
+    <string name="noFilter">Nessun filtro attivo</string>
+    <string name="yesFilter">Filtro attivo:</string>
 
 
+
+    <!-- Informazioni utili -->
+    <string name="allInfo">Guardia medica,Farmacia,Ospedale,Carabinieri,Polizia provinciale,Polizia locale</string>
+    <string name="tel">tel.</string>
 
 </resources>
