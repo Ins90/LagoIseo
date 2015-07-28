@@ -7,9 +7,10 @@
 <LinearLayout
 
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     tools:context="it.inserrafesta.iseomap.activity.DetailsActivity">
+
     <include
         layout="@layout/toolbar"/>
 
@@ -48,14 +49,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Qualità dell'acqua:"
+                android:text="@string/qlt_f"
                 android:textStyle="bold"
                 android:textSize="15dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_classificazione"
-                android:text="Eccellente"
                 android:textSize="15dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="comune"
+            android:text="@string/comune"
             android:padding="15dp"
             android:textSize="16dp"
             android:id="@+id/tv_comune" />
@@ -88,31 +88,43 @@
         android:padding="15dp"
         android:textSize="15dp"
         android:id="@+id/distance" />
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/details_container">
-        </LinearLayout>
-        <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/GridLayout1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context=".GridXMLActivity"
-            android:columnCount="1"
-            >
 
-        </GridLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:id="@+id/mygrid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/red">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/comune"
 
-        </LinearLayout>
+        android:id="@+id/button2"
+        />
+<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".DetailsActivity"
+    android:orientation="vertical">
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#3F51B5"/>
+
+    <it.inserrafesta.iseomap.ExpandableHeightGridView
+        android:id="@+id/gridView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="5dp"
+        android:columnWidth="80dp"
+        android:gravity="center"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="5dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="false"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#3F51B5"/>
+</LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

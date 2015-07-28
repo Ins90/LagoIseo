@@ -44,6 +44,7 @@
     <string name="map_sat">Mappa satellitare</string>
     <string name="map_str">Mappa stradale</string>
     <string name="zoom_iseo">Zoom sul lago d\'Iseo</string>
+    <string name="qlt_f">Qualità dell\'acqua: </string>
     <string name="qlt">Qualità acqua: </string>
     <string name="qlt_ecc">Qualità acqua: Eccellente</string>
     <string name="qlt_buo">Qualità acqua: Buona</string>

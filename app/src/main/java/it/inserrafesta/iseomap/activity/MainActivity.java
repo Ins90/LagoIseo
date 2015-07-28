@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected void displayMapFragment() {
+    public void displayMapFragment() {
         getSupportActionBar().setTitle(R.string.app_name);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (mapFragment.isAdded()) { // if the fragment is already in container
