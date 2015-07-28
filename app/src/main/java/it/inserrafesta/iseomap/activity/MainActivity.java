@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // on first time display view for first nav item (map of Lake Iseo )
             SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-            boolean OptSatellite = SP.getBoolean("satellite", true);
+            boolean OptSatellite = SP.getBoolean("satellite", false);
             Bundle bundl = new Bundle();
             bundl.putBoolean("OptSatellite", OptSatellite);
 

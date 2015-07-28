@@ -54,7 +54,7 @@ public class DetailsActivity extends AppCompatActivity {
     private String imageUrl;
     SharedPreferences prefLat;
     SharedPreferences prefLng;
-
+    double distanza;
     private GridView gridView;
     private GridViewAdapter gridAdapter;
     @Override
@@ -93,9 +93,11 @@ public class DetailsActivity extends AppCompatActivity {
                 break;
             }
         }
-
-        double distanza = getDistance(Double.valueOf(prefLat.getString("prefLat", null)), Double.valueOf(prefLng.getString("prefLng", null)), lat, lng) / 1000;
-
+        if(!prefLat.getString("prefLat", "0").equals("0")) {
+            distanza = getDistance(Double.valueOf(prefLat.getString("prefLat", null)), Double.valueOf(prefLng.getString("prefLng", null)), lat, lng) / 1000;
+        }else{
+            distanza=0;
+        }
         /*
         ** Set Views content
          */
@@ -106,9 +108,12 @@ public class DetailsActivity extends AppCompatActivity {
         if (distanza !=0) {
             DecimalFormat df = new DecimalFormat("##.##");
             df.setRoundingMode(RoundingMode.DOWN);
+            distance.setVisibility(View.VISIBLE);
             distance.setText(Html.fromHtml("<B>Distanza dalla località: </B>" + df.format(distanza) + " Km"));
 
 
+        }else{
+            distance.setVisibility(View.GONE);
         }
         Button btn = (Button) findViewById(R.id.button2);
         btn.setOnClickListener(new View.OnClickListener() {

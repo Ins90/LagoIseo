@@ -105,7 +105,15 @@ public class MapFragment extends Fragment implements
         int id = item.getItemId();
         switch(id){
             case R.id.action_home:
-                    Toast.makeText(getActivity().getApplicationContext(), "Centramento mappa ...", Toast.LENGTH_SHORT).show();
+                if((System.currentTimeMillis()/1000)-prefGPS.getLong("timeToGps",0)>timeRefreshGPS) {
+                    //Toast.makeText( context,"tempo salvato: "+String.valueOf(System.currentTimeMillis()/1000-prefGPS.getLong("timeToGps",0)) +"tempo",Toast.LENGTH_SHORT).show();
+                    mGoogleApiClient.connect();
+                }else{
+                    mGoogleApiClient.disconnect();
+                    locManDisable=true;
+                }
+
+                Toast.makeText(getActivity().getApplicationContext(), "Centramento mappa ...", Toast.LENGTH_SHORT).show();
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(INITIAL_LATLNG, INITIAL_ZOOM));
               //    googleMap.getUiSettings().setScrollGesturesEnabled(false);
                 break;
@@ -131,6 +139,7 @@ public class MapFragment extends Fragment implements
 
                 break;
             case R.id.action_refresh:
+
                 BackgroundTask task = new BackgroundTask(getActivity());
                 task.execute();
 
@@ -182,7 +191,7 @@ public class MapFragment extends Fragment implements
 
 
         if((System.currentTimeMillis()/1000)-prefGPS.getLong("timeToGps",0)>timeRefreshGPS) {
-          //  Toast.makeText( context,"tempo salvato: "+String.valueOf(System.currentTimeMillis()/1000-prefGPS.getLong("timeToGps",0)) +"tempo",Toast.LENGTH_SHORT).show();
+            Toast.makeText( context,"tempo salvato: "+String.valueOf(System.currentTimeMillis()/1000-prefGPS.getLong("timeToGps",0)) +"tempo",Toast.LENGTH_SHORT).show();
             mGoogleApiClient.connect();
         }else{
             mGoogleApiClient.disconnect();
@@ -514,7 +523,7 @@ public class MapFragment extends Fragment implements
 
     @Override
     public void onLocationChanged(Location location) {
-       // Toast.makeText(context, "Location received: " + location.getLatitude(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Location received: " + location.getLatitude(), Toast.LENGTH_SHORT).show();
         prefLat.edit().putString("prefLat", String.valueOf(location.getLatitude())).apply();
         prefLng.edit().putString("prefLng", String.valueOf(location.getLongitude())).apply();
         prefGPS.edit().putLong("timeToGps", System.currentTimeMillis() / 1000).apply();
