@@ -7,8 +7,14 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
-         <!--Customize your theme here. -->
+        <item name="colorPrimary">@color/PrimaryColor</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <!--Customize your theme here. -->
 
+    </style>
+
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/PrimaryColor</item>
     </style>
 
     <style name="MyDrawerArrowToggle" parent="Widget.AppCompat.DrawerArrowToggle">

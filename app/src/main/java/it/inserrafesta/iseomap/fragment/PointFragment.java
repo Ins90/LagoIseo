@@ -1,5 +1,6 @@
 package it.inserrafesta.iseomap.fragment;
 
+import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -75,8 +76,12 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
                 preCheckedItemsLast= new boolean[]{ false, false, false, false, false, false, false, false, false, false, false} ;
                 checkFilterUpdateAdapter();
                 final TextView tv = (TextView) getActivity().findViewById(R.id.testFilter);
-                tv.setText(R.string.noFilter);
+                tv.setText(Html.fromHtml("<B>" +getActivity().getResources().getString(R.string.noFilter)+"</B>"));
+                final TextView contenutoFiltro = (TextView) getActivity().findViewById(R.id.componentFilter);
                 tv.setVisibility(View.GONE);
+                contenutoFiltro.setText("");
+                contenutoFiltro.setVisibility(View.GONE);
+
                 setItemsVisibility(menuNew, searchItem, false); //nascondo l item del filtro quando apro la ricerca
 
                 return true;  // Return true to expand action view
@@ -155,6 +160,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
     public void showFilter(){
         //Get widgets reference from XML layout
         final TextView tv = (TextView) getActivity().findViewById(R.id.testFilter);
+        final TextView contenutoFiltro = (TextView) getActivity().findViewById(R.id.componentFilter);
 
         //Initialize a new AlertDialog Builder
         AlertDialog.Builder adb = new AlertDialog.Builder(this.getActivity());
@@ -205,8 +211,11 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
                 //When user click the positive button from alert dialog
                 //Set a message to show user at top
                 if (selectedItems.size() != 0) {
-                    tv.setText(R.string.yesFilter);
+                    tv.setTypeface(null, Typeface.NORMAL);
 
+                    tv.setText(Html.fromHtml("<B>" + getActivity().getResources().getString(R.string.yesFilter) + "</B>"));
+                    contenutoFiltro.setText("");
+                    contenutoFiltro.setVisibility(View.VISIBLE);
                     //iterate through ArrayList
                     for (int i = 0; i < selectedItems.size(); i++) {
 
@@ -214,10 +223,11 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
 
                         String selectedService = Arrays.asList(serviziNomi).get(IndexOfServicesArray);
                         //Display the selected services to TextView
-                        tv.setText(tv.getText() + " " + selectedService + "; ");
+                        contenutoFiltro.setText(contenutoFiltro.getText() + " " + selectedService + "; ");
                     }
                 } else {
-                    tv.setText(R.string.noFilter);
+                    tv.setText(Html.fromHtml("<B>" +getActivity().getResources().getString(R.string.noFilter)+"</B>"));
+                    contenutoFiltro.setVisibility(View.GONE);
                 }
                 transformArray(selectedItems);
                 checkFilterUpdateAdapter();
@@ -229,8 +239,10 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 preCheckedItemsLast = new boolean[]{false, false, false, false, false, false, false, false, false, false, false};
-                tv.setText(R.string.noFilter);
+                tv.setText(Html.fromHtml("<B>" + getActivity().getResources().getString(R.string.noFilter) + "</B>"));
                 checkFilterUpdateAdapter();
+                contenutoFiltro.setVisibility(View.GONE);
+
             }
         });
 

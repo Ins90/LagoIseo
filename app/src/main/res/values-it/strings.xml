@@ -17,6 +17,8 @@
     <string name="title_activity_details">Dettagli</string>
     <string name="localita">Località</string>
     <string name="comune">Comune</string>
+    <string name="indirizzo">Indirizzo</string>
+
     <string name="distanceLoc">Distanza dalla località</string>
 
 <!-- dialog alert connection and toast message-->
@@ -83,7 +85,7 @@
     <string name="descRefresh">Selezionare il tempo minimo tra un aggiornamento e l\'altro (Default 12 ore)</string>
 
     <!-- Servizi -->
-    <string name="allServices">Area Picnic,Parco giochi,Servizi Igienici,Bar,Ristorante,Parcheggio,Area campeggio,Pista ciclabile,Area verde,Accesso ai cani,Accessibilità</string>
+    <string name="allServices">Area Picnic,Parco giochi,Servizi Igienici,Bar,Ristorante,Parcheggio,Area campeggio,Pista ciclabile,Area verde,Accesso cani,Accessibilità,Attracco barche</string>
     <string name="title_activity_activity__filter">Activity_Filter</string>
 
     <!-- filter -->
@@ -97,6 +99,6 @@
 
     <!-- Informazioni utili -->
     <string name="allInfo">Guardia medica,Farmacia,Ospedale,Carabinieri,Polizia provinciale,Polizia locale</string>
-    <string name="tel">tel.</string>
+    <string name="tel">Telefono</string>
 
 </resources>

@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -41,7 +42,7 @@ public class DetailsActivity extends AppCompatActivity {
     public static int numInfo = 6;
     private ArrayList<InformazioneUtile> infoVec = new ArrayList<>();
     String[] infoNomiArray;
-    static int numServizi=11;
+    static int numServizi=12;
     static String[] serviziNomiArray;
     public static Vector<String> serviziNomi;
     private static ArrayList<Boolean> serviziVec;
@@ -106,26 +107,31 @@ public class DetailsActivity extends AppCompatActivity {
         /*
         ** Set Views content
          */
+     /*   textView.setTypeface(null, Typeface.BOLD_ITALIC);
+        textView.setTypeface(null, Typeface.BOLD);
+        textView.setTypeface(null, Typeface.ITALIC);
+        textView.setTypeface(null, Typeface.NORMAL);
+     */
         TextView tvComune = (TextView) findViewById(R.id.tv_comune);
+        TextView tvInd = (TextView) findViewById(R.id.tv_indirizzo);
+
         tvComune.setText(Html.fromHtml("<B>"+getResources().getString(R.string.comune)+": "+"</B>"+ comune + " (" + provincia + ")"));
+
+        if(!indirizzo.isEmpty()) {
+            tvInd.setVisibility(View.VISIBLE);
+            tvInd.setText(Html.fromHtml("<B>" + getResources().getString(R.string.indirizzo) + ": " + "</B>" + indirizzo));
+        }else{
+            tvInd.setVisibility(View.GONE);
+        }
         TextView distance = (TextView) findViewById(R.id.distance);
         if (distanza !=0) {
             DecimalFormat df = new DecimalFormat("##.##");
             df.setRoundingMode(RoundingMode.DOWN);
             distance.setVisibility(View.VISIBLE);
-            distance.setText(getResources().getString(R.string.distanceLoc) + ": " + df.format(distanza) + " Km");
-
-
+            distance.setText(Html.fromHtml("<B>"+getResources().getString(R.string.distanceLoc) + ": </B>" + df.format(distanza) + " Km"));
         }else{
             distance.setVisibility(View.GONE);
         }
-        Button btn = (Button) findViewById(R.id.button2);
-        btn.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                //myClick(v); /* my method to call new intent or activity */
-            }
-        });
 
         //Gridview per i servizi
         ExpandableHeightGridView gridView = (ExpandableHeightGridView) findViewById(R.id.gridView);
@@ -169,14 +175,14 @@ public class DetailsActivity extends AppCompatActivity {
                 if(!indirizzo.equals(""))
                     infoRow.addView(indirizzoTv);
                 infoContainer.addView(infoRow);
-                titoloTv.setBackgroundColor(Color.parseColor("#3D51B4"));
+                titoloTv.setBackgroundColor(Color.parseColor("#3F51B5"));
                 titoloTv.setTextColor(Color.WHITE);
                 titoloTv.setPadding(30,20,20,20);
                 titoloTv.setTextSize(15);
                 nomeTv.setPadding(30,10,10,10);
                 telefonoTv.setPadding(30,10,10,10);
                 indirizzoTv.setPadding(30,10,10,10);
-                infoRow.setPadding(0,40,0,0);
+                infoRow.setPadding(0,20,0,0);
             }
         }
         /*

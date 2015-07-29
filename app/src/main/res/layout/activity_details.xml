@@ -77,29 +77,41 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="15dp"
             android:textSize="16dp"
-            android:id="@+id/tv_comune" />
-
+            android:id="@+id/tv_comune"
+            android:paddingLeft="15dp"
+            android:paddingTop="15dp"
+            android:paddingRight="15dp" />
+    <TextView
+            android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:textSize="16dp"
+        android:visibility="gone"
+        android:id="@+id/tv_indirizzo" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         android:textSize="15dp"
-        android:id="@+id/distance" />
-
+        android:id="@+id/distance"
+        android:paddingTop="15dp"
+        android:visibility="gone"
+        android:paddingLeft="15dp"
+        android:paddingBottom="15dp" />
+<!--
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/comune"
 
         android:id="@+id/button2"
-        />
+        /> -->
 <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".DetailsActivity"
-    android:orientation="vertical">
+        android:orientation="vertical">
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="2dp"
@@ -119,10 +131,6 @@
         android:focusableInTouchMode="false"
         android:clickable="false"/>
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:background="#3F51B5"/>
 </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

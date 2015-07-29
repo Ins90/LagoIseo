@@ -7,14 +7,38 @@
 
     <TextView
         android:id="@+id/testFilter"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="1dp"
-        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
         android:textSize="17sp"
+        android:textStyle="bold"
         android:text="@string/noFilter"
-        />
+        android:paddingBottom="10dp"
+        android:background="@color/PrimaryColor"
+        android:textColor="@color/white"
+        android:paddingRight="10dp" />
 
+    <TextView
+        android:id="@+id/componentFilter"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:textSize="17sp"
+        android:background="@color/PrimaryColor"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:paddingRight="10dp" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:paddingTop="10dp"
+        android:background="#3F51B5"/>
     <ListView
         android:id="@android:id/list"
         android:layout_marginTop="7dp"
