@@ -17,6 +17,19 @@
     <string name="title_activity_details">Dettagli</string>
     <string name="localita">Località</string>
     <string name="comune">Comune</string>
+    <string name="distanceLoc">Distanza dalla località</string>
+
+<!-- dialog alert connection and toast message-->
+    <string name="titleDialog">Connessione Internet assente</string>
+    <string name="descDialog">La prima volta è necessaria una connessione Internet per usare l\'applicazione.  </string>
+    <string name="connButton">Esci </string>
+    <string name="exitToast">Premere ancora il tasto INDIETRO per uscire dall\'app</string>
+    <string name="zoomMap">Centramento mappa ...</string>
+    <string name="update">Aggiornamento in corso...</string>
+
+    <string name="first">12 ore</string>
+    <string name="second">1 giorno</string>
+    <string name="third">1 setimana</string>
 
 
     <string name="action_home">Zoom su tutti i punti di balneazione</string>
@@ -44,6 +57,7 @@
     <string name="map_sat">Mappa satellitare</string>
     <string name="map_str">Mappa stradale</string>
     <string name="zoom_iseo">Zoom sul lago d\'Iseo</string>
+    <string name="qlt_f">Qualità dell\'acqua: </string>
     <string name="qlt">Qualità acqua: </string>
     <string name="qlt_ecc">Qualità acqua: Eccellente</string>
     <string name="qlt_buo">Qualità acqua: Buona</string>
@@ -69,14 +83,13 @@
     <string name="descRefresh">Selezionare il tempo minimo tra un aggiornamento e l\'altro (Default 12 ore)</string>
 
     <!-- Servizi -->
-    <string name="allServices">Area Picnic,Parco giochi,Servizi Igienici,Bar,Ristorante,Parcheggio,Area campeggio,Pista ciclabile,Area verde,Accesso ai cani,Accessibile a portatori di Handicap</string>
+    <string name="allServices">Area Picnic,Parco giochi,Servizi Igienici,Bar,Ristorante,Parcheggio,Area campeggio,Pista ciclabile,Area verde,Accesso ai cani,Accessibilità</string>
     <string name="title_activity_activity__filter">Activity_Filter</string>
 
     <!-- filter -->
     <string name="title_filter">Seleziona i servizi essenziali per te!</string>
     <string name="neutral_button">Reset</string>
     <string name="negative_button">Annulla</string>
-
     <string name="noFilter">Nessun filtro attivo</string>
     <string name="yesFilter">Filtro attivo:</string>
 

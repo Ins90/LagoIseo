@@ -39,6 +39,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -113,7 +114,7 @@ public class MapFragment extends Fragment implements
                     locManDisable=true;
                 }
 
-                Toast.makeText(getActivity().getApplicationContext(), "Centramento mappa ...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), getResources().getString(R.string.zoomMap), Toast.LENGTH_SHORT).show();
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(INITIAL_LATLNG, INITIAL_ZOOM));
               //    googleMap.getUiSettings().setScrollGesturesEnabled(false);
                 break;
@@ -127,10 +128,10 @@ public class MapFragment extends Fragment implements
                 }
 
                 if(googleMap.getMapType()==GoogleMap.MAP_TYPE_NORMAL){
-                    Toast.makeText(context, "Mappa satellitare", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, getResources().getString(R.string.map_sat), Toast.LENGTH_SHORT).show();
                     googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 }else{
-                    Toast.makeText(context, "Mappa stradale", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, getResources().getString(R.string.map_str), Toast.LENGTH_SHORT).show();
                     googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 }
                 break;
@@ -327,11 +328,43 @@ public class MapFragment extends Fragment implements
     }
 
     /*
-     * Aggiunge i makers alla mappa passata costruendoli da places
+     * Aggiunge i makers alla mappa
      */
     private void putMakers(List<Place> places,GoogleMap mMap){
-        for(int i=0;i<places.size();i++)
-            places.get(i).makeMaker(mMap);
+        for(int i=0;i<places.size();i++) {
+            //places.get(i).makeMaker(mMap);
+
+            int image = 0;
+
+            if (places.get(i).getDivieto() == 1) {
+                image = R.drawable.marker_divieto;
+            } else {
+                switch (places.get(i).getClassificazione()) {
+                    case 1:
+                        image = R.drawable.marker_1;
+                        break;
+                    case 2:
+                        image = R.drawable.marker_2;
+                        break;
+                    case 3:
+                        image = R.drawable.marker_3;
+                        break;
+                    case 4:
+                        image = R.drawable.marker_4;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            String title = getActivity().getResources().getString(R.string.localita) +" "+ places.get(i).getLocalita() + "_" + places.get(i).getDivieto() + "_" + places.get(i).getClassificazione() + "_" + places.get(i).getImageUrl();
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(places.get(i).getLat(), places.get(i).getLng()))
+                    .title(title)
+                    .icon(BitmapDescriptorFactory.fromResource(image))
+                    .snippet(getActivity().getResources().getString(R.string.comune)+ ": " + places.get(i).getComune()));
+        }
     }
 
     public void showLegend(){
@@ -544,7 +577,7 @@ public class MapFragment extends Fragment implements
 
         @Override
         protected void onPreExecute() {
-            dialog.setMessage("Aggiornamento in corso...");
+            dialog.setMessage(getResources().getString(R.string.update));
             dialog.show();
         }
 

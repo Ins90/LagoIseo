@@ -1,8 +1,8 @@
 <resources>
     <string-array name="listArray">
-        <item>12 ore</item>
-        <item>1 giorno</item>
-        <item>1 settimana</item>
+        <item>@string/first</item>
+        <item>@string/second</item>
+        <item>@string/third</item>
     </string-array>
 
     <string-array name="listValues">

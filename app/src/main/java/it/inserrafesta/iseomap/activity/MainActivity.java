@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,15 +17,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import java.lang.reflect.Field;
-
 import it.inserrafesta.iseomap.ConnectionDetector;
-import it.inserrafesta.iseomap.NetworkConnectivity;
-import it.inserrafesta.iseomap.NetworkMonitorListener;
 import it.inserrafesta.iseomap.R;
 
 import it.inserrafesta.iseomap.fragment.LinkFragment;
@@ -55,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = getApplicationContext();
-
+        checkFirstRun();
         // Initializing Toolbar and setting it as the actionbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,29 +57,11 @@ public class MainActivity extends AppCompatActivity {
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        //checkStatusConnection(); //check only first time
-        //checkRealTimeConnection(); //check all the time
-
-       /* try {
-            ViewConfiguration config = ViewConfiguration.get(this);
-            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-
-            if (menuKeyField != null) {
-                menuKeyField.setAccessible(true);
-                menuKeyField.setBoolean(config, false);
-            }
-        }
-        catch (Exception e) {
-            // presumably, not relevant
-        }
-
-        */
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             // This method will trigger on item Click of navigation menu
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-
 
                 //Checking if the item is in checked state or not, if not make it in checked state
                 if (menuItem.isChecked()) menuItem.setChecked(false);
@@ -174,33 +150,12 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
-    private void checkRealTimeConnection() {
-        NetworkConnectivity.sharedNetworkConnectivity().configure(this);
-        NetworkConnectivity.sharedNetworkConnectivity().startNetworkMonitor();
-        NetworkConnectivity.sharedNetworkConnectivity()
-                .addNetworkMonitorListener(new NetworkMonitorListener() {
-                    @Override
-                    public void connectionCheckInProgress() {
-                        // Okay to make UI updates (check-in-progress is rare)
-                    }
-
-                    @Override
-                    public void connectionEstablished() {
-                        // Okay to make UI updates -- do something now that
-                        // connection is avaialble
-                        try {
-                            alert.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void connectionLost() {
-                        // Okay to make UI updates -- bummer, no connection
-                        showAlertDialog("Connessione Internet assente", "Necessaria una connessione internet per usare l'applicazione");
-                    }
-                });
+    public void checkFirstRun() {
+        boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
+        if (isFirstRun){
+            // Place your dialog code here to display the dialog
+            checkStatusConnection();
+        }
     }
 
     protected void checkStatusConnection(){
@@ -210,7 +165,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (!isInternetPresent) {
             // make HTTP requests
-            showAlertDialog("Connessione Internet assente", "Necessaria una connessione internet per usare l'applicazione");
+            showAlertDialog(getResources().getString(R.string.titleDialog), getResources().getString(R.string.descDialog));
+        }else{
+            getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                    .edit()
+                    .putBoolean("isFirstRun", false)
+                    .apply();
         }
     }
 
@@ -332,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 System.exit(0);
             } else {
-                Toast.makeText(getBaseContext(), "Premere ancora il tasto INDIETRO per uscire dall'app", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),getResources().getString(R.string.exitToast), Toast.LENGTH_SHORT).show();
             }
             mBackPressed = System.currentTimeMillis();
         }
@@ -358,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        alert.setPositiveButton("Esci", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(getResources().getString(R.string.connButton), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
                 finish();
