@@ -3,6 +3,8 @@ package it.inserrafesta.iseomap.activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -15,7 +17,6 @@ import android.view.View;
 import android.view.WindowManager;
 
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,7 +45,9 @@ public class DetailsActivity extends AppCompatActivity {
     static String[] serviziNomiArray;
     public static Vector<String> serviziNomi;
     private static ArrayList<Boolean> serviziVec;
+    private String id_asl;
     private String comune;
+    private String indirizzo;
     private String localita;
     private String provincia;
     private double lat;
@@ -55,8 +58,7 @@ public class DetailsActivity extends AppCompatActivity {
     SharedPreferences prefLat;
     SharedPreferences prefLng;
     double distanza;
-    private GridView gridView;
-    private GridViewAdapter gridAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Context context = getApplication();
@@ -90,6 +92,9 @@ public class DetailsActivity extends AppCompatActivity {
                 imageUrl = MapFragment.places.get(i).getImageUrl();
                 serviziVec = MapFragment.places.get(i).getServiziVec();
                 infoVec = MapFragment.places.get(i).getInfoVec();
+                indirizzo=MapFragment.places.get(i).getIndirizzo();
+                id_asl=MapFragment.places.get(i).getId_asl();
+
                 break;
             }
         }
@@ -102,14 +107,13 @@ public class DetailsActivity extends AppCompatActivity {
         ** Set Views content
          */
         TextView tvComune = (TextView) findViewById(R.id.tv_comune);
-        tvComune.setText(Html.fromHtml("<B>Comune: </B>" + comune + " (" + provincia + ")"));
-
+        tvComune.setText(Html.fromHtml("<B>"+getResources().getString(R.string.comune)+": "+"</B>"+ comune + " (" + provincia + ")"));
         TextView distance = (TextView) findViewById(R.id.distance);
         if (distanza !=0) {
             DecimalFormat df = new DecimalFormat("##.##");
             df.setRoundingMode(RoundingMode.DOWN);
             distance.setVisibility(View.VISIBLE);
-            distance.setText(Html.fromHtml("<B>Distanza dalla località: </B>" + df.format(distanza) + " Km"));
+            distance.setText(getResources().getString(R.string.distanceLoc) + ": " + df.format(distanza) + " Km");
 
 
         }else{
@@ -125,7 +129,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         //Gridview per i servizi
         ExpandableHeightGridView gridView = (ExpandableHeightGridView) findViewById(R.id.gridView);
-        gridAdapter = new GridViewAdapter(this, R.layout.grid_item_layout, getData());
+        GridViewAdapter gridAdapter = new GridViewAdapter(this, R.layout.grid_item_layout, getData());
         gridView.setAdapter(gridAdapter);
         gridView.setExpanded(true);
 
@@ -221,8 +225,8 @@ public class DetailsActivity extends AppCompatActivity {
             if (serviziVec.get(i)) {
                 Resources res = getResources();
                 int id = getResources().getIdentifier("servizio_" + (i + 1), "drawable", this.getPackageName());
-                //Bitmap bitmap = BitmapFactory.decodeResource(res,id);
-                serviceItems.add(new ServiceItem(id,serviziNomi.elementAt(i)));
+                Bitmap bitmap = BitmapFactory.decodeResource(res, id);
+                serviceItems.add(new ServiceItem(bitmap,serviziNomi.elementAt(i)));
             }
         }
         return serviceItems;

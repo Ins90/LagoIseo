@@ -9,9 +9,11 @@ import android.util.Log;
 public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_PLACE = "localita_tbl";
     public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_ID_ASL = "id_asl";
     public static final String COLUMN_LAT = "lat";
     public static final String COLUMN_LNG = "lng";
     public static final String COLUMN_COMUNE = "comune";
+    public static final String COLUMN_INDIRIZZO = "indirizzo";
     public static final String COLUMN_LOCALITA = "localita";
     public static final String COLUMN_PROVINCIA = "provincia";
     public static final String COLUMN_CLAS = "classificazione";
@@ -34,9 +36,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_CREATE = "create table "
             + TABLE_PLACE + "("
             + COLUMN_ID + " integer primary key,"
+            + COLUMN_ID_ASL + " text not null,"
             + COLUMN_LAT + " real not null,"
             + COLUMN_LNG + " real not null,"
             + COLUMN_COMUNE + " text not null,"
+            + COLUMN_INDIRIZZO + " text,"
             + COLUMN_LOCALITA + " text not null,"
             + COLUMN_PROVINCIA + " text not null,"
             + COLUMN_CLAS + " integer not null,"

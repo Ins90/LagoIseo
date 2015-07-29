@@ -3,21 +3,21 @@ package it.inserrafesta.iseomap;
 import android.graphics.Bitmap;
 
 public class ServiceItem {
-    private int imageId;
+    private Bitmap image;
     private String title;
 
-    public ServiceItem(int image, String title) {
+    public ServiceItem(Bitmap image, String title) {
         super();
-        this.imageId = image;
+        this.image = image;
         this.title = title;
     }
 
-    public int getImage() {
-        return imageId;
+    public Bitmap getImage() {
+        return image;
     }
 
-    public void setImage(int imageId) {
-        this.imageId = imageId;
+    public void setImage(Bitmap imageId) {
+        this.image = imageId;
     }
 
     public String getTitle() {

@@ -12,7 +12,9 @@ import java.util.List;
 public class Place {
 
     private long ID;
+    private String id_asl;
     private String comune;
+    private String indirizzo;
     private String localita;
     private String provincia;
     private double lat;
@@ -25,13 +27,15 @@ public class Place {
     private String serviziStr;
 
 
-    public Place(long id, double _lat, double _lng, String _comune, String _localita, String _provincia, int _classificazione, int _divieto, String _imageUrl,String serviziString,ArrayList<InformazioneUtile> _infoVec){
+    public Place(long id, String _id_asl, double _lat, double _lng, String _comune, String _indirizzo, String _localita, String _provincia, int _classificazione, int _divieto, String _imageUrl,String serviziString,ArrayList<InformazioneUtile> _infoVec){
 
         serviziStr=serviziString;
         infoVec = _infoVec;
 
         ID=id;
+        id_asl=_id_asl;
         comune = _comune;
+        indirizzo=_indirizzo;
         localita = _localita;
         provincia = _provincia;
         lat = _lat;
@@ -176,4 +180,13 @@ public class Place {
     public long getID() {
         return ID;
     }
+
+    public String getId_asl() {
+        return id_asl;
+    }
+
+    public String getIndirizzo() {
+        return indirizzo;
+    }
+
 }

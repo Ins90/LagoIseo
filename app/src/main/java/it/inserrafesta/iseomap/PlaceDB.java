@@ -13,9 +13,11 @@ public class PlaceDB {
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
     private String[] allColumns = {MySQLiteHelper.COLUMN_ID,
+            MySQLiteHelper.COLUMN_ID_ASL,
             MySQLiteHelper.COLUMN_LAT,
             MySQLiteHelper.COLUMN_LNG,
             MySQLiteHelper.COLUMN_COMUNE,
+            MySQLiteHelper.COLUMN_INDIRIZZO,
             MySQLiteHelper.COLUMN_LOCALITA,
             MySQLiteHelper.COLUMN_PROVINCIA,
             MySQLiteHelper.COLUMN_CLAS,
@@ -42,10 +44,11 @@ public class PlaceDB {
     // from Object to database
     private ContentValues placeToValues(Place place) {
         ContentValues values = new ContentValues();
-        //values.put(MySQLiteHelper.COLUMN_ID, place.getID());
+        values.put(MySQLiteHelper.COLUMN_ID_ASL, place.getId_asl());
         values.put(MySQLiteHelper.COLUMN_LAT, place.getLat());
         values.put(MySQLiteHelper.COLUMN_LNG, place.getLng());
         values.put(MySQLiteHelper.COLUMN_COMUNE, place.getComune());
+        values.put(MySQLiteHelper.COLUMN_INDIRIZZO, place.getIndirizzo());
         values.put(MySQLiteHelper.COLUMN_LOCALITA, place.getLocalita());
         values.put(MySQLiteHelper.COLUMN_PROVINCIA, place.getProvincia());
         values.put(MySQLiteHelper.COLUMN_CLAS, place.getClassificazione());
@@ -65,20 +68,22 @@ public class PlaceDB {
     // from database to Object
     private Place cursorToPlace(Cursor cursor) {
         long id=cursor.getLong(0);
-        double lat =cursor.getDouble(1);
-        double lng =cursor.getDouble(2);
-        String comune = cursor.getString(3);
-        String localita = cursor.getString(4);
-        String provincia = cursor.getString(5);
-        int clas =cursor.getInt(6);
-        int divieto =cursor.getInt(7);
-        String image = cursor.getString(8);
+        String id_asl=cursor.getString(1);
+        double lat =cursor.getDouble(2);
+        double lng =cursor.getDouble(3);
+        String comune = cursor.getString(4);
+        String indirizzo=cursor.getString(5);
+        String localita = cursor.getString(6);
+        String provincia = cursor.getString(7);
+        int clas =cursor.getInt(8);
+        int divieto =cursor.getInt(9);
+        String image = cursor.getString(10);
 
-        String servizi = cursor.getString(9);
+        String servizi = cursor.getString(11);
         ArrayList<InformazioneUtile> infoVec = new ArrayList<>();
 
         for(int i=0;i<DetailsActivity.numInfo;i++) {
-            String strInfo=cursor.getString(i + 10);
+            String strInfo=cursor.getString(i + 12);
             String[] arrayInfo=strInfo.split(",,");
             InformazioneUtile info = new InformazioneUtile(arrayInfo[0],arrayInfo[1],arrayInfo[2]);
 
@@ -86,7 +91,7 @@ public class PlaceDB {
 
         }
 
-       return new Place(id,lat,lng,comune,localita,provincia,clas,divieto,image,servizi,infoVec);
+       return new Place(id,id_asl,lat,lng,comune,indirizzo,localita,provincia,clas,divieto,image,servizi,infoVec);
     }
 
     public Place insertPlace(Place place) {

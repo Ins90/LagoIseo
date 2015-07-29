@@ -191,7 +191,7 @@ public class MapFragment extends Fragment implements
 
 
         if((System.currentTimeMillis()/1000)-prefGPS.getLong("timeToGps",0)>timeRefreshGPS) {
-            Toast.makeText( context,"tempo salvato: "+String.valueOf(System.currentTimeMillis()/1000-prefGPS.getLong("timeToGps",0)) +"tempo",Toast.LENGTH_SHORT).show();
+            //Toast.makeText( context,"tempo salvato: "+String.valueOf(System.currentTimeMillis()/1000-prefGPS.getLong("timeToGps",0)) +"tempo",Toast.LENGTH_SHORT).show();
             mGoogleApiClient.connect();
         }else{
             mGoogleApiClient.disconnect();
@@ -384,7 +384,7 @@ public class MapFragment extends Fragment implements
                 }
               //  Place p =dbPlace.insertPlace(new Place (json.getLong("ID"),json.getDouble("lat"),json.getDouble("lng"),json.getString("comune"),json.getString("localita"),
               //          json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString()));
-                Place p = new Place (json.getLong("ID"),json.getDouble("lat"),json.getDouble("lng"),json.getString("comune"),json.getString("localita"),json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString(),infoVec);
+                Place p = new Place (json.getLong("ID"),json.getString("id_asl"),json.getDouble("lat"),json.getDouble("lng"),json.getString("comune"),json.getString("indirizzo"),json.getString("localita"),json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString(),infoVec);
                 dbPlace.insertPlace(p);
                 places.add(p);
 
@@ -523,7 +523,7 @@ public class MapFragment extends Fragment implements
 
     @Override
     public void onLocationChanged(Location location) {
-        Toast.makeText(context, "Location received: " + location.getLatitude(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(context, "Location received: " + location.getLatitude(), Toast.LENGTH_SHORT).show();
         prefLat.edit().putString("prefLat", String.valueOf(location.getLatitude())).apply();
         prefLng.edit().putString("prefLng", String.valueOf(location.getLongitude())).apply();
         prefGPS.edit().putLong("timeToGps", System.currentTimeMillis() / 1000).apply();

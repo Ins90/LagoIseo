@@ -50,10 +50,10 @@ public class GridViewAdapter extends ArrayAdapter {
         ServiceItem item = data.get(position);
         holder.imageTitle.setText(item.getTitle());
 
-        Picasso.with(context)
-                .load(item.getImage())
-                .into(holder.image);
-        //holder.image.setImageBitmap(item.getImage());
+        //Picasso.with(context)
+        //        .load(item.getImage())
+        //        .into(holder.image);
+        holder.image.setImageBitmap(item.getImage());
         return row;
     }
 
