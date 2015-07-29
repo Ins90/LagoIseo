@@ -38,7 +38,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
     public static boolean ricercaCreata=false; //necessaria per il tasto indietro, se lo si preme appena aperta l'app
     Menu menuNew;
     boolean[] saveItemForCancelDialog;
-    boolean[] preCheckedItemsLast= new boolean[]{ false, false, false, false, false, false, false, false, false, false, false} ;
+    boolean[] preCheckedItemsLast= new boolean[]{ false, false, false, false, false, false, false, false, false, false, false, false} ;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -73,7 +73,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                preCheckedItemsLast= new boolean[]{ false, false, false, false, false, false, false, false, false, false, false} ;
+                preCheckedItemsLast= new boolean[]{ false, false, false, false, false, false, false, false, false, false, false, false} ;
                 checkFilterUpdateAdapter();
                 final TextView tv = (TextView) getActivity().findViewById(R.id.testFilter);
                 tv.setText(Html.fromHtml("<B>" +getActivity().getResources().getString(R.string.noFilter)+"</B>"));
@@ -180,12 +180,13 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
             if (preCheckedItemsLast.length != 0) {
                 preCheckedItems = preCheckedItemsLast;
                 //ricerco i true, in modo che siano realmente selezionati se l utente non li tocca!!
+                saveItemForCancelDialog=preCheckedItemsLast;
                 for(int i=0;i<preCheckedItemsLast.length;i++){
                     if(preCheckedItemsLast[i])
                         selectedItems.add(i);
                 }
             } else {
-                preCheckedItems = new boolean[]{ false, false, false, false, false, false, false, false, false, false, false} ;
+                preCheckedItems = new boolean[]{ false, false, false, false, false, false, false, false, false, false, false, false} ;
             }
 
         //Define the AlertBuilder as a multiple choice items collection.
@@ -238,7 +239,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
         adb.setNeutralButton(R.string.neutral_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                preCheckedItemsLast = new boolean[]{false, false, false, false, false, false, false, false, false, false, false};
+                preCheckedItemsLast = new boolean[]{false, false, false, false, false, false, false, false, false, false, false, false};
                 tv.setText(Html.fromHtml("<B>" + getActivity().getResources().getString(R.string.noFilter) + "</B>"));
                 checkFilterUpdateAdapter();
                 contenutoFiltro.setVisibility(View.GONE);
