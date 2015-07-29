@@ -37,7 +37,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
     public static MenuItem searchItem;
     public static boolean ricercaCreata=false; //necessaria per il tasto indietro, se lo si preme appena aperta l'app
     Menu menuNew;
-    boolean[] saveItemForCancelDialog;
+  //  boolean[] saveItemForCancelDialog;
     boolean[] preCheckedItemsLast= new boolean[]{ false, false, false, false, false, false, false, false, false, false, false, false} ;
 
     @Override
@@ -180,7 +180,7 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
             if (preCheckedItemsLast.length != 0) {
                 preCheckedItems = preCheckedItemsLast;
                 //ricerco i true, in modo che siano realmente selezionati se l utente non li tocca!!
-                saveItemForCancelDialog=preCheckedItemsLast;
+                //saveItemForCancelDialog=preCheckedItemsLast;
                 for(int i=0;i<preCheckedItemsLast.length;i++){
                     if(preCheckedItemsLast[i])
                         selectedItems.add(i);
@@ -247,13 +247,13 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
             }
         });
 
-        adb.setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                preCheckedItemsLast = saveItemForCancelDialog; //TODO non funge
+       // adb.setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
+        //    @Override
+        //    public void onClick(DialogInterface dialog, int which) {
+       //         preCheckedItemsLast = saveItemForCancelDialog; //TODO non funge
 
-            }
-        });
+       //     }
+        //});
         adb.setCancelable(false);
 
         //Display the Alert Dialog on app interface
