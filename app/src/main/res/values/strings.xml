@@ -92,7 +92,7 @@
     <string name="descRefresh">Selezionare il tempo minimo tra un aggiornamento e l\'altro (Default 12 ore)</string>
 
     <!-- Servizi -->
-    <string name="allServices">Area Picnic,Parco giochi,Servizi Igienici,Bar,Ristorante,Parcheggio,Area campeggio,Pista ciclabile,Area verde,Accesso cani,Accessibilità,Attracco barche</string>
+    <string name="allServices">Area Picnic,Parco giochi,Servizi Igienici,Bar,Ristorante,Parcheggio,Area campeggio,Pista ciclabile,Area verde,Accesso cani,Accessibilità,Attracco</string>
     <string name="title_activity_activity__filter">Activity_Filter</string>
 
     <!-- filter -->
