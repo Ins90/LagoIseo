@@ -1,12 +1,14 @@
 package it.inserrafesta.iseomap.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.v7.widget.Toolbar;
@@ -208,7 +210,7 @@ public class DetailsActivity extends AppCompatActivity {
             if(info.exists()) {
                 String nome = info.getNome();
                 String indirizzo = info.getIndirizzo();
-                String telefono = info.getTelefono();
+                final String telefono = info.getTelefono();
                 LinearLayout infoRow = new LinearLayout(this);
                 infoRow.setOrientation(LinearLayout.VERTICAL);
                 TextView titoloTv = new TextView(this);
@@ -220,8 +222,8 @@ public class DetailsActivity extends AppCompatActivity {
                 //titoloTv.setTextSize(getResources().getDimension(R.dimen.textTitleInfo));
 
                 nomeTv.setText(nome);
-                telefonoTv.setText(getResources().getString(R.string.tel)+" "+telefono);
-                indirizzoTv.setText(indirizzo);
+                telefonoTv.setText(Html.fromHtml("<B>"+getResources().getString(R.string.tel)+": </B><FONT COLOR=\"#a0beff\">"+ telefono+"</FONT>"));
+                indirizzoTv.setText(Html.fromHtml("<B>"+getResources().getString(R.string.indirizzo)+": </B> "+indirizzo));
                 infoRow.addView(titoloTv);
                 if(!nome.equals(""))
                     infoRow.addView(nomeTv);
@@ -238,6 +240,15 @@ public class DetailsActivity extends AppCompatActivity {
                 telefonoTv.setPadding(30,10,10,10);
                 indirizzoTv.setPadding(30,10,10,10);
                 infoRow.setPadding(0,20,0,0);
+
+                telefonoTv.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View view) {
+                       Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+telefono));
+                        startActivity(dialIntent);
+                    }
+                });
             }
         }
         /*
