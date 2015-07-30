@@ -79,9 +79,12 @@
 
 
     <string name="descriptionAcque">Per la valutazione e l\'attribuzione dello stato di qualità delle acque di balneazione (scarso, sufficiente, buono o eccellente) la normativa stabilisce l\'utilizzo di due indicatori microbiologici:</string>
-    <string name="indicatori">Escherichia coli - Enterococchi intestinali</string>
+    +    <string name="indicatori">1. Escherichia coli\n2. Enterococchi intestinali</string>
     <string name="descriptionAcque2">Questi parametri microbiologici rappresentano la migliore corrispondenza possibile tra inquinamento di origine fecale e ripercussioni per la salute nelle acque destinate a scopi ricreativi</string>
-
+    <string name="descriptionAcque3">VALUTAZIONE DELLE ACQUE DI BALNEAZIONE INTERNE</string>
+    <string name="descriptionAcque4">(*) basato sulla valutazione al 95° percentile\n(**) basato sulla valutazione al 90° percentile</string>
+    <string name="descriptionAcque5">VALORE LIMITE</string>
+    <string name="descriptionAcque6">Al fine di garantire un adeguato livello di tutela della salute dei bagnanti, per le acque classificate ad inizio stagione balneabili la normativa, stabilisce a livello analitico un “valore limite”, il cui superamento impone l’obbligo di immediata adozione del provvedimento di divieto temporaneo di balneazione.</string>
     <!-- Preferenze-->
     <string name="vistaSat">Vista satellitare</string>
     <string name="descVistaSat">Se selezionata, imposta la mappa satellitare come predefinita all’apertura dell’app</string>
