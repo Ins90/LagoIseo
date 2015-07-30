@@ -96,6 +96,7 @@ public class MapFragment extends Fragment implements
     static String[] serviziNomiArray;
     public static Vector<String> serviziNomi;
     private Handler mHandler = new Handler();
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_map, menu);
@@ -417,7 +418,7 @@ public class MapFragment extends Fragment implements
                 }
               //  Place p =dbPlace.insertPlace(new Place (json.getLong("ID"),json.getDouble("lat"),json.getDouble("lng"),json.getString("comune"),json.getString("localita"),
               //          json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString()));
-                Place p = new Place (json.getLong("ID"),json.getString("id_asl"),json.getDouble("lat"),json.getDouble("lng"),json.getString("comune"),json.getString("indirizzo"),json.getString("localita"),json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString(),infoVec);
+                Place p = new Place (json.getLong("ID"),json.getString("id_asl"),json.getDouble("lat"),json.getDouble("lng"),json.getString("comune"),json.getString("indirizzo"),json.getString("localita"),json.getString("provincia"),json.getInt("classificazione"),json.getInt("divieto"),json.getString("image"),serviziVec.toString(),infoVec,0);
                 dbPlace.insertPlace(p);
                 places.add(p);
 
@@ -530,6 +531,16 @@ public class MapFragment extends Fragment implements
         }
     }
 
+    public void UpdateLocalDbStar(){
+        if(places.size()!=0) {
+            dbPlace.removeAll();
+        }
+        dbPlace = new PlaceDB();
+        dbPlace.open();
+        for(int i=0;i<places.size();i++) {
+            dbPlace.insertPlace(places.get(i));
+        }
+    }
     @Override
     public void onConnected(Bundle bundle) {
         if((System.currentTimeMillis()/1000)-prefGPS.getLong("timeToGps",0)>timeRefreshGPS) {

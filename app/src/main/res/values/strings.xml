@@ -2,7 +2,8 @@
     <string name="app_name">IseoAcque</string>
 
     <string name="home_string">Home</string>
-    <string name="explore_string">Punti di balneazione</string>
+    <string name="explore_string">Località di balneazione</string>
+    <string name="star_string">Località preferite</string>
     <string name="classification_string">Classificazione acque</string>
     <string name="link_string">ASL Nuotare Informati </string>
     <string name="settings_string">Impostazioni</string>
@@ -20,14 +21,16 @@
     <string name="indirizzo">Indirizzo</string>
 
     <string name="distanceLoc">Distanza dalla località</string>
+    <string name="locAdd">Località aggiunta ai preferiti</string>
+    <string name="locRem">Località rimossa ai preferiti</string>
 
 <!-- dialog alert connection and toast message-->
     <string name="titleDialog">Connessione Internet assente</string>
     <string name="descDialog">La prima volta è necessaria una connessione Internet per usare l\'applicazione.  </string>
     <string name="connButton">Esci </string>
     <string name="exitToast">Premere ancora il tasto INDIETRO per uscire dall\'app</string>
-    <string name="zoomMap">Centramento mappa ...</string>
-    <string name="update">Aggiornamento in corso...</string>
+    <string name="zoomMap">Centramento mappa …</string>
+    <string name="update">Aggiornamento in corso…</string>
 
     <string name="first">12 ore</string>
     <string name="second">1 giorno</string>
@@ -49,6 +52,7 @@
 
     <string name="search_hint">Ricerca per Località o Comune … </string>
     <string name="empty_list">Nessun risultato trovato</string>
+    <string name="empty_list_star">Nessuna località preferita</string>
 
     <string name="noConnection">Connessione necessaria per aggiornare il Database</string>
     <string name="updateOK">Aggiornamento effettuato</string>

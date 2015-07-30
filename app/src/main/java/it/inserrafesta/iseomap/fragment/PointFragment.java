@@ -224,7 +224,10 @@ public class PointFragment extends ListFragment implements SearchView.OnQueryTex
 
                         String selectedService = Arrays.asList(serviziNomi).get(IndexOfServicesArray);
                         //Display the selected services to TextView
-                        contenutoFiltro.setText(contenutoFiltro.getText() + " " + selectedService + "; ");
+                        contenutoFiltro.setText(contenutoFiltro.getText() + " " + selectedService);
+                        if((i+1)!=selectedItems.size()){
+                            contenutoFiltro.setText(contenutoFiltro.getText()+ " - ");
+                        }
                     }
                 } else {
                     tv.setText(Html.fromHtml("<B>" +getActivity().getResources().getString(R.string.noFilter)+"</B>"));

@@ -19,6 +19,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CLAS = "classificazione";
     public static final String COLUMN_DIVIETO = "divieto";
     public static final String COLUMN_IMAGE = "image";
+    public static final String COLUMN_FAVORITO = "favorito";
     public static final String COLUMN_SERVIZI = "servizi";
     public static final String COLUMN_MEDICO = "medico";
     public static final String COLUMN_FARMACIA = "farmacia";
@@ -46,6 +47,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_CLAS + " integer not null,"
             + COLUMN_DIVIETO + " integer not null,"
             + COLUMN_IMAGE + " text not null,"
+            + COLUMN_FAVORITO + " integer,"
             + COLUMN_SERVIZI + " text,"
             + COLUMN_MEDICO + " text,"
             + COLUMN_FARMACIA + " text,"

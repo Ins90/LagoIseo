@@ -26,6 +26,7 @@ import it.inserrafesta.iseomap.R;
 import it.inserrafesta.iseomap.fragment.LinkFragment;
 import it.inserrafesta.iseomap.fragment.MapFragment;
 import it.inserrafesta.iseomap.fragment.PointFragment;
+import it.inserrafesta.iseomap.fragment.StarFragment;
 import it.inserrafesta.iseomap.fragment.WaterFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     static LinkFragment linkFragment;
     static PointFragment exploreFragment;
     static WaterFragment waterFragment;
+    static StarFragment starFragment;
+    SharedPreferences prefStar;
     AlertDialog.Builder alert=null;
     private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
     private long mBackPressed;
@@ -46,9 +49,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = getApplicationContext();
+        prefStar = context.getSharedPreferences("Stars", Context.MODE_PRIVATE);
+        inizializeArrayStars();
+        //prefStar.edit().putString("Stars", String.valueOf(location.getLatitude())).apply();
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = getApplicationContext();
         checkFirstRun();
         // Initializing Toolbar and setting it as the actionbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -77,6 +85,10 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.explore:
                         displayPointFragment();
+                        return true;
+
+                    case R.id.star:
+                        displayStarFragment();
                         return true;
 
                     case R.id.classification:
@@ -141,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
             bundl.putBoolean("OptSatellite", OptSatellite);
 
             waterFragment = new WaterFragment();
+            starFragment = new StarFragment();
+
             mapFragment = new MapFragment();
             mapFragment.setArguments(bundl);
             linkFragment = new LinkFragment();
@@ -148,6 +162,10 @@ public class MainActivity extends AppCompatActivity {
             displayMapFragment();
         }
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    private void inizializeArrayStars() {
+
     }
 
     public void checkFirstRun() {
@@ -192,6 +210,9 @@ public class MainActivity extends AppCompatActivity {
         if (waterFragment.isAdded()) {
             ft.hide(waterFragment);
         }
+        if (starFragment.isAdded()) {
+            ft.hide(starFragment);
+        }
         ft.commit();
     }
 
@@ -212,8 +233,35 @@ public class MainActivity extends AppCompatActivity {
         if (waterFragment.isAdded()) {
             ft.hide(waterFragment);
         }
+        if (starFragment.isAdded()) {
+            ft.hide(starFragment);
+        }
         ft.commit();
     }
+
+    protected void displayStarFragment() {
+        getSupportActionBar().setTitle(R.string.star_string);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (starFragment.isAdded()) { // if the fragment is already in container
+            ft.show(starFragment);
+        } else { // fragment needs to be added to frame container
+            ft.add(R.id.frame, starFragment, "STAR");
+        }
+        if (mapFragment.isAdded()) {
+            ft.hide(mapFragment);
+        }
+        if (linkFragment.isAdded()) {
+            ft.hide(linkFragment);
+        }
+        if (exploreFragment.isAdded()) {
+            ft.hide(exploreFragment);
+        }
+        if (waterFragment.isAdded()) {
+            ft.hide(waterFragment);
+        }
+        ft.commit();
+    }
+
 
     protected void displayPointFragment() {
         getSupportActionBar().setTitle(R.string.explore_string);
@@ -231,6 +279,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (waterFragment.isAdded()) {
             ft.hide(waterFragment);
+        }
+        if (starFragment.isAdded()) {
+            ft.hide(starFragment);
         }
         ft.commit();
     }
@@ -251,6 +302,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (mapFragment.isAdded()) {
             ft.hide(mapFragment);
+        }
+        if (starFragment.isAdded()) {
+            ft.hide(starFragment);
         }
         ft.commit();
     }

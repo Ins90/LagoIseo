@@ -23,6 +23,7 @@ public class PlaceDB {
             MySQLiteHelper.COLUMN_CLAS,
             MySQLiteHelper.COLUMN_DIVIETO,
             MySQLiteHelper.COLUMN_IMAGE,
+            MySQLiteHelper.COLUMN_FAVORITO,
             MySQLiteHelper.COLUMN_SERVIZI,
             MySQLiteHelper.COLUMN_MEDICO,
             MySQLiteHelper.COLUMN_FARMACIA,
@@ -54,6 +55,7 @@ public class PlaceDB {
         values.put(MySQLiteHelper.COLUMN_CLAS, place.getClassificazione());
         values.put(MySQLiteHelper.COLUMN_DIVIETO, place.getDivieto());
         values.put(MySQLiteHelper.COLUMN_IMAGE, place.getImageUrl());
+        values.put(MySQLiteHelper.COLUMN_FAVORITO, place.getFavorite());
         values.put(MySQLiteHelper.COLUMN_SERVIZI, place.getServiziStr());
         values.put(MySQLiteHelper.COLUMN_MEDICO, place.getInformazioneIndex(0));
         values.put(MySQLiteHelper.COLUMN_FARMACIA, place.getInformazioneIndex(1));
@@ -78,12 +80,13 @@ public class PlaceDB {
         int clas =cursor.getInt(8);
         int divieto =cursor.getInt(9);
         String image = cursor.getString(10);
+        int favorito = cursor.getInt(11);
 
-        String servizi = cursor.getString(11);
+        String servizi = cursor.getString(12);
         ArrayList<InformazioneUtile> infoVec = new ArrayList<>();
 
         for(int i=0;i<DetailsActivity.numInfo;i++) {
-            String strInfo=cursor.getString(i + 12);
+            String strInfo=cursor.getString(i + 13);
             String[] arrayInfo=strInfo.split(",,");
             InformazioneUtile info = new InformazioneUtile(arrayInfo[0],arrayInfo[1],arrayInfo[2]);
 
@@ -91,7 +94,7 @@ public class PlaceDB {
 
         }
 
-       return new Place(id,id_asl,lat,lng,comune,indirizzo,localita,provincia,clas,divieto,image,servizi,infoVec);
+       return new Place(id,id_asl,lat,lng,comune,indirizzo,localita,provincia,clas,divieto,image,servizi,infoVec,favorito);
     }
 
     public Place insertPlace(Place place) {

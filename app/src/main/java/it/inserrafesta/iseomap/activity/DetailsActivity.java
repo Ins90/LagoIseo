@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -14,13 +13,16 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -59,17 +61,70 @@ public class DetailsActivity extends AppCompatActivity {
     SharedPreferences prefLat;
     SharedPreferences prefLng;
     double distanza;
+    boolean change=true;
+    Menu menuNew;
+    public MenuItem star;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menuNew=menu;
+        getMenuInflater().inflate(R.menu.menu_details, menu);
+        star = menu.findItem(R.id.action_star);
+        for (int i = 0; i < MapFragment.places.size(); i++) {
+            if (MapFragment.places.get(i).getLocalita().equals(localita)) {
+                if(MapFragment.places.get(i).getFavorite()==0) {
+                    star.setIcon(R.drawable.ic_star_white_add_36dp);
+                }else{
+                    star.setIcon(R.drawable.ic_star_white_check_36dp);
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch(id){
+            case R.id.action_star:
+                for (int i = 0; i < MapFragment.places.size(); i++) {
+                    if(MapFragment.places.get(i).getLocalita().equals(localita)) {
+                        if(MapFragment.places.get(i).getFavorite()==0) {
+                            MapFragment.places.get(i).setFavorite(1,getApplicationContext());
+                            item.setIcon(R.drawable.ic_star_white_check_36dp);
+                            Toast.makeText(this, R.string.locAdd, Toast.LENGTH_SHORT).show();
+                         if(MainActivity.starFragment.isAdded()) {
+                             MainActivity.starFragment.checkStarUpdateAdapter();
+                         }
+                            MainActivity.mapFragment.UpdateLocalDbStar();
+                        }else{
+                            MapFragment.places.get(i).setFavorite(0,getApplicationContext());
+                            item.setIcon(R.drawable.ic_star_white_add_36dp);
+                            Toast.makeText(this, R.string.locRem, Toast.LENGTH_SHORT).show();
+                            if(MainActivity.starFragment.isAdded()) {
+                                MainActivity.starFragment.checkStarUpdateAdapter();
+                            }
+                            MainActivity.mapFragment.UpdateLocalDbStar();
+
+                        }
+                    }
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Context context = getApplication();
+        //setHasOptionsMenu(true); //necessario per visualizzare i pulsanti nella toolbar
 
         String services=getResources().getString(R.string.allServices);
         serviziNomiArray=services.split(",");
 
         serviziNomi= new Vector<>(Arrays.asList(serviziNomiArray));
         //Log.d("Adapter", "array " + serviziNomiArray[10].toString());
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
         Bundle extras = getIntent().getExtras();

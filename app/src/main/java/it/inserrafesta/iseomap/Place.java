@@ -1,5 +1,8 @@
 package it.inserrafesta.iseomap;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -25,9 +28,10 @@ public class Place {
     private ArrayList<Boolean> serviziVec=new ArrayList<>();
     private ArrayList<InformazioneUtile> infoVec = new ArrayList<>();
     private String serviziStr;
+    private int favorite; //0 non è un preferito, 1 si
+    SharedPreferences prefStar;
 
-
-    public Place(long id, String _id_asl, double _lat, double _lng, String _comune, String _indirizzo, String _localita, String _provincia, int _classificazione, int _divieto, String _imageUrl,String serviziString,ArrayList<InformazioneUtile> _infoVec){
+    public Place(long id, String _id_asl, double _lat, double _lng, String _comune, String _indirizzo, String _localita, String _provincia, int _classificazione, int _divieto, String _imageUrl,String serviziString,ArrayList<InformazioneUtile> _infoVec,int _favorite){
 
         serviziStr=serviziString;
         infoVec = _infoVec;
@@ -43,6 +47,7 @@ public class Place {
         classificazione = _classificazione;
         divieto = _divieto;
         imageUrl = _imageUrl;
+        favorite=_favorite;
         ArrayList<String> serviziVecTemp = new ArrayList<>();
         serviziVecTemp.addAll(Arrays.asList(serviziString.substring(1, serviziString.length() - 1).split(", ")));
         serviziVec=getBooleanArray(serviziVecTemp);
@@ -187,6 +192,18 @@ public class Place {
 
     public String getIndirizzo() {
         return indirizzo;
+    }
+
+    public int getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(int favorite, Context context) {
+        this.favorite = favorite;
+        prefStar = context.getSharedPreferences("Stars", Context.MODE_PRIVATE);
+        String temp=prefStar.getString("Stars","");
+        prefStar.edit().putString("Stars",temp + localita+",,"+favorite+"," ).apply();
+
     }
 
 }

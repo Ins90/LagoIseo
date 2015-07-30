@@ -17,6 +17,12 @@
             android:title="@string/explore_string" />
 
         <item
+            android:id="@+id/star"
+            android:checked="false"
+            android:icon="@drawable/ic_star_white_24dp"
+            android:title="@string/star_string" />
+
+        <item
             android:id="@+id/classification"
             android:checked="false"
             android:icon="@drawable/ic_invert_colors_white_24dp"

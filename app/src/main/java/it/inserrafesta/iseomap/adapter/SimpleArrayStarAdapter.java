@@ -24,29 +24,19 @@ import it.inserrafesta.iseomap.R;
 import it.inserrafesta.iseomap.activity.DetailsActivity;
 
 
-public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterable {
+public class SimpleArrayStarAdapter extends ArrayAdapter<Place>{
     private final Context context;
-    private PointFilter filter;
     private ArrayList<Place> originalList;
     private ArrayList<Place> pointList;
 
-    public SimpleArrayAdapter(Context context, int resource,
+    public SimpleArrayStarAdapter(Context context, int resource,
                               ArrayList<Place> pointList) {
         super(context, resource,pointList);
         this.context = context;
         this.pointList = new ArrayList<>();
         this.pointList.addAll(pointList);
-        this.originalList = new ArrayList<>();
-        this.originalList.addAll(pointList);
     }
 
-    @Override
-    public Filter getFilter() {
-        if (filter == null){
-            filter  = new PointFilter();
-        }
-        return filter;
-    }
 
     @SuppressLint("InflateParams")
     @Override
@@ -129,7 +119,6 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
     public static class ViewHolder {
         TextView localita;
         TextView comune;
-      //  TextView classificazione;
         ImageView imgV;
         ImageView water;
 
@@ -145,61 +134,4 @@ public class SimpleArrayAdapter extends ArrayAdapter<Place> implements Filterabl
         return pointList.get(position);
     }
 
-    private class PointFilter extends Filter
-    {
-
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-
-            constraint = constraint.toString().toLowerCase();
-            FilterResults result = new FilterResults();
-            if(constraint != null && constraint.toString().length() > 0)
-            {
-                ArrayList<Place> filteredItems = new ArrayList<>();
-
-                //Gestione filtro
-                for(int i = 0, l = originalList.size(); i < l; i++)
-                {
-                    boolean inserito=false;
-                    Place place = originalList.get(i);
-                    String loc=place.getLocalita().toLowerCase();
-                    String[] locdivisa=loc.split(" ");
-
-                    for(int j=0;j<locdivisa.length;j++){
-                        if (!inserito && locdivisa[j].startsWith((String) constraint)) {
-                            filteredItems.add(place);
-                            inserito=true;
-                        }
-                    }
-                        if (!inserito && place.getComune().toLowerCase().startsWith((String) constraint))
-                            filteredItems.add(place);
-
-                }
-                result.count = filteredItems.size();
-                result.values = filteredItems;
-            }
-            else
-            {
-                synchronized(this)
-                {
-                    result.values = originalList;
-                    result.count = originalList.size();
-                }
-            }
-            return result;
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        protected void publishResults(CharSequence constraint,
-                                      FilterResults results) {
-
-            pointList = (ArrayList<Place>)results.values;
-            notifyDataSetChanged();
-            clear();
-            for(int i = 0, l = pointList.size(); i < l; i++)
-                add(pointList.get(i));
-            notifyDataSetInvalidated();
-        }
-    }
 }
